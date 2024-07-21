@@ -17,7 +17,7 @@ const Header = () => {
           Log In
         </Link>
 
-        <DPrimaryButtonLink href="/signup" label="Sign Up" />
+        <DPrimaryButtonLink href="/signup" label="Sign Up" className="w-min" />
       </div>
     </div>
   );
