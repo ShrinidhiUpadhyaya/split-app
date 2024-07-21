@@ -1,12 +1,12 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
-
-import { Input } from "@/components/ui/input";
 
 import DSocialLoginButton from "@/components/DSocialLoginButton";
 import DSeperator from "@/components/DSeperator";
 import DTextLink from "@/components/DTextLink";
-import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
+import DLoginForm from "./DLoginForm";
 
 const loginOptions = [
   {
@@ -37,6 +37,7 @@ const Login = () => {
         <p className="text-4xl font-bold mb-8 w-full text-center">
           Sign in to your account
         </p>
+
         <div className="w-full space-y-4">
           {loginOptions.map((option) => (
             <DSocialLoginButton
@@ -50,12 +51,7 @@ const Login = () => {
 
         <DSeperator />
 
-        <div className="space-y-4">
-          <Input placeholder="youremail@email.com" />
-          <Input placeholder="your password" />
-          <DTextLink label="Forgot your password?" />
-          <DPrimaryButtonLink label="Sign in with your email" />
-        </div>
+        <DLoginForm />
       </div>
     </div>
   );
