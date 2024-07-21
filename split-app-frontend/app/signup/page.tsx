@@ -1,12 +1,10 @@
 import React from "react";
 import Image from "next/image";
 
-import { Input } from "@/components/ui/input";
-
 import DSocialLoginButton from "@/components/DSocialLoginButton";
 import DSeperator from "@/components/DSeperator";
 import DTextLink from "@/components/DTextLink";
-import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
+import SignUpForm from "./SignUpForm";
 
 const loginOptions = [
   {
@@ -50,13 +48,7 @@ const SignUp = () => {
 
         <DSeperator />
 
-        <div className="space-y-4">
-          <Input placeholder="your name" />
-          <Input placeholder="youremail@email.com" />
-          <Input placeholder="your password" />
-          <Input placeholder="Re-enter your password" />
-          <DPrimaryButtonLink label="Sign in with your email" />
-        </div>
+        <SignUpForm />
       </div>
     </div>
   );
