@@ -1,12 +1,11 @@
 import React from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Url } from "next/dist/shared/lib/router/router";
 
 interface TextLinkProps {
   label?: string;
   className?: string;
-  href?: Url;
+  href?: string;
 }
 
 const DTextLink: React.FC<TextLinkProps> = ({

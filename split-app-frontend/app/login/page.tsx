@@ -10,11 +10,11 @@ import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
 
 const loginOptions = [
   {
-    type: "Google",
+    type: "Sign in with Google",
     icon: "/google.png",
   },
   {
-    type: "Apple",
+    type: "Sign in with Apple",
     icon: "/apple.png",
   },
 ];
@@ -24,7 +24,7 @@ const Login = () => {
     <div className="w-full h-svh flex flex-col justify-center items-center relative gap-8">
       <div className="top-0 right-0 flex justify- w-full">
         <div className="flex-1 flex justify-center items-end">
-          <Image src="/logo.svg" width={150} height={150} />
+          <Image src="/logo.svg" width={150} height={150} alt="Split Logo" />
         </div>
 
         <div className="flex flex-col absolute right-0 py-2 px-8 text-sm">

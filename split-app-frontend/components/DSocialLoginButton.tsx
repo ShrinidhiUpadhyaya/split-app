@@ -27,7 +27,7 @@ const DSocialLoginButton: React.FC<ButtonProps> = ({
       >
         <div className="w-full h-full flex items-center justify-center gap-4">
           <Image src={icon} height={24} width={24} alt="Login with Google" />
-          Sign in with {label}
+          {label}
         </div>
       </Link>
     </div>

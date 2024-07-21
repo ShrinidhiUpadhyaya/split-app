@@ -6,12 +6,17 @@ import { buttonVariants } from "@/components/ui/button";
 interface ButtonProps {
   label?: string;
   className?: string;
+  href?: string;
 }
 
-const DPrimaryButtonLink: React.FC<ButtonProps> = ({ label, className }) => {
+const DPrimaryButtonLink: React.FC<ButtonProps> = ({
+  label,
+  href = "",
+  className,
+}) => {
   return (
     <Link
-      href=""
+      href={href}
       className={cn(
         buttonVariants({ variant: "default" }),
         "h-11 w-full text-lg font-bold",
