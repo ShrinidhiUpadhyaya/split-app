@@ -6,7 +6,7 @@ import Image from "next/image";
 import DSocialLoginButton from "@/components/DSocialLoginButton";
 import DSeperator from "@/components/DSeperator";
 import DTextLink from "@/components/DTextLink";
-import DLoginForm from "./DLoginForm";
+import LoginForm from "./LoginForm";
 
 const loginOptions = [
   {
@@ -51,7 +51,7 @@ const Login = () => {
 
         <DSeperator />
 
-        <DLoginForm />
+        <LoginForm />
       </div>
     </div>
   );

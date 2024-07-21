@@ -15,7 +15,7 @@ const formSchema = z.object({
   password: z.string().min(10).max(20),
 });
 
-const DLoginForm = () => {
+const LoginForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -48,4 +48,4 @@ const DLoginForm = () => {
   );
 };
 
-export default DLoginForm;
+export default LoginForm;
