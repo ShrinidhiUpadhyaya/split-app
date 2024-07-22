@@ -1,18 +1,23 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 
+import SignUpForm from "./SignUpForm";
 import DSeperator from "@/components/DSeperator";
 import DTextLink from "@/components/DTextLink";
-import SignUpForm from "./SignUpForm";
-
 import DGoogleButton from "@/components/DGoogleButton";
+import DPage from "@/components/DPage";
 
 const SignUp = () => {
   return (
-    <div className="w-full h-svh flex flex-col items-center relative gap-8 border pt-8">
+    <DPage>
       <div className="top-0 right-0 flex w-full">
         <div className="flex-1 flex justify-center items-end">
-          <Image src="/logo.svg" width={150} height={150} alt="Split Logo" />
+          <Link href="/">
+            <Image src="/logo.svg" width={150} height={150} alt="Split Logo" />
+          </Link>
         </div>
 
         <div className="flex flex-col absolute right-0 py-2 px-8 text-sm">
@@ -32,7 +37,7 @@ const SignUp = () => {
 
         <SignUpForm />
       </div>
-    </div>
+    </DPage>
   );
 };
 

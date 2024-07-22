@@ -11,7 +11,7 @@ interface FormFieldProps {
   control: any;
   name: string;
   placeholder?: string;
-  type?: string;
+  type?: string | undefined;
 }
 
 const DFormFieldComponent: React.FC<FormFieldProps> = ({

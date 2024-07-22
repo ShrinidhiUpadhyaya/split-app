@@ -43,10 +43,8 @@ const DGoogleButton: React.FC<ButtonProps> = ({
   return (
     <div>
       <Button
-        className={cn(
-          "border-2 border-[#5E5D6073] bg-transparent text-black hover:bg-transparent hover:shadow-lg flex gap-4 text-lg font-semibold h-11 rounded-xl",
-          className
-        )}
+        className={cn("text-lg font-semibold", className)}
+        variant="outline"
         onClick={signUpWithGoogle}
       >
         <div className="w-full h-full flex items-center justify-center gap-4">
