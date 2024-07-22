@@ -40,7 +40,7 @@ const LoginForm = () => {
           type="password"
         />
 
-        <Button type="submit" className="w-full text-lg font-bold h-11">
+        <Button type="submit" className="w-full text-lg font-bold">
           Sign in with your email
         </Button>
       </form>

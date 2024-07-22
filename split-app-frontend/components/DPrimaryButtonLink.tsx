@@ -23,7 +23,7 @@ const DPrimaryButtonLink: React.FC<ButtonProps> = ({
       href={href}
       className={cn(
         buttonVariants({ variant: "default" }),
-        "h-11 w-full text-lg font-bold",
+        "w-full text-lg font-bold",
         disabled && "opacity-40",
         className
       )}
