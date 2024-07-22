@@ -3,26 +3,16 @@
 import React from "react";
 import Image from "next/image";
 
-import DSocialLoginButton from "@/components/DSocialLoginButton";
 import DSeperator from "@/components/DSeperator";
 import DTextLink from "@/components/DTextLink";
 import LoginForm from "./LoginForm";
 
-const loginOptions = [
-  {
-    type: "Sign in with Google",
-    icon: "/google.png",
-  },
-  {
-    type: "Sign in with Apple",
-    icon: "/apple.png",
-  },
-];
+import DGoogleButton from "@/components/DGoogleButton";
 
 const Login = () => {
   return (
-    <div className="w-full h-svh flex flex-col justify-center items-center relative gap-8">
-      <div className="top-0 right-0 flex justify- w-full">
+    <div className="w-full h-svh flex flex-col items-center relative gap-8 pt-8">
+      <div className="top-0 right-0 flex w-full">
         <div className="flex-1 flex justify-center items-end">
           <Image src="/logo.svg" width={150} height={150} alt="Split Logo" />
         </div>
@@ -38,16 +28,7 @@ const Login = () => {
           Sign in to your account
         </p>
 
-        <div className="w-full space-y-4">
-          {loginOptions.map((option) => (
-            <DSocialLoginButton
-              key={option.type}
-              icon={option.icon}
-              label={option.type}
-              className="w-full"
-            />
-          ))}
-        </div>
+        <DGoogleButton label="Continue with Google" className="w-full" />
 
         <DSeperator />
 
