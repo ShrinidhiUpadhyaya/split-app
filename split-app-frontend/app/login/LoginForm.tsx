@@ -6,8 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
-
 import { Button } from "../../components/ui/button";
+import { signInWithGoogle } from "@/firebase/utils";
 import DFormFieldComponent from "../../components/DFormFieldComponent";
 
 const formSchema = z.object({
@@ -20,8 +20,8 @@ const LoginForm = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    await signInWithGoogle();
   };
 
   return (

@@ -7,8 +7,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "../../components/ui/button";
-import DFormFieldComponent from "../../components/DFormFieldComponent";
 import { createUserWithEmail } from "@/firebase/utils";
+import DFormFieldComponent from "../../components/DFormFieldComponent";
 
 const formSchema = z
   .object({
@@ -26,7 +26,7 @@ const SignUpForm = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const emailSignUp = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const createValues = { email: values.email, password: values.password };
       const idToken = await createUserWithEmail(createValues);
@@ -46,7 +46,7 @@ const SignUpForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(emailSignUp)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <DFormFieldComponent
           control={form.control}
           name="email"

@@ -1,14 +1,22 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
 
+import Image from "next/image";
+import { redirect } from "next/navigation";
+import { useAuthStore } from "@/store/zustand";
+import { Button } from "@/components/ui/button";
 import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
 import DTextLink from "@/components/DTextLink";
 import DPage from "@/components/DPage";
 
 const WelcomeScreen = () => {
+  const { user } = useAuthStore();
+
+  if (!user) {
+    redirect("/");
+  }
+
   return (
     <DPage>
       <div className="w-[35%] flex flex-col items-center">
