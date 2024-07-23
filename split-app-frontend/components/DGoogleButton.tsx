@@ -3,11 +3,9 @@
 import React from "react";
 import Image from "next/image";
 
-import { auth } from "../firebase/config";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { cn } from "@/lib/utils";
-
 import { Button } from "./ui/button";
+import { signInWithGoogle } from "../firebase/utils";
 
 interface ButtonProps {
   label?: string;
@@ -15,10 +13,8 @@ interface ButtonProps {
 }
 
 const signUpWithGoogle = async () => {
-  const provider = new GoogleAuthProvider();
   try {
-    const result = await signInWithPopup(auth, provider);
-    const idToken = await result.user.getIdToken();
+    const idToken = await signInWithGoogle();
 
     const response = await fetch("http://localhost:3001/signup", {
       method: "POST",
