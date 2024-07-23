@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useAuthStore } from "@/store/zustand";
+import { useEffect, useState } from "react";
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -17,26 +16,26 @@ const provider = new GoogleAuthProvider();
 const createUserWithEmail = async ({
   email,
   password,
-}: CreateUserWithEmailProps): Promise<Object> => {
+}: CreateUserWithEmailProps): Promise<string> => {
   const result = await createUserWithEmailAndPassword(auth, email, password);
   const idToken = await result.user.getIdToken();
 
   return idToken;
 };
 
-const signInWithGoogle = async (): Promise<Object> => {
+const signInWithGoogle = async (): Promise<string> => {
   const result = await signInWithPopup(auth, provider);
   const idToken = await result.user.getIdToken();
 
   return idToken;
 };
 
-const useGetUser = () => {
-  const { user, setUser } = useAuthStore();
+const useAuthStateUser = () => {
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const authState = auth.onAuthStateChanged((user) => {
-      setUser(user);
+    const authState = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser);
     });
 
     return () => authState();
@@ -45,6 +44,4 @@ const useGetUser = () => {
   return user;
 };
 
-// const onAuthStateChanged = auth.onAuthStateChanged;
-
-export { createUserWithEmail, signInWithGoogle, useGetUser };
+export { createUserWithEmail, signInWithGoogle, useAuthStateUser };

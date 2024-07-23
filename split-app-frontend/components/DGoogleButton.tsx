@@ -1,11 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
-
+import { useAppStore } from "@/store/zustand";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { signInWithGoogle } from "../firebase/utils";
+import { signInWithGoogle, useAuthStateUser } from "../firebase/utils";
 
 interface ButtonProps {
   label?: string;
@@ -15,7 +15,6 @@ interface ButtonProps {
 const signUpWithGoogle = async () => {
   try {
     const idToken = await signInWithGoogle();
-
     const response = await fetch("http://localhost:3001/signup", {
       method: "POST",
       headers: {
@@ -36,6 +35,13 @@ const DGoogleButton: React.FC<ButtonProps> = ({
   label = "Label",
   className,
 }) => {
+  const authStateUser = useAuthStateUser();
+  const { setUser } = useAppStore();
+
+  useEffect(() => {
+    setUser(authStateUser);
+  }, [authStateUser, setUser]);
+
   return (
     <div>
       <Button

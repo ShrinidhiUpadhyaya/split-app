@@ -3,10 +3,10 @@ import { User as FirebaseUser } from "firebase/auth";
 
 type AppStore = {
   user: FirebaseUser | null;
-  setUser: (user: FirebaseUser) => void;
+  setUser: (user: FirebaseUser | null) => void;
 };
 
-export const useAuthStore = create<AppStore>((set) => ({
+export const useAppStore = create<AppStore>((set) => ({
   user: null,
   setUser: (user) => set({ user: user }),
 }));

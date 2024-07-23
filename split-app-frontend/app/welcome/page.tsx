@@ -4,14 +4,14 @@ import React from "react";
 
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { useAuthStore } from "@/store/zustand";
+import { useAppStore } from "@/store/zustand";
 import { Button } from "@/components/ui/button";
 import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
 import DTextLink from "@/components/DTextLink";
 import DPage from "@/components/DPage";
 
 const WelcomeScreen = () => {
-  const { user } = useAuthStore();
+  const { user } = useAppStore();
 
   if (!user) {
     redirect("/");

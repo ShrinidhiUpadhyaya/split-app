@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useAppStore } from "@/store/zustand";
 import { Form } from "@/components/ui/form";
 import { Button } from "../../components/ui/button";
-import { createUserWithEmail } from "@/firebase/utils";
+import { createUserWithEmail, useAuthStateUser } from "@/firebase/utils";
 import DFormFieldComponent from "../../components/DFormFieldComponent";
 
 const formSchema = z
@@ -43,6 +44,13 @@ const SignUpForm = () => {
       console.log("Error", error);
     }
   };
+
+  const authStateUser = useAuthStateUser();
+  const { setUser } = useAppStore();
+
+  useEffect(() => {
+    setUser(authStateUser);
+  }, [authStateUser, setUser]);
 
   return (
     <Form {...form}>
