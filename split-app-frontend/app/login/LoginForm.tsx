@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
+import { useRouter } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useAppStore } from "@/store/zustand";
 import { Form } from "@/components/ui/form";
 import { Button } from "../../components/ui/button";
-import { signInWithGoogle, useAuthStateUser } from "@/firebase/utils";
+import { manualSignIn } from "@/firebase/utils";
 import DFormFieldComponent from "../../components/DFormFieldComponent";
 
 const formSchema = z.object({
@@ -17,20 +17,16 @@ const formSchema = z.object({
 });
 
 const LoginForm = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await signInWithGoogle();
+    await manualSignIn(values);
+    router.push("/welcome");
   };
-
-  const authStateUser = useAuthStateUser();
-  const { setUser } = useAppStore();
-
-  useEffect(() => {
-    setUser(authStateUser);
-  }, [authStateUser, setUser]);
 
   return (
     <Form {...form}>

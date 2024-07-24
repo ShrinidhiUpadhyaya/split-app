@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
 import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   signInWithPopup,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
+import { useAppStore } from "@/store/zustand";
 import { auth } from "./config";
+import { addAuthCookie, deleteAuthCookie } from "@/utils/cookies";
 
 interface CreateUserWithEmailProps {
   email: string;
@@ -30,18 +34,24 @@ const signInWithGoogle = async (): Promise<string> => {
   return idToken;
 };
 
-const useAuthStateUser = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const authState = auth.onAuthStateChanged((currentUser) => {
-      setUser(currentUser);
-    });
-
-    return () => authState();
-  }, [setUser]);
-
-  return user;
+const manualSignIn = async ({ email, password }: CreateUserWithEmailProps) => {
+  const response = await signInWithEmailAndPassword(auth, email, password);
+  return await response.user.getIdToken();
 };
 
-export { createUserWithEmail, signInWithGoogle, useAuthStateUser };
+const logOut = () => {
+  signOut(auth);
+};
+
+onAuthStateChanged(auth, async (user) => {
+  const token = await user?.getIdToken();
+  if (token || token != undefined) {
+    addAuthCookie(token);
+    useAppStore.getState().setUser(token);
+  } else {
+    deleteAuthCookie();
+    useAppStore.getState().setUser(null);
+  }
+});
+
+export { createUserWithEmail, signInWithGoogle, manualSignIn, logOut };

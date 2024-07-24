@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
+
+import { useRouter } from "next/navigation";
+
 import Image from "next/image";
-import { useAppStore } from "@/store/zustand";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { signInWithGoogle, useAuthStateUser } from "../firebase/utils";
+import { signInWithGoogle } from "../firebase/utils";
 
 interface ButtonProps {
   label?: string;
@@ -35,19 +37,19 @@ const DGoogleButton: React.FC<ButtonProps> = ({
   label = "Label",
   className,
 }) => {
-  const authStateUser = useAuthStateUser();
-  const { setUser } = useAppStore();
+  const router = useRouter();
 
-  useEffect(() => {
-    setUser(authStateUser);
-  }, [authStateUser, setUser]);
+  const onSubmit = async () => {
+    await signUpWithGoogle();
+    router.push("/welcome");
+  };
 
   return (
     <div>
       <Button
         className={cn("text-lg font-semibold", className)}
         variant="outline"
-        onClick={signUpWithGoogle}
+        onClick={onSubmit}
       >
         <div className="w-full h-full flex items-center justify-center gap-4">
           <Image src={"/google.png"} height={24} width={24} alt={label} />
