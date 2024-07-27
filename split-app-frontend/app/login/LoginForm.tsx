@@ -25,7 +25,7 @@ const LoginForm = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     await manualSignIn(values);
-    router.push("/welcome");
+    router.push("/user");
   };
 
   return (

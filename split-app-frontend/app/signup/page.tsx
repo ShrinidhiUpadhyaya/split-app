@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 import SignUpForm from "./SignUpForm";
 import DSeperator from "@/components/DSeperator";
 import DTextLink from "@/components/DTextLink";
@@ -11,6 +11,8 @@ import DGoogleButton from "@/components/DGoogleButton";
 import DPage from "@/components/DPage";
 
 const SignUp = () => {
+  const router = useRouter();
+
   return (
     <DPage>
       <div className="top-0 right-0 flex w-full">
@@ -31,7 +33,11 @@ const SignUp = () => {
           Create your Split account
         </p>
 
-        <DGoogleButton label="Continue with Google" className="w-full" />
+        <DGoogleButton
+          label="Continue with Google"
+          className="w-full"
+          onDone={() => router.push("/welcome")}
+        />
 
         <DSeperator />
 

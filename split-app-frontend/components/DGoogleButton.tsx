@@ -12,6 +12,7 @@ import { signInWithGoogle } from "../firebase/utils";
 interface ButtonProps {
   label?: string;
   className?: string;
+  onDone?: Function;
 }
 
 const signUpWithGoogle = async () => {
@@ -36,12 +37,13 @@ const signUpWithGoogle = async () => {
 const DGoogleButton: React.FC<ButtonProps> = ({
   label = "Label",
   className,
+  onDone,
 }) => {
   const router = useRouter();
 
   const onSubmit = async () => {
     await signUpWithGoogle();
-    router.push("/welcome");
+    onDone();
   };
 
   return (
