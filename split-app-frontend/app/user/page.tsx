@@ -54,7 +54,7 @@ const User: React.FC<SideNavNarProps> = ({ className }) => {
       <TabsContent value="groups">
         <Groups />
       </TabsContent>
-      <TabsContent value="friends">
+      <TabsContent value="friends" className="w-full">
         <Friends />
       </TabsContent>
     </Tabs>

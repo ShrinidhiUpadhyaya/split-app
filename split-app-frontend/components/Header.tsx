@@ -8,16 +8,21 @@ import { usePathname } from "next/navigation";
 import { useAppStore } from "@/store/zustand";
 import { cn } from "@/lib/utils";
 import { logOut } from "@/firebase/utils";
-import { Button } from "./ui/button";
 import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+const authRoutes = ["/login", "/signup"];
 
 const Header = () => {
   const pathname = usePathname();
-  const showHeader =
-    pathname === "/login" || pathname === "/signup" ? false : true;
+  const showHeader = !authRoutes.includes(pathname);
 
   const { user } = useAppStore();
-
   const router = useRouter();
 
   const onLogOut = () => {
@@ -41,14 +46,33 @@ const Header = () => {
       {user ? (
         <div className="flex items-center gap-4">
           {user?.displayName}
-          <Image
-            src="/guy1Profile.png"
-            height={24}
-            width={24}
-            alt="Profile Photo"
-          />
 
-          <Button onClick={onLogOut}>Sign out</Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Image
+                src="/guy1Profile.png"
+                height={24}
+                width={24}
+                alt="Profile Photo"
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="border border-[#64748b] shadow-lg w-40"
+              align="end"
+            >
+              <div>
+                <DropdownMenuItem className="font-semibold cursor-pointer">
+                  Your Account
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="font-semibold cursor-pointer"
+                  onClick={onLogOut}
+                >
+                  Sign Out
+                </DropdownMenuItem>
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       ) : (
         <div className="w-full flex gap-8 items-center justify-end flex-1">
