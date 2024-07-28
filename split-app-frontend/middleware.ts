@@ -13,17 +13,17 @@ export async function middleware(req: NextRequest) {
   const token = cookies().get("session")?.value;
   const pathname = req.nextUrl.pathname;
 
-  if (!token && protectedRoutes.includes(pathname)) {
+  if (!token && protectedRoutes.has(pathname)) {
     return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
   try {
     await jwtVerify(token, SECRET_KEY);
-    if (authRoutes.includes(pathname)) {
+    if (authRoutes.has(pathname)) {
       return NextResponse.redirect(new URL("/user", req.nextUrl));
     }
   } catch (err) {
-    if (protectedRoutes.includes(pathname))
+    if (protectedRoutes.has(pathname))
       return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
