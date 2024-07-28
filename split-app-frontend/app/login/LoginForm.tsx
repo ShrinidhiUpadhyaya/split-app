@@ -16,7 +16,7 @@ const formSchema = z.object({
   password: z.string().min(10).max(20),
 });
 
-const LoginForm = () => {
+const LoginForm = ({ onDone }) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -24,8 +24,8 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await manualSignIn(values);
-    router.push("/user");
+    const idToken = await manualSignIn(values);
+    onDone(idToken);
   };
 
   return (

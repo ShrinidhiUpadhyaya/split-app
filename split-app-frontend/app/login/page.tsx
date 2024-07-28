@@ -4,6 +4,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import axios from "axios";
+axios.defaults.withCredentials = true;
 import LoginForm from "./LoginForm";
 import DSeperator from "@/components/DSeperator";
 import DTextLink from "@/components/DTextLink";
@@ -12,6 +14,16 @@ import DPage from "@/components/DPage";
 
 const Login = () => {
   const router = useRouter();
+
+  const login = async (token) => {
+    try {
+      const response = await axios.post(`http://localhost:3001/auth/login/`, {
+        token: token,
+      });
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
 
   return (
     <DPage>
@@ -36,12 +48,12 @@ const Login = () => {
         <DGoogleButton
           label="Continue with Google"
           className="w-full"
-          onDone={() => router.push("/user")}
+          onDone={login}
         />
 
         <DSeperator />
 
-        <LoginForm />
+        <LoginForm onDone={login} />
       </div>
     </DPage>
   );

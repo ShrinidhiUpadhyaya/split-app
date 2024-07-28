@@ -22,7 +22,7 @@ const formSchema = z
     path: ["repeatPassword"],
   });
 
-const SignUpForm = () => {
+const SignUpForm = ({ onDone }) => {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -33,20 +33,7 @@ const SignUpForm = () => {
     try {
       const createValues = { email: values.email, password: values.password };
       const idToken = await createUserWithEmail(createValues);
-
-      const response = await fetch("http://localhost:3001/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ idToken }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to sign up user");
-      }
-
-      router.push("/welcome");
+      return idToken;
     } catch (error) {
       console.log("Error", error);
     }

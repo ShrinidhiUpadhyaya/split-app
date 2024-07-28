@@ -15,35 +15,16 @@ interface ButtonProps {
   onDone?: Function;
 }
 
-const signUpWithGoogle = async () => {
-  try {
-    const idToken = await signInWithGoogle();
-    const response = await fetch("http://localhost:3001/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ idToken }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to sign up user");
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 const DGoogleButton: React.FC<ButtonProps> = ({
   label = "Label",
   className,
-  onDone,
+  onDone = () => {},
 }) => {
   const router = useRouter();
 
   const onSubmit = async () => {
-    await signUpWithGoogle();
-    onDone();
+    const idToken = await signInWithGoogle();
+    onDone(idToken);
   };
 
   return (
