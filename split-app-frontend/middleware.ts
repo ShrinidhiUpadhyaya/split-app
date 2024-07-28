@@ -1,20 +1,35 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { hasCookie } from "cookies-next";
+import { NextRequest } from "next/server";
+import { cookies } from "next/headers";
+import { jwtVerify } from "jose";
 
-const protectedRoutes = ["/welcome"];
-const authRoutes = ["/login", "/signup"];
+const JWT_SECRET = process.env.JWT_SECRET;
+const protectedRoutes = new Set(["/welcome", "/user"]);
+const authRoutes = new Set(["/login", "/signup"]);
+
+const SECRET_KEY = new TextEncoder().encode(JWT_SECRET);
 
 export async function middleware(req: NextRequest) {
-  const isAuthenticated = hasCookie("user-id", { req });
+  const token = cookies().get("session")?.value;
+  const pathname = req.nextUrl.pathname;
 
-  if (!isAuthenticated && protectedRoutes.includes(req.nextUrl.pathname)) {
-    const absoluteURL = new URL("/login", req.nextUrl.origin);
-    return NextResponse.redirect(absoluteURL.toString());
+  if (!token && protectedRoutes.includes(pathname)) {
+    return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
-  if (isAuthenticated && authRoutes.includes(req.nextUrl.pathname)) {
-    const absoluteURL = new URL("/", req.nextUrl.origin);
-    return NextResponse.redirect(absoluteURL.toString());
+  try {
+    await jwtVerify(token, SECRET_KEY);
+    if (authRoutes.includes(pathname)) {
+      return NextResponse.redirect(new URL("/user", req.nextUrl));
+    }
+  } catch (err) {
+    if (protectedRoutes.includes(pathname))
+      return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
+
+  return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/((?!api|_next/static|_next/image).*)"],
+};
