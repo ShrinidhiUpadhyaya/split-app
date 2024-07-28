@@ -25,7 +25,7 @@ const DFriendCard: React.FC<FriendCardProps> = ({
   const [friendStatus, setFriendStatus] = useState<number>(status);
 
   return (
-    <div className={cn("w-full min-w-[240px] max-w-[320px] p-4", className)}>
+    <div className={cn("w-full min-w-[240px] max-w-[320px]", className)}>
       <Card className="w-full bg-[#CCF2FF] shadow-xl">
         <CardHeader className="p-4">
           <CardTitle className="font-semibold flex gap-4 items-center !text-3xl">
