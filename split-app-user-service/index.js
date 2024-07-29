@@ -24,10 +24,10 @@ app.use(
 app.use("/auth", authRoutes);
 
 app.post("/add-Friend", async (req, res) => {
-  const { userEmail, friendEmail } = req.body;
+  const { user_id, friendEmail } = req.body;
 
   try {
-    const user = await User.findOne({ email: userEmail });
+    const user = await User.findOne({ _id: user_id });
     const friend = await User.findOne({ email: friendEmail });
 
     if (!user || !friend) {
@@ -42,7 +42,7 @@ app.post("/add-Friend", async (req, res) => {
     const result = await newFriendship.save();
     res.status(200).json(result);
   } catch (error) {
-    console.log("Error");
+    console.log("Error", error);
     res.status(400).json({ error: error.message });
   }
 });
@@ -60,14 +60,16 @@ app.get("/friends/:userId", async (req, res) => {
         return {
           id: friendship.friend_id._id,
           email: friendship.friend_id.email,
+          name: friendship.friend_id.name,
         };
       } else {
-        return { id: friendship.user_id, email: friendship.email };
+        return {
+          id: friendship.user_id,
+          email: friendship.email,
+          name: friendship.name,
+        };
       }
     });
-
-    console.log("##");
-    console.log(friendships);
 
     res.status(200).json(friends);
   } catch (error) {

@@ -1,16 +1,26 @@
 import { create } from "zustand";
-import { User as FirebaseUser } from "firebase/auth";
+import { persist } from "zustand/middleware";
 
 type AppStore = {
-  user: string | null;
-  setUser: (user: string | null) => void;
+  user: Object | null;
+  setUserID: (user: Object | null) => void;
   friends: Array<Object | null>;
   setFriends: (friends: Array<Object>) => void;
+  clearAll: () => void;
 };
 
-export const useAppStore = create<AppStore>((set) => ({
-  user: null,
-  setUser: (user) => set({ user: user }),
-  friends: [],
-  setFriends: (friends) => set({ friends: friends }),
-}));
+export const useAppStore = create(
+  persist(
+    (set) => ({
+      user: null,
+      setUserID: (user) => set({ user: user }),
+      friends: [],
+      setFriends: (friends) => set({ friends: friends }),
+      clearAll: () => set({ user: null, friends: [] }),
+    }),
+    {
+      name: "user_storage",
+      getStorage: () => localStorage,
+    }
+  )
+);

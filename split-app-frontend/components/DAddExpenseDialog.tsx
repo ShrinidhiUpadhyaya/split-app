@@ -59,11 +59,16 @@ import DTagPicker from "./screenComponents/DTagPicker";
 
 const DAddExpenseDialog = () => {
   const [date, setDate] = React.useState<Date>(new Date());
+  const [persons, setPerson] = useState();
   const { friends } = useAppStore();
   const [expenseShared, setExpenseShared] = useState([]);
 
   useEffect(() => {
-    console.log("Friends", friends);
+    const userWithAmount = friends.map((friend) => {
+      return { ...friend, amount: null };
+    });
+
+    setPerson(userWithAmount);
   }, [friends]);
 
   return (
@@ -84,7 +89,7 @@ const DAddExpenseDialog = () => {
             </div>
             <div className="flex gap-4">
               <span className="min-w-[20%]">Paid by</span>
-              <DPaidByCombobox list={friends} />
+              <DPaidByCombobox people={persons} />
             </div>
             <div className="flex gap-4 items-center">
               <span className="min-w-[20%]">Amount</span>
@@ -105,7 +110,7 @@ const DAddExpenseDialog = () => {
             <div className="flex gap-4 w-full">
               <span className="min-w-[20%]">Persons</span>
               <div className="w-[200px] h-20 flex-1 overflow-hidden">
-                <DTagPicker onValueChange={setExpenseShared} />
+                <DTagPicker onValueChange={setExpenseShared} people={persons} />
               </div>
             </div>
           </div>

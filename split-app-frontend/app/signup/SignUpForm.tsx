@@ -33,7 +33,7 @@ const SignUpForm = ({ onDone }) => {
     try {
       const createValues = { email: values.email, password: values.password };
       const idToken = await createUserWithEmail(createValues);
-      return idToken;
+      onDone(idToken);
     } catch (error) {
       console.log("Error", error);
     }

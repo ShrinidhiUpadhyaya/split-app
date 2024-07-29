@@ -15,15 +15,18 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import DFormFieldComponent from "./DFormFieldComponent";
+import { useAppStore } from "@/store/zustand";
 
 const formSchema = z.object({
-  email: z.string().min(6).max(25).email(),
+  email: z.string().min(6).max(50).email(),
 });
 
 const DAddFriendDialog = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+
+  const { user } = useAppStore();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -33,7 +36,7 @@ const DAddFriendDialog = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userEmail: "shrinidhiupadhyaya1195@gmail.com",
+          user_id: user._id,
           friendEmail: values?.email,
         }),
       });

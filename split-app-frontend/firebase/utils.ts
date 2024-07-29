@@ -43,15 +43,4 @@ const logOut = () => {
   signOut(auth);
 };
 
-onAuthStateChanged(auth, async (user) => {
-  const token = await user?.getIdToken();
-  if (token || token != undefined) {
-    addAuthCookie(token);
-    useAppStore.getState().setUser(token);
-  } else {
-    deleteAuthCookie();
-    useAppStore.getState().setUser(null);
-  }
-});
-
 export { createUserWithEmail, signInWithGoogle, manualSignIn, logOut };

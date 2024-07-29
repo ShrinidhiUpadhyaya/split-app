@@ -21,14 +21,18 @@ import {
 } from "@/components/ui/popover";
 import { useAppStore } from "@/store/zustand";
 
-const DTagPicker = ({ onValueChange }) => {
-  const { friends } = useAppStore();
+const DTagPicker = ({ people, onValueChange }) => {
   const [selectedValues, setSelectedValues] = React.useState([]);
   const [open, setOpen] = useState(false);
+  const [persons, setPersons] = useState(people);
 
   useEffect(() => {
     onValueChange(selectedValues);
   }, [selectedValues]);
+
+  useEffect(() => {
+    setPersons(people);
+  }, [people]);
 
   return (
     <div className="w-full border border-[blue]">
@@ -55,10 +59,35 @@ const DTagPicker = ({ onValueChange }) => {
             <CommandEmpty>No framework found.</CommandEmpty>
             <CommandList>
               <CommandGroup>
-                {friends.map((friend) => (
+                <CommandItem
+                  key={"you"}
+                  value={"you"}
+                  onSelect={(currentValue) => {
+                    if (!selectedValues.includes(currentValue)) {
+                      const tempVal = [...selectedValues, currentValue];
+                      setSelectedValues(tempVal);
+                    } else {
+                      const tempVal = selectedValues.filter(
+                        (value) => value !== currentValue
+                      );
+                      setSelectedValues(tempVal);
+                    }
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      selectedValues.includes("you")
+                        ? "opacity-100"
+                        : "opacity-0"
+                    )}
+                  />
+                  You
+                </CommandItem>
+                {persons.map((person) => (
                   <CommandItem
-                    key={friend.email}
-                    value={friend.email}
+                    key={person.id}
+                    value={person.id}
                     onSelect={(currentValue) => {
                       if (!selectedValues.includes(currentValue)) {
                         const tempVal = [...selectedValues, currentValue];
@@ -74,12 +103,12 @@ const DTagPicker = ({ onValueChange }) => {
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        selectedValues.includes(friend.email)
+                        selectedValues.includes(person.id)
                           ? "opacity-100"
                           : "opacity-0"
                       )}
                     />
-                    {friend.email}
+                    {person?.name ? person.name : person.email}
                   </CommandItem>
                 ))}
               </CommandGroup>

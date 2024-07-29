@@ -6,8 +6,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useAppStore } from "@/store/zustand";
+import axios from "axios";
+axios.defaults.withCredentials = true;
 import { cn } from "@/lib/utils";
-import { logOut } from "@/firebase/utils";
 import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
 import {
   DropdownMenu,
@@ -22,12 +23,17 @@ const Header = () => {
   const pathname = usePathname();
   const showHeader = !authRoutes.includes(pathname);
 
-  const { user } = useAppStore();
+  const { user, clearAll } = useAppStore();
   const router = useRouter();
 
-  const onLogOut = () => {
-    logOut();
-    router.push("/");
+  const onLogOut = async () => {
+    try {
+      await axios.post(`http://localhost:3001/auth/logout`);
+      clearAll();
+      router.push("/");
+    } catch (error) {
+      console.log("Error", error);
+    }
   };
 
   return (

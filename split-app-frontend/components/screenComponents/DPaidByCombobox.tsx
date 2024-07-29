@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -67,10 +67,26 @@ export function DPaidByCombobox({ people }) {
             <CommandEmpty>No framework found.</CommandEmpty>
             <CommandList>
               <CommandGroup>
+                <CommandItem
+                  key={"you"}
+                  value={"you"}
+                  onSelect={(currentValue) => {
+                    setValue(currentValue === value ? "" : currentValue);
+                    setOpen(false);
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      value === "you" ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  You
+                </CommandItem>
                 {people.map((person) => (
                   <CommandItem
-                    key={person.email}
-                    value={person.email}
+                    key={person.id}
+                    value={person.id}
                     onSelect={(currentValue) => {
                       setValue(currentValue === value ? "" : currentValue);
                       setOpen(false);
@@ -79,10 +95,10 @@ export function DPaidByCombobox({ people }) {
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === person.email ? "opacity-100" : "opacity-0"
+                        value === person.id ? "opacity-100" : "opacity-0"
                       )}
                     />
-                    {person.email}
+                    {person?.name ? person.name : person.email}
                   </CommandItem>
                 ))}
               </CommandGroup>

@@ -3,9 +3,10 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 axios.defaults.withCredentials = true;
-import { useRouter } from "next/navigation";
+import { useAppStore } from "@/store/zustand";
 import SignUpForm from "./SignUpForm";
 import DSeperator from "@/components/DSeperator";
 import DTextLink from "@/components/DTextLink";
@@ -14,12 +15,16 @@ import DPage from "@/components/DPage";
 
 const SignUp = () => {
   const router = useRouter();
+  const { setUserID } = useAppStore();
 
   const signUp = async (idToken) => {
     try {
       const response = await axios.post(`http://localhost:3001/auth/signup/`, {
         idToken: idToken,
       });
+      const user = response.data;
+      setUserID(user);
+      router.push("/user");
     } catch (error) {
       console.log("Error", error);
     }
