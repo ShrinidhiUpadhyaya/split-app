@@ -17,10 +17,10 @@ const SignUp = () => {
   const router = useRouter();
   const { setUserID } = useAppStore();
 
-  const signUp = async (idToken) => {
+  const signUp = async (token: string | null | undefined) => {
     try {
       const response = await axios.post(`http://localhost:3001/auth/signup/`, {
-        idToken: idToken,
+        idToken: token,
       });
       const user = response.data;
       setUserID(user);
@@ -53,12 +53,12 @@ const SignUp = () => {
         <DGoogleButton
           label="Continue with Google"
           className="w-full"
-          onDone={signUp}
+          onSignIn={signUp}
         />
 
         <DSeperator />
 
-        <SignUpForm onDone={signUp} />
+        <SignUpForm onSignUp={signUp} />
       </div>
     </DPage>
   );

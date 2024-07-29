@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -11,21 +9,23 @@ import { Button } from "../../components/ui/button";
 import { manualSignIn } from "@/firebase/utils";
 import DFormFieldComponent from "../../components/DFormFieldComponent";
 
+interface LoginFormProps {
+  onSignIn?: (token: String | null | undefined) => void;
+}
+
 const formSchema = z.object({
   email: z.string().min(6).max(25).email(),
   password: z.string().min(10).max(20),
 });
 
-const LoginForm = ({ onDone }) => {
-  const router = useRouter();
-
+const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const idToken = await manualSignIn(values);
-    onDone(idToken);
+    const token = await manualSignIn(values);
+    onSignIn?.(token);
   };
 
   return (

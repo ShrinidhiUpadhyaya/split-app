@@ -17,7 +17,7 @@ const Login = () => {
   const router = useRouter();
   const { setUserID } = useAppStore();
 
-  const login = async (token) => {
+  const login = async (token: string | null | undefined) => {
     try {
       const response = await axios.post(`http://localhost:3001/auth/login/`, {
         token: token,
@@ -53,12 +53,12 @@ const Login = () => {
         <DGoogleButton
           label="Continue with Google"
           className="w-full"
-          onDone={login}
+          onSignIn={login}
         />
 
         <DSeperator />
 
-        <LoginForm onDone={login} />
+        <LoginForm onSignIn={login} />
       </div>
     </DPage>
   );

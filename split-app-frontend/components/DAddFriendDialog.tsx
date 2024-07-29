@@ -36,7 +36,7 @@ const DAddFriendDialog = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user_id: user._id,
+          user_id: user?._id,
           friendEmail: values?.email,
         }),
       });

@@ -18,30 +18,11 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
+interface PaidByComboboxProps {
+  people: Array<Object>;
+}
 
-export function DPaidByCombobox({ people }) {
+const DPaidByCombobox: React.FC<PaidByComboboxProps> = ({ people }) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
@@ -56,7 +37,7 @@ export function DPaidByCombobox({ people }) {
             className="w-full justify-between"
           >
             {value
-              ? people.find((person) => person.email === value)?.label
+              ? people.find((person) => person?.email === value)?.label
               : "Select framework..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
@@ -85,8 +66,8 @@ export function DPaidByCombobox({ people }) {
                 </CommandItem>
                 {people.map((person) => (
                   <CommandItem
-                    key={person.id}
-                    value={person.id}
+                    key={person?.id}
+                    value={person?.id}
                     onSelect={(currentValue) => {
                       setValue(currentValue === value ? "" : currentValue);
                       setOpen(false);
@@ -108,4 +89,6 @@ export function DPaidByCombobox({ people }) {
       </Popover>
     </div>
   );
-}
+};
+
+export default DPaidByCombobox;

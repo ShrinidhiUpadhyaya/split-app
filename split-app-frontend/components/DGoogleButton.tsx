@@ -1,9 +1,6 @@
 "use client";
 
 import React from "react";
-
-import { useRouter } from "next/navigation";
-
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
@@ -12,19 +9,17 @@ import { signInWithGoogle } from "../firebase/utils";
 interface ButtonProps {
   label?: string;
   className?: string;
-  onDone?: Function;
+  onSignIn?: Function;
 }
 
 const DGoogleButton: React.FC<ButtonProps> = ({
   label = "Label",
   className,
-  onDone = () => {},
+  onSignIn,
 }) => {
-  const router = useRouter();
-
   const onSubmit = async () => {
     const idToken = await signInWithGoogle();
-    onDone(idToken);
+    onSignIn?.(idToken);
   };
 
   return (

@@ -6,6 +6,7 @@ interface PageProps {
   children?: React.ReactNode;
   className?: string;
 }
+
 const DPage: React.FC<PageProps> = ({ children, className }) => {
   return (
     <motion.div

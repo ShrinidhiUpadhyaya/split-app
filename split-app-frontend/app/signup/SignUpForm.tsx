@@ -1,15 +1,17 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "../../components/ui/button";
-import { createUserWithEmail } from "@/firebase/utils";
 import DFormFieldComponent from "../../components/DFormFieldComponent";
+import { createUserWithEmail } from "@/firebase/utils";
+
+interface SignUpFormProps {
+  onSignUp?: (token: String | null | undefined) => void;
+}
 
 const formSchema = z
   .object({
@@ -22,9 +24,7 @@ const formSchema = z
     path: ["repeatPassword"],
   });
 
-const SignUpForm = ({ onDone }) => {
-  const router = useRouter();
-
+const SignUpForm: React.FC<SignUpFormProps> = ({ onSignUp }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -32,8 +32,8 @@ const SignUpForm = ({ onDone }) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const createValues = { email: values.email, password: values.password };
-      const idToken = await createUserWithEmail(createValues);
-      onDone(idToken);
+      const token = await createUserWithEmail(createValues);
+      onSignUp?.(token);
     } catch (error) {
       console.log("Error", error);
     }

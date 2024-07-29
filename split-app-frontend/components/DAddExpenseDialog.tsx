@@ -26,7 +26,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { format } from "date-fns";
-import { DPaidByCombobox } from "./screenComponents/DPaidByCombobox";
+import DPaidByCombobox from "./screenComponents/DPaidByCombobox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";

@@ -1,10 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-
-import { Check, ChevronsUpDown } from "lucide-react";
 import { Badge } from "../ui/badge";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -19,16 +16,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useAppStore } from "@/store/zustand";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-const DTagPicker = ({ people, onValueChange }) => {
+interface TagPickerProps {
+  people: Array<Object>;
+  onValueChange: ([]) => void;
+}
+
+const DTagPicker: React.FC<TagPickerProps> = ({ people, onValueChange }) => {
   const [selectedValues, setSelectedValues] = React.useState([]);
   const [open, setOpen] = useState(false);
   const [persons, setPersons] = useState(people);
 
   useEffect(() => {
     onValueChange(selectedValues);
-  }, [selectedValues]);
+  }, [selectedValues, onValueChange]);
 
   useEffect(() => {
     setPersons(people);

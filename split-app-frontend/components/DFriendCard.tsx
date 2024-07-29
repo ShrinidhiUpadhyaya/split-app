@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import DTextLink from "./DTextLink";
 
 interface FriendCardProps {
-  friend?: Object;
+  friend?: Object | null | undefined;
   status?: number;
   className?: string;
 }

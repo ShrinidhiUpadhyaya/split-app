@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type AppStore = {
+type AppStoreProps = {
   user: Object | null;
   setUserID: (user: Object | null) => void;
   friends: Array<Object | null>;
@@ -9,7 +9,7 @@ type AppStore = {
   clearAll: () => void;
 };
 
-export const useAppStore = create(
+export const useAppStore = create<AppStoreProps>()(
   persist(
     (set) => ({
       user: null,
