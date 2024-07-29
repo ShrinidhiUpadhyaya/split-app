@@ -32,8 +32,14 @@ const signInWithGoogle = async (): Promise<string> => {
 };
 
 const manualSignIn = async ({ email, password }: CreateUserWithEmailProps) => {
-  const response = await signInWithEmailAndPassword(auth, email, password);
-  return await response.user.getIdToken();
+  try {
+    const response = await signInWithEmailAndPassword(auth, email, password);
+    return await response?.user?.getIdToken();
+  } catch (error) {
+    console.log("Firebase manual Sign In Error", error);
+  }
+
+  return;
 };
 
 const logOut = () => {

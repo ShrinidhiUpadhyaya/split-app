@@ -38,9 +38,9 @@ const Friends = ({}) => {
             <DAddFriendDialog />
           </div>
         ) : (
-          <>
+          <div className="w-full space-y-8">
             <div className="w-full flex">
-              <Button>Add friend</Button>
+              <DAddFriendDialog />
 
               <div className="flex-1 flex justify-end gap-4">
                 <DAddExpenseDialog />
@@ -53,7 +53,7 @@ const Friends = ({}) => {
                 <DFriendCard key={friend?.email} friend={friend} />
               ))}
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

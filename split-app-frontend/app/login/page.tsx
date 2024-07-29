@@ -10,20 +10,26 @@ import DSeperator from "@/components/DSeperator";
 import DTextLink from "@/components/DTextLink";
 import DGoogleButton from "@/components/DGoogleButton";
 import DPage from "@/components/DPage";
+import useShowToast from "@/components/DToast";
 import { login } from "@/utils/authApi";
 
 const Login = () => {
   const router = useRouter();
   const { setUserID } = useAppStore();
+  const { showErrorToast, showSuccessToast } = useShowToast();
 
   const sendSignInReq = async (token: string | null | undefined) => {
     if (token) {
       const user = await login(token);
-      if (user) {
-        setUserID(user);
-        router.push("/user");
-      }
+      setUserID(user);
+      router.push("/user");
+      showSuccessToast("Login successful! Welcome back.");
+      return;
     }
+
+    showErrorToast(
+      "We couldn't find a user with that email address or the password you entered is incorrect. Please check your email and password and try again."
+    );
   };
 
   return (

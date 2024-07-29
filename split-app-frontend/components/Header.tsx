@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
+import useShowToast from "@/components/DToast";
 import { logOut } from "@/utils/authApi";
 
 const authRoutes = ["/login", "/signup"];
@@ -21,15 +22,18 @@ const authRoutes = ["/login", "/signup"];
 const Header = () => {
   const pathname = usePathname();
   const showHeader = !authRoutes.includes(pathname);
-
   const { user, clearAll } = useAppStore();
   const router = useRouter();
+  const { showSuccessToast } = useShowToast();
 
   const onLogOut = async () => {
-    const response = await logOut();
-    if (response) {
+    try {
+      await logOut();
       clearAll();
       router.push("/");
+      showSuccessToast("You have successfully logged out.");
+    } catch (error) {
+      console.log("Logout error", error);
     }
   };
 

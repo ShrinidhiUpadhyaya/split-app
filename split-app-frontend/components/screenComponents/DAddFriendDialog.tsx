@@ -40,12 +40,7 @@ const DAddFriendDialog = () => {
           friendEmail: values?.email,
         }),
       });
-
       console.log(response.status);
-
-      if (!response.ok) {
-        throw new Error("Failed to sign up user");
-      }
     } catch (error) {
       console.log("Error", error);
     }

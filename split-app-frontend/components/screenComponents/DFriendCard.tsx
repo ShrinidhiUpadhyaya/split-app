@@ -26,13 +26,13 @@ const DFriendCard: React.FC<FriendCardProps> = ({
 
   return (
     <div className={cn("w-full min-w-[240px] max-w-[320px]", className)}>
-      <Card className="w-full bg-[#CCF2FF] shadow-xl">
+      <Card className="w-full shadow-xl">
         <CardHeader className="p-4">
           <CardTitle className="font-semibold flex gap-4 items-center !text-3xl">
             <div className="flex items-center gap-2 overflow-hidden">
               <div
                 className={cn(
-                  "rounded-full min-h-12 min-w-12 shadow-sm bg-[red]"
+                  "rounded-full min-h-12 min-w-12 shadow-sm bg-[white]"
                 )}
               ></div>
               <span className="flex-1 overflow-hidden text-ellipsis">
