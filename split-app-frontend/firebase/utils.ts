@@ -3,12 +3,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   signOut,
 } from "firebase/auth";
-import { useAppStore } from "@/store/zustand";
 import { auth } from "./config";
-import { addAuthCookie, deleteAuthCookie } from "@/utils/cookies";
 
 interface CreateUserWithEmailProps {
   email: string;

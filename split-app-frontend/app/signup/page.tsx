@@ -4,29 +4,25 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-axios.defaults.withCredentials = true;
 import { useAppStore } from "@/store/zustand";
 import SignUpForm from "./SignUpForm";
 import DSeperator from "@/components/DSeperator";
 import DTextLink from "@/components/DTextLink";
 import DGoogleButton from "@/components/DGoogleButton";
 import DPage from "@/components/DPage";
+import { signUp } from "@/utils/authApi";
 
 const SignUp = () => {
   const router = useRouter();
   const { setUserID } = useAppStore();
 
-  const signUp = async (token: string | null | undefined) => {
-    try {
-      const response = await axios.post(`http://localhost:3001/auth/signup/`, {
-        idToken: token,
-      });
-      const user = response.data;
-      setUserID(user);
-      router.push("/user");
-    } catch (error) {
-      console.log("Error", error);
+  const sendSignUpReq = async (token: string | null | undefined) => {
+    if (token) {
+      const user = await signUp(token);
+      if (user) {
+        setUserID(user);
+        router.push("/user");
+      }
     }
   };
 
@@ -53,12 +49,12 @@ const SignUp = () => {
         <DGoogleButton
           label="Continue with Google"
           className="w-full"
-          onSignIn={signUp}
+          onSignIn={sendSignUpReq}
         />
 
         <DSeperator />
 
-        <SignUpForm onSignUp={signUp} />
+        <SignUpForm onSignUp={sendSignUpReq} />
       </div>
     </DPage>
   );

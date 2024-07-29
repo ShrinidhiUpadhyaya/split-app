@@ -6,8 +6,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { Button } from "../../components/ui/button";
-import DFormFieldComponent from "../../components/DFormFieldComponent";
 import { createUserWithEmail } from "@/firebase/utils";
+import DFormFieldComponent from "../../components/DFormFieldComponent";
 
 interface SignUpFormProps {
   onSignUp?: (token: String | null | undefined) => void;

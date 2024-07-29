@@ -4,29 +4,25 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import axios from "axios";
-axios.defaults.withCredentials = true;
 import { useAppStore } from "@/store/zustand";
 import LoginForm from "./LoginForm";
 import DSeperator from "@/components/DSeperator";
 import DTextLink from "@/components/DTextLink";
 import DGoogleButton from "@/components/DGoogleButton";
 import DPage from "@/components/DPage";
+import { login } from "@/utils/authApi";
 
 const Login = () => {
   const router = useRouter();
   const { setUserID } = useAppStore();
 
-  const login = async (token: string | null | undefined) => {
-    try {
-      const response = await axios.post(`http://localhost:3001/auth/login/`, {
-        token: token,
-      });
-      const user = response.data;
-      setUserID(user);
-      router.push("/user");
-    } catch (error) {
-      console.log("Error", error);
+  const sendSignInReq = async (token: string | null | undefined) => {
+    if (token) {
+      const user = await login(token);
+      if (user) {
+        setUserID(user);
+        router.push("/user");
+      }
     }
   };
 
@@ -53,12 +49,12 @@ const Login = () => {
         <DGoogleButton
           label="Continue with Google"
           className="w-full"
-          onSignIn={login}
+          onSignIn={sendSignInReq}
         />
 
         <DSeperator />
 
-        <LoginForm onSignIn={login} />
+        <LoginForm onSignIn={sendSignInReq} />
       </div>
     </DPage>
   );
