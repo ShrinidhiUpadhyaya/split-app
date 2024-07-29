@@ -48,7 +48,7 @@ const Header = () => {
 
       {user ? (
         <div className="flex items-center gap-4">
-          {user?.displayName}
+          {user?.name ? user.name : user.email}
 
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -59,18 +59,12 @@ const Header = () => {
                 alt="Profile Photo"
               />
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="border border-[#64748b] shadow-lg w-40"
-              align="end"
-            >
+            <DropdownMenuContent className="shadow-lg w-40" align="end">
               <div>
-                <DropdownMenuItem className="font-semibold cursor-pointer">
+                <DropdownMenuItem className="cursor-pointer">
                   Your Account
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="font-semibold cursor-pointer"
-                  onClick={onLogOut}
-                >
+                <DropdownMenuItem className="cursor-pointer" onClick={onLogOut}>
                   Sign Out
                 </DropdownMenuItem>
               </div>

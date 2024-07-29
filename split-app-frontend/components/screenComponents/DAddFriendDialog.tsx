@@ -54,7 +54,7 @@ const DAddFriendDialog = () => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="text-lg font-bold">Add friends</Button>
+        <Button>Add friends</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -77,13 +77,13 @@ const DAddFriendDialog = () => {
                       <Button
                         type="button"
                         variant="outline"
-                        className="w-full text-lg font-bold"
+                        className="w-full font-bold"
                       >
                         Cancel
                       </Button>
                     </DialogClose>
 
-                    <Button type="submit" className="w-full text-lg font-bold">
+                    <Button type="submit" className="w-full font-bold">
                       Add
                     </Button>
                   </div>

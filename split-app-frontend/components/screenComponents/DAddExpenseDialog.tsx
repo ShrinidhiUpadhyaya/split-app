@@ -74,15 +74,15 @@ const DAddExpenseDialog = () => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="text-lg font-bold">Add Expense</Button>
+        <Button>Add Expense</Button>
       </DialogTrigger>
       <DialogContent className="!max-w-full w-3/4 h-3/4 block !space-y-0">
         <DialogHeader className="py-4">
           <DialogTitle className="text-2xl">Add an expense </DialogTitle>
         </DialogHeader>
 
-        <div className="w-full flex gap-8 text-black">
-          <div className="w-[40%] space-y-8 bg-[#CCF2FF] rounded-lg p-4">
+        <div className="w-full flex gap-8">
+          <div className="w-[40%] space-y-8 rounded-lg p-4">
             <div className="flex gap-4">
               <span className="min-w-[20%]">Title</span>
               <Input />
@@ -114,14 +114,14 @@ const DAddExpenseDialog = () => {
               </div>
             </div>
           </div>
-          <div className="flex-1 bg-[#CCF2FF] rounded-lg p-4">
+          <div className="flex-1 rounded-lg p-4">
             <Tabs defaultValue="equally" className="w-full ">
               <TabsList className="grid w-full grid-cols-4">
                 {shareOptions.map((option) => (
                   <TabsTrigger
                     key={option.value}
                     value={option.value}
-                    className="w-full font-semibold gap-4 rounded-md data-[state=active]:bg-[#00BAF2] data-[state=active]:text-[white]"
+                    className="w-full font-semibold gap-4 rounded-md"
                   >
                     <span className="hidden sm:flex">{option.label}</span>
                   </TabsTrigger>

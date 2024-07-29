@@ -66,12 +66,4 @@
   body {
     @apply bg-background text-foreground;
   }
-
-  .primaryFontSize {
-    @apply text-lg;
-  }
-
-  .primaryColorFont {
-    @apply text-[#00BAF2];
-  }
 }

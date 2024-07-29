@@ -41,7 +41,7 @@ const User: React.FC<SideNavNarProps> = ({ className }) => {
           <TabsTrigger
             key={option.value}
             value={option.value}
-            className="max-w-[360px] w-full text-lg font-medium gap-4 flex justify-center md:justify-start h-12 rounded-md px-8 py-4 data-[state=active]:bg-[#00BAF2] data-[state=active]:text-[white]"
+            className="max-w-[360px] w-full font-medium gap-4 flex justify-center md:justify-start h-12 rounded-md px-8 py-4"
           >
             <span>{option.icon}</span>
             <span className="hidden sm:flex">{option.label}</span>

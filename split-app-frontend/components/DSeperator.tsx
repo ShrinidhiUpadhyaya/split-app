@@ -22,7 +22,7 @@ const DSeperator: React.FC<SeperatorProps> = ({
       {label && (
         <p
           className={cn(
-            "p-1 px-2 bg-[white] absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2",
+            "p-1 px-2 bg-[#020817] absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2",
             labelClassName
           )}
         >

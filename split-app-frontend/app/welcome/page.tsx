@@ -35,7 +35,7 @@ const WelcomeScreen = () => {
             className="w-full"
           />
 
-          <Button variant="outline" className="w-full text-lg font-semibold">
+          <Button variant="outline" className="w-full font-semibold">
             Invite friends
           </Button>
 

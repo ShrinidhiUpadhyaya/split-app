@@ -25,7 +25,7 @@ const DGoogleButton: React.FC<ButtonProps> = ({
   return (
     <div>
       <Button
-        className={cn("text-lg font-semibold", className)}
+        className={cn("font-semibold", className)}
         variant="outline"
         onClick={onSubmit}
       >

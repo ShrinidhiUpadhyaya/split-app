@@ -62,7 +62,7 @@ const SignUpForm: React.FC<SignUpFormProps> = ({ onSignUp }) => {
           type="password"
         />
 
-        <Button type="submit" className="w-full text-lg font-bold">
+        <Button type="submit" className="w-full font-bold">
           Sign in with your email
         </Button>
       </form>

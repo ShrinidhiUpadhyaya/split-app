@@ -1,3 +1,5 @@
+import { ThemeProvider } from "@/components/theme-provider";
+
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
@@ -18,8 +20,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={noto_sans.className}>
-        <Header />
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Header />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
