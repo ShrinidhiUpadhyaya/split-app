@@ -11,7 +11,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 import {
   Select,
   SelectContent,
@@ -26,7 +26,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { format } from "date-fns";
-import DPaidByCombobox from "./screenComponents/DPaidByCombobox";
+import DPaidByCombobox from "./DPaidByCombobox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
@@ -55,7 +55,7 @@ const shareOptions = [
   },
 ];
 
-import DTagPicker from "./screenComponents/DTagPicker";
+import DTagPicker from "./DTagPicker";
 
 const DAddExpenseDialog = () => {
   const [date, setDate] = React.useState<Date>(new Date());

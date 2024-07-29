@@ -3,7 +3,7 @@ import { NextRequest } from "next/server";
 import { cookies } from "next/headers";
 import { jwtVerify } from "jose";
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET;
 const protectedRoutes = new Set(["/welcome", "/user"]);
 const authRoutes = new Set(["/login", "/signup"]);
 

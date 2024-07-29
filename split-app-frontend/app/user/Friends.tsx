@@ -3,9 +3,9 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
-import DFriendCard from "@/components/DFriendCard";
-import DAddFriendDialog from "@/components/DAddFriendDialog";
-import DAddExpenseDialog from "@/components/DAddExpenseDialog";
+import DFriendCard from "@/components/screenComponents/DFriendCard";
+import DAddFriendDialog from "@/components/screenComponents/DAddFriendDialog";
+import DAddExpenseDialog from "@/components/screenComponents/DAddExpenseDialog";
 import { useAppStore } from "@/store/zustand";
 
 const Friends = ({}) => {

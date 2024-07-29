@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Send, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
-import DTextLink from "./DTextLink";
+import DTextLink from "../DTextLink";
 
 interface FriendCardProps {
   friend?: Object | null | undefined;
