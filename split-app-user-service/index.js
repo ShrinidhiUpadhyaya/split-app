@@ -58,13 +58,13 @@ app.get("/friends/:userId", async (req, res) => {
     const friends = friendships.map((friendship) => {
       if (friendship.user_id._id.toString() === userId) {
         return {
-          id: friendship.friend_id._id,
+          _id: friendship.friend_id._id,
           email: friendship.friend_id.email,
           name: friendship.friend_id.name,
         };
       } else {
         return {
-          id: friendship.user_id,
+          _id: friendship.user_id,
           email: friendship.email,
           name: friendship.name,
         };

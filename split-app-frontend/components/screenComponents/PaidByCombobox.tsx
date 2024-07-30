@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -17,17 +17,35 @@ import {
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAppStore } from "@/store/zustand";
 
-interface PaidByComboboxProps {
-  people: Array<Object>;
+interface ComboboxProps {
+  persons: Array<Object>;
+  onValueChange?: Function;
 }
 
-const DPaidByCombobox: React.FC<PaidByComboboxProps> = ({ people }) => {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+const DPaidByCombobox: React.FC<ComboboxProps> = ({
+  persons,
+  onValueChange,
+}) => {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+
+  const { user } = useAppStore();
+  const userId = user._id;
+
+  useEffect(() => {
+    console.log("Value Change", value);
+    onValueChange?.(value);
+  }, [value]);
+
+  useEffect(() => {
+    console.log("Printing user id", userId);
+    setValue(userId);
+  }, [userId]);
 
   return (
-    <div className="flex items-center space-x-4">
+    <div className="w-full flex items-center space-x-4">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -36,47 +54,35 @@ const DPaidByCombobox: React.FC<PaidByComboboxProps> = ({ people }) => {
             aria-expanded={open}
             className="w-full justify-between"
           >
-            {value
-              ? people.find((person) => person?.email === value)?.label
-              : "Select framework..."}
+            {value == userId
+              ? "You"
+              : persons.find((person) => person?._id === value)?.name ??
+                persons.find((person) => person?._id === value)?.email}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-full p-0">
           <Command>
             <CommandInput placeholder="Search framework..." />
-            <CommandEmpty>No framework found.</CommandEmpty>
+            <CommandEmpty>Person not found.</CommandEmpty>
             <CommandList>
               <CommandGroup>
-                <CommandItem
-                  key={"you"}
-                  value={"you"}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
-                    setOpen(false);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === "you" ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  You
-                </CommandItem>
-                {people.map((person) => (
+                {persons.map((person) => (
                   <CommandItem
-                    key={person?.id}
-                    value={person?.id}
+                    key={person?._id}
+                    value={person?._id}
                     onSelect={(currentValue) => {
-                      setValue(currentValue === value ? "" : currentValue);
-                      setOpen(false);
+                      console.log(currentValue);
+                      if (currentValue !== value) {
+                        setValue(currentValue === value ? "" : currentValue);
+                        setOpen(false);
+                      }
                     }}
                   >
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === person.id ? "opacity-100" : "opacity-0"
+                        value === person?._id ? "opacity-100" : "opacity-0"
                       )}
                     />
                     {person?.name ? person.name : person.email}

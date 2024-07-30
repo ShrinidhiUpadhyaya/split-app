@@ -21,7 +21,7 @@ const formSchema = z.object({
   email: z.string().min(6).max(50).email(),
 });
 
-const DAddFriendDialog = () => {
+const AddFriendDialog = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -92,4 +92,4 @@ const DAddFriendDialog = () => {
   );
 };
 
-export default DAddFriendDialog;
+export default AddFriendDialog;

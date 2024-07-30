@@ -17,7 +17,7 @@ interface FriendCardProps {
   className?: string;
 }
 
-const DFriendCard: React.FC<FriendCardProps> = ({
+const FriendCard: React.FC<FriendCardProps> = ({
   friend,
   status = -1,
   className,
@@ -91,4 +91,4 @@ const DFriendCard: React.FC<FriendCardProps> = ({
   );
 };
 
-export default DFriendCard;
+export default FriendCard;

@@ -21,7 +21,6 @@ router.post("/login", async (req, res) => {
     const jwtToken = jwt.sign({ uid }, JWT_SECRET, { expiresIn: "1h" });
     res.cookie("session", jwtToken, { httpOnly: true, secure: true });
     res.status(200).send({
-      msg: "Login successful",
       email: existingUser.email,
       name: existingUser.name,
       _id: existingUser._id,
@@ -68,7 +67,7 @@ router.get("/verify", async (req, res) => {
     return res.status(409).send({ error: "User does not exists" });
   }
 
-  res.status(200).send({ msg: "Login successful", user_id: existingUser._id });
+  res.status(200).send({ user_id: existingUser._id });
 });
 
 router.post("/logout", (req, res) => {

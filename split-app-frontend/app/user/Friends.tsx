@@ -3,28 +3,28 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { Button } from "@/components/ui/button";
-import DFriendCard from "@/components/screenComponents/DFriendCard";
-import DAddFriendDialog from "@/components/screenComponents/DAddFriendDialog";
-import DAddExpenseDialog from "@/components/screenComponents/DAddExpenseDialog";
+import FriendCard from "@/components/screenComponents/FriendCard";
+import AddFriendDialog from "@/components/screenComponents/AddFriendDialog";
+import AddExpenseDialog from "@/components/screenComponents/AddExpenseDialog";
 import { useAppStore } from "@/store/zustand";
 
 const Friends = ({}) => {
   const { user, friends, setFriends } = useAppStore();
 
   useEffect(() => {
-    const fetchFriends = async () => {
+    async function fetchFriends() {
       try {
         const response = await axios.get(
           `http://localhost:3001/friends/${user._id}`
         );
         setFriends(response.data);
       } catch (error) {
-        console.log("Error", error);
+        console.log("Fetch friends Error", error);
       }
-    };
+    }
 
     fetchFriends();
-  }, [user, setFriends]);
+  }, [user]);
 
   return (
     <div className="w-full h-full px-8 space-y-8">
@@ -35,22 +35,22 @@ const Friends = ({}) => {
               You have not added any friends yet
             </p>
 
-            <DAddFriendDialog />
+            <AddFriendDialog />
           </div>
         ) : (
           <div className="w-full space-y-8">
             <div className="w-full flex">
-              <DAddFriendDialog />
+              <AddFriendDialog />
 
               <div className="flex-1 flex justify-end gap-4">
-                <DAddExpenseDialog />
+                <AddExpenseDialog />
                 <Button variant="secondary">Settle Up</Button>
               </div>
             </div>
 
             <div className="w-full h-full">
               {friends.map((friend) => (
-                <DFriendCard key={friend?.email} friend={friend} />
+                <FriendCard key={friend?.email} friend={friend} />
               ))}
             </div>
           </div>
