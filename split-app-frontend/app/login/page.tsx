@@ -11,7 +11,7 @@ import DTextLink from "@/components/DTextLink";
 import DGoogleButton from "@/components/DGoogleButton";
 import DPage from "@/components/DPage";
 import useShowToast from "@/components/DToast";
-import { login } from "@/utils/authApi";
+import { login } from "@/lib/authApi";
 
 const Login = () => {
   const router = useRouter();

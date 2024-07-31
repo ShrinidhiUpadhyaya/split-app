@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Dialog,
   DialogContent,
@@ -43,8 +43,6 @@ import { z } from "zod";
 import { useAppStore } from "@/store/zustand";
 
 import PaidByCombobox from "./PaidByCombobox";
-import InvolvedPersonsCombobox from "./InvolvedPersonsCombobox";
-import { Payment } from "./ExpenseTable";
 import ExpenseTable from "./ExpenseTable";
 
 const shareOptions = [
@@ -70,27 +68,21 @@ const shareOptions = [
 ];
 
 const FormSchema = z.object({
-  title: z.string({
-    required_error: "Please enter a title.",
+  description: z.string({
+    required_error: "Please enter a description.",
   }),
   paidBy: z.string({
     required_error: "Please select who paid the expense.",
   }),
-  amount: z.coerce.number().gte(),
-  sharedWith: z.array(
-    z.object({
-      amount: z.any().nullable(),
-      _id: z.string(),
-    })
-  ),
+  amount: z.coerce.number().gte(0).default(0),
 });
 
 const AddExpenseDialog = () => {
-  const [date, setDate] = useState<Date>(new Date());
-  const [persons, setPerson] = useState([]);
   const { friends, user } = useAppStore();
-  const [splitAmountValues, setSplitAmountValues] = useState<Payment[]>([]);
-
+  const [persons, setPerson] = useState([]);
+  const [totalAmount, setTotalAmount] = useState<number>(0);
+  const [date, setDate] = useState<Date>(new Date());
+  const [formValues, setFormValues] = useState();
   const [backendData, setBackendData] = useState([]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -99,40 +91,35 @@ const AddExpenseDialog = () => {
 
   useEffect(() => {
     const userWithAmount = friends.map((friend) => {
-      return { ...friend, amount: null };
+      return { ...friend, amount: 0 };
     });
 
     const updatedValue = [
       ...userWithAmount,
-      { _id: user?._id, amount: null, name: "You", email: user?.email },
+      { _id: user?._id, amount: 0, name: "You", email: user?.email },
     ];
 
     setPerson(updatedValue);
   }, [friends]);
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log("Printing values");
-    console.log(values);
+    setFormValues(values);
   };
 
-  const calculateAmount = (values) => {
-    const totalAmount = 100;
-    const equalAmount = totalAmount / values.length;
+  const compueBackendValues = useCallback(() => {
+    const checkNullAmount = backendData.filter((value) => value.amount != 0);
+    const newValues = checkNullAmount?.map((value) => ({ _id: value._id }));
 
-    const a = values?.map((person) => ({
-      ...person,
-      amount: equalAmount,
-    }));
+    const backendSchema = {
+      description: formValues?.description,
+      amount: totalAmount,
+      date: Date.now,
+      paidBy: formValues?.paidBy,
+      sharedWith: [{ ...newValues }],
+    };
 
-    const formattedData: Payment[] = a.map((item) => ({
-      _id: item._id,
-      amount: item.amount,
-      email: item.email,
-    }));
-
-    setSplitAmountValues(formattedData);
-    console.log("Updated Persons", formattedData);
-  };
+    console.log("Backend Schema Data", backendSchema);
+  }, [formValues]);
 
   return (
     <Dialog>
@@ -153,12 +140,12 @@ const AddExpenseDialog = () => {
               >
                 <FormField
                   control={form.control}
-                  name="title"
+                  name="description"
                   render={({ field }) => (
                     <FormItem>
                       <div className="flex items-center gap-8">
                         <FormLabel className="min-w-[20%] max-w-[20%]">
-                          Title
+                          Description
                         </FormLabel>
                         <FormControl>
                           <Input {...field} />
@@ -209,39 +196,16 @@ const AddExpenseDialog = () => {
                             </SelectContent>
                           </Select>
                           <FormControl>
-                            <Input {...field} />
+                            <Input
+                              type="number"
+                              {...field}
+                              onChange={(event) => {
+                                setTotalAmount(event.target.value);
+                              }}
+                              className="font-bold text-xl"
+                            />
                           </FormControl>
                         </div>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="sharedWith"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex items-center gap-8">
-                        <FormLabel className="min-w-[20%] max-w-[20%]">
-                          Persons
-                        </FormLabel>
-                        <FormControl className="w-full">
-                          <InvolvedPersonsCombobox
-                            onValueChange={(values) => {
-                              const updatedData = values.map(
-                                ({ email, name, ...rest }) => rest
-                              );
-                              console.log("updatedData", updatedData);
-                              setBackendData(updatedData);
-
-                              field.onChange(updatedData);
-                              calculateAmount(values);
-                            }}
-                            people={persons}
-                          />
-                        </FormControl>
                       </div>
                       <FormMessage />
                     </FormItem>
@@ -266,7 +230,11 @@ const AddExpenseDialog = () => {
               </TabsList>
               <TabsContent value="equally">
                 <div className="w-full h-72 max-h-72 rounded-lg overflow-hidden">
-                  <ExpenseTable data={splitAmountValues} />
+                  <ExpenseTable
+                    tableData={persons}
+                    totalAmount={totalAmount}
+                    onValueChange={setBackendData}
+                  />
                 </div>
               </TabsContent>
             </Tabs>

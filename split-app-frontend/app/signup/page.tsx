@@ -10,7 +10,7 @@ import DSeperator from "@/components/DSeperator";
 import DTextLink from "@/components/DTextLink";
 import DGoogleButton from "@/components/DGoogleButton";
 import DPage from "@/components/DPage";
-import { signUp } from "@/utils/authApi";
+import { signUp } from "@/lib/authApi";
 
 const SignUp = () => {
   const router = useRouter();

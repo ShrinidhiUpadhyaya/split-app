@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
 import useShowToast from "@/components/DToast";
-import { logOut } from "@/utils/authApi";
+import { logOut } from "@/lib/authApi";
 
 const authRoutes = ["/login", "/signup"];
 

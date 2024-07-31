@@ -1,6 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -13,7 +16,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -23,14 +25,38 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ArrowUpDown } from "lucide-react";
+import { splitEqually } from "@/lib/splitAmount";
 
 export type Payment = {
   _id: string;
   amount: number;
   email: string;
+  name: string;
 };
 
 export const columns: ColumnDef<Payment>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "email",
     header: ({ column }) => {
@@ -44,7 +70,7 @@ export const columns: ColumnDef<Payment>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="text-base">{row.getValue("email")}</div>,
+    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
     accessorKey: "amount",
@@ -58,22 +84,27 @@ export const columns: ColumnDef<Payment>[] = [
         currency: "USD",
       }).format(amount);
 
-      return (
-        <div className="text-right font-semibold text-base">{formatted}</div>
-      );
+      return <div className="text-right font-medium">{formatted}</div>;
     },
   },
 ];
 
 interface TableProps {
-  data: Payment[];
+  tableData: Payment[];
+  totalAmount: number;
+  onValueChange?: Function;
 }
 
-const ExpenseTable: React.FC<TableProps> = ({ data }) => {
+const ExpenseTable: React.FC<TableProps> = ({
+  tableData,
+  totalAmount,
+  onValueChange = () => {},
+}) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [data, setData] = useState<Payment[]>(tableData);
 
   const table = useReactTable({
     data,
@@ -93,6 +124,36 @@ const ExpenseTable: React.FC<TableProps> = ({ data }) => {
       rowSelection,
     },
   });
+
+  const getSelectedRows = () => {
+    return table.getSelectedRowModel().rows.map((row) => row.original);
+  };
+
+  const selectedRows = useMemo(() => getSelectedRows(), [rowSelection]);
+
+  const newValues = useMemo(() => {
+    return selectedRows.length > 0
+      ? splitEqually(selectedRows, totalAmount)
+      : data.map((value) => ({ ...value, amount: 0 }));
+  }, [selectedRows]);
+
+  const mergeValues = useCallback(() => {
+    return data.map((dataObj) => {
+      const matchingValues = newValues.find(
+        (selectedRowsObj) => selectedRowsObj._id === dataObj._id
+      );
+      return matchingValues ? { ...dataObj, ...matchingValues } : dataObj;
+    });
+  }, [newValues]);
+
+  useEffect(() => {
+    const mergedValues = mergeValues();
+    setData(mergedValues);
+  }, [mergeValues]);
+
+  useEffect(() => {
+    onValueChange(data);
+  }, [data]);
 
   return (
     <div className="w-full h-full">
