@@ -1,7 +1,13 @@
+import { ThemeProvider } from "@/components/theme-provider";
+
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
+import Header from "@/components/screenComponents/Header";
 
+const noto_sans = Noto_Sans({ subsets: ["latin"] });
 const noto_sans = Noto_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -16,7 +22,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={noto_sans.className}>{children}</body>
+      <body className={noto_sans.className}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Header />
+          {children}
+          <Toaster />
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
