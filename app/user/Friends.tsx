@@ -26,7 +26,7 @@ const Friends = ({}) => {
 
   return (
     <div className="h-full w-full space-y-8 px-8">
-      <div className="flex justify-center py-16">
+      <div className="flex justify-center">
         {friends.length < 1 ? (
           <div className="flex w-[50%] flex-col justify-center gap-8 text-center">
             <p className="mb-8 w-full text-4xl font-bold">You have not added any friends yet</p>

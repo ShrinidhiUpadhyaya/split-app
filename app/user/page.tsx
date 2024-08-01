@@ -61,12 +61,12 @@ const User: React.FC<SideNavNarProps> = ({className}) => {
 
   return (
     <>
-      <div className="flex h-16 w-full items-center justify-between gap-4 px-16">
+      <div className="flex h-16 w-full items-center justify-between gap-4 px-8 pl-10">
         <Link href="/">
           <Image src={"logo.svg"} height={24} width={96} alt="Split logo" />
         </Link>
 
-        <div className="flex flex-1 items-center justify-end">
+        <div className="flex flex-1 items-center justify-end gap-4 pr-8">
           <p>{user?.name ?? user?.email}</p>
 
           <DropdownMenu>
@@ -82,13 +82,16 @@ const User: React.FC<SideNavNarProps> = ({className}) => {
           </DropdownMenu>
         </div>
       </div>
-      <Tabs defaultValue="dashboard" className={cn("w-full flex-1 md:flex md:gap-12", className)}>
-        <TabsList className="flex h-full w-full items-start gap-8 md:w-[25%] md:flex-col">
+      <Tabs
+        defaultValue="dashboard"
+        className={cn("h-svh w-full flex-1 py-8 md:flex md:gap-12", className)}
+      >
+        <TabsList className="flex h-full min-w-[360px] max-w-[360px] items-start justify-start gap-8 px-4 md:w-[25%] md:flex-col">
           {sideNavBarOptions.map((option) => (
             <TabsTrigger
               key={option.value}
               value={option.value}
-              className="flex h-12 w-full max-w-[360px] justify-center gap-4 rounded-md px-8 py-4 font-medium md:justify-start"
+              className="flex h-11 w-full justify-center gap-4 rounded-md p-8 text-base font-bold md:justify-start"
             >
               <span>{option.icon}</span>
               <span className="hidden sm:flex">{option.label}</span>

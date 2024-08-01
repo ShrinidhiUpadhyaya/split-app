@@ -1,5 +1,6 @@
 import {connectToDB} from "@/lib/mongo";
 import Friend from "../../../models/Friend";
+
 connectToDB();
 
 export async function GET(req, {params}) {
