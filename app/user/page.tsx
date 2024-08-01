@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {logOut} from "@/lib/authApi";
 import {cn} from "@/lib/utils";
 import {useAppStore} from "@/store/zustand";
 import {Group, Handshake, LayoutDashboard} from "lucide-react";
@@ -46,6 +47,17 @@ const User: React.FC<SideNavNarProps> = ({className}) => {
   const {user, clearAll} = useAppStore();
   const router = useRouter();
   const {showSuccessToast} = useShowToast();
+
+  const onLogOut = async () => {
+    try {
+      await logOut();
+      clearAll();
+      router.push("/");
+      showSuccessToast("You have successfully logged out.");
+    } catch (error) {
+      console.log("Logout error", error);
+    }
+  };
 
   return (
     <>
