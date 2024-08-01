@@ -1,7 +1,6 @@
-import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
-import { cookies } from "next/headers";
-import { jwtVerify } from "jose";
+import {jwtVerify} from "jose";
+import {cookies} from "next/headers";
+import {NextRequest, NextResponse} from "next/server";
 
 const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET;
 const protectedRoutes = new Set(["/welcome", "/user"]);
@@ -24,8 +23,7 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL("/user", req.nextUrl));
     }
   } catch (err) {
-    if (protectedRoutes.has(pathname))
-      return NextResponse.redirect(new URL("/login", req.nextUrl));
+    if (protectedRoutes.has(pathname)) return NextResponse.redirect(new URL("/login", req.nextUrl));
   }
 
   return NextResponse.next();

@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import {Button} from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -10,28 +9,22 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useAppStore } from "@/store/zustand";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {cn} from "@/lib/utils";
+import {useAppStore} from "@/store/zustand";
+import {Check, ChevronsUpDown} from "lucide-react";
+import React, {useEffect, useState} from "react";
 
 interface ComboboxProps {
   persons: Array<Object>;
   onValueChange?: Function;
 }
 
-const DPaidByCombobox: React.FC<ComboboxProps> = ({
-  persons,
-  onValueChange,
-}) => {
+const DPaidByCombobox: React.FC<ComboboxProps> = ({persons, onValueChange}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
-  const { user } = useAppStore();
+  const {user} = useAppStore();
   const userId = user._id;
 
   useEffect(() => {
@@ -56,8 +49,8 @@ const DPaidByCombobox: React.FC<ComboboxProps> = ({
           >
             {value == userId
               ? "You"
-              : persons.find((person) => person?._id === value)?.name ??
-                persons.find((person) => person?._id === value)?.email}
+              : (persons.find((person) => person?._id === value)?.name ??
+                persons.find((person) => person?._id === value)?.email)}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -82,7 +75,7 @@ const DPaidByCombobox: React.FC<ComboboxProps> = ({
                     <Check
                       className={cn(
                         "mr-2 h-4 w-4",
-                        value === person?._id ? "opacity-100" : "opacity-0"
+                        value === person?._id ? "opacity-100" : "opacity-0",
                       )}
                     />
                     {person?.name ? person.name : person.email}

@@ -1,6 +1,6 @@
-import React from "react";
+import {cn} from "@/lib/utils";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import React from "react";
 
 interface TextLinkProps {
   label?: string;
@@ -8,16 +8,9 @@ interface TextLinkProps {
   href?: string;
 }
 
-const DTextLink: React.FC<TextLinkProps> = ({
-  label,
-  href = "/",
-  className,
-}) => {
+const DTextLink: React.FC<TextLinkProps> = ({label, href = "/", className}) => {
   return (
-    <Link
-      href={href}
-      className={cn("primaryColorFont text-sm font-semibold block", className)}
-    >
+    <Link href={href} className={cn("primaryColorFont text-sm font-semibold block", className)}>
       {label}
     </Link>
   );

@@ -21,4 +21,4 @@ mongoose.connection.on("error", (err) => {
   console.error("MongoDB error:", err);
 });
 
-export { connectToDB };
+export {connectToDB};

@@ -1,20 +1,19 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useAppStore } from "@/store/zustand";
-import SignUpForm from "./SignUpForm";
-import DSeperator from "@/components/DSeperator";
-import DTextLink from "@/components/DTextLink";
 import DGoogleButton from "@/components/DGoogleButton";
 import DPage from "@/components/DPage";
-import { signUp } from "@/lib/authApi";
+import DSeperator from "@/components/DSeperator";
+import DTextLink from "@/components/DTextLink";
+import {signUp} from "@/lib/authApi";
+import {useAppStore} from "@/store/zustand";
+import Image from "next/image";
+import Link from "next/link";
+import {useRouter} from "next/navigation";
+import SignUpForm from "./SignUpForm";
 
 const SignUp = () => {
   const router = useRouter();
-  const { setUserID } = useAppStore();
+  const {setUserID} = useAppStore();
 
   const sendSignUpReq = async (user: string | null | undefined) => {
     if (user) {
@@ -43,15 +42,9 @@ const SignUp = () => {
       </div>
 
       <div className="w-[35%] space-y-12">
-        <p className="text-4xl font-bold mb-8 w-full text-center">
-          Create your Split account
-        </p>
+        <p className="text-4xl font-bold mb-8 w-full text-center">Create your Split account</p>
 
-        <DGoogleButton
-          label="Continue with Google"
-          className="w-full"
-          onSignIn={sendSignUpReq}
-        />
+        <DGoogleButton label="Continue with Google" className="w-full" onSignIn={sendSignUpReq} />
 
         <DSeperator />
 

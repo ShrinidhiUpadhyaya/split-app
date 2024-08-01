@@ -11,7 +11,7 @@ const friendSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  created_at: { type: Date, default: Date.now },
+  created_at: {type: Date, default: Date.now},
 });
 
 const Friend = mongoose.models.Friend || mongoose.model("Friend", friendSchema);

@@ -1,17 +1,18 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import {Button} from "@/components/ui/button";
+import {Calendar} from "@/components/ui/calendar";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "../ui/input";
+import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -19,31 +20,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useAppStore } from "@/store/zustand";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {cn} from "@/lib/utils";
+import {useAppStore} from "@/store/zustand";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {format} from "date-fns";
+import {CalendarIcon} from "lucide-react";
+import {useCallback, useEffect, useState} from "react";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
+import {Input} from "../ui/input";
 
-import PaidByCombobox from "./PaidByCombobox";
 import ExpenseTable from "./ExpenseTable";
+import PaidByCombobox from "./PaidByCombobox";
 
 const shareOptions = [
   {
@@ -78,7 +67,7 @@ const FormSchema = z.object({
 });
 
 const AddExpenseDialog = () => {
-  const { friends, user } = useAppStore();
+  const {friends, user} = useAppStore();
   const [persons, setPerson] = useState([]);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [date, setDate] = useState<Date>(new Date());
@@ -91,12 +80,12 @@ const AddExpenseDialog = () => {
 
   useEffect(() => {
     const userWithAmount = friends.map((friend) => {
-      return { ...friend, amount: 0 };
+      return {...friend, amount: 0};
     });
 
     const updatedValue = [
       ...userWithAmount,
-      { _id: user?._id, amount: 0, name: "You", email: user?.email },
+      {_id: user?._id, amount: 0, name: "You", email: user?.email},
     ];
 
     setPerson(updatedValue);
@@ -108,14 +97,14 @@ const AddExpenseDialog = () => {
 
   const compueBackendValues = useCallback(() => {
     const checkNullAmount = backendData.filter((value) => value.amount != 0);
-    const newValues = checkNullAmount?.map((value) => ({ _id: value._id }));
+    const newValues = checkNullAmount?.map((value) => ({_id: value._id}));
 
     const backendSchema = {
       description: formValues?.description,
       amount: totalAmount,
       date: Date.now,
       paidBy: formValues?.paidBy,
-      sharedWith: [{ ...newValues }],
+      sharedWith: [{...newValues}],
     };
 
     console.log("Backend Schema Data", backendSchema);
@@ -141,12 +130,10 @@ const AddExpenseDialog = () => {
                 <FormField
                   control={form.control}
                   name="description"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <div className="flex items-center gap-8">
-                        <FormLabel className="min-w-[20%] max-w-[20%]">
-                          Description
-                        </FormLabel>
+                        <FormLabel className="min-w-[20%] max-w-[20%]">Description</FormLabel>
                         <FormControl>
                           <Input {...field} />
                         </FormControl>
@@ -158,17 +145,12 @@ const AddExpenseDialog = () => {
                 <FormField
                   control={form.control}
                   name="paidBy"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <div className="flex items-center gap-8">
-                        <FormLabel className="min-w-[20%] max-w-[20%]">
-                          Paid by
-                        </FormLabel>
+                        <FormLabel className="min-w-[20%] max-w-[20%]">Paid by</FormLabel>
                         <FormControl>
-                          <PaidByCombobox
-                            persons={persons}
-                            onValueChange={field.onChange}
-                          />
+                          <PaidByCombobox persons={persons} onValueChange={field.onChange} />
                         </FormControl>
                       </div>
                       <FormMessage />
@@ -178,12 +160,10 @@ const AddExpenseDialog = () => {
                 <FormField
                   control={form.control}
                   name="amount"
-                  render={({ field }) => (
+                  render={({field}) => (
                     <FormItem>
                       <div className="flex items-center gap-8">
-                        <FormLabel className="min-w-[20%] max-w-[20%]">
-                          Amount
-                        </FormLabel>
+                        <FormLabel className="min-w-[20%] max-w-[20%]">Amount</FormLabel>
                         <div className="flex gap-4">
                           <Select defaultValue="rupees">
                             <SelectTrigger className="w-24">
@@ -250,7 +230,7 @@ const AddExpenseDialog = () => {
                     variant={"outline"}
                     className={cn(
                       "w-[280px] justify-start text-left font-normal",
-                      !date && "text-muted-foreground"
+                      !date && "text-muted-foreground",
                     )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
@@ -258,12 +238,7 @@ const AddExpenseDialog = () => {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={setDate}
-                    initialFocus
-                  />
+                  <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
                 </PopoverContent>
               </Popover>
             </div>
@@ -274,11 +249,7 @@ const AddExpenseDialog = () => {
                 </Button>
               </DialogClose>
 
-              <Button
-                type="submit"
-                form="addExpenseForm"
-                className="w-40 font-bold"
-              >
+              <Button type="submit" form="addExpenseForm" className="w-40 font-bold">
                 Add
               </Button>
             </div>

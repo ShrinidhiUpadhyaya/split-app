@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useEffect } from "react";
-import axios from "axios";
-import { Button } from "@/components/ui/button";
-import FriendCard from "@/components/screenComponents/FriendCard";
-import AddFriendDialog from "@/components/screenComponents/AddFriendDialog";
 import AddExpenseDialog from "@/components/screenComponents/AddExpenseDialog";
-import { useAppStore } from "@/store/zustand";
+import AddFriendDialog from "@/components/screenComponents/AddFriendDialog";
+import FriendCard from "@/components/screenComponents/FriendCard";
+import {Button} from "@/components/ui/button";
+import {useAppStore} from "@/store/zustand";
+import axios from "axios";
+import {useEffect} from "react";
 
 const Friends = ({}) => {
-  const { user, friends, setFriends } = useAppStore();
+  const {user, friends, setFriends} = useAppStore();
 
   useEffect(() => {
     async function fetchFriends() {
@@ -29,9 +29,7 @@ const Friends = ({}) => {
       <div className="flex justify-center py-16">
         {friends.length < 1 ? (
           <div className="w-[50%] flex flex-col justify-center gap-8 text-center">
-            <p className="text-4xl font-bold mb-8 w-full">
-              You have not added any friends yet
-            </p>
+            <p className="text-4xl font-bold mb-8 w-full">You have not added any friends yet</p>
 
             <AddFriendDialog />
           </div>

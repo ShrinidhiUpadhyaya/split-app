@@ -1,30 +1,29 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
-import { useAppStore } from "@/store/zustand";
-import { cn } from "@/lib/utils";
+import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
+import useShowToast from "@/components/DToast";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
-import useShowToast from "@/components/DToast";
-import { logOut } from "@/lib/authApi";
+import {logOut} from "@/lib/authApi";
+import {cn} from "@/lib/utils";
+import {useAppStore} from "@/store/zustand";
+import Image from "next/image";
+import Link from "next/link";
+import {usePathname, useRouter} from "next/navigation";
+import {useEffect, useState} from "react";
 
 const authRoutes = ["/login", "/signup"];
 
 const Header = () => {
   const pathname = usePathname();
   const showHeader = !authRoutes.includes(pathname);
-  const { user, clearAll } = useAppStore();
+  const {user, clearAll} = useAppStore();
   const router = useRouter();
-  const { showSuccessToast } = useShowToast();
+  const {showSuccessToast} = useShowToast();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -43,12 +42,7 @@ const Header = () => {
   };
 
   return (
-    <div
-      className={cn(
-        "w-full flex justify-between px-16 py-4",
-        !showHeader && "hidden"
-      )}
-    >
+    <div className={cn("w-full flex justify-between px-16 py-4", !showHeader && "hidden")}>
       <div className="flex-1">
         <Link href="/">
           <Image src={"logo.svg"} height={24} width={96} alt="Split logo" />
@@ -63,21 +57,11 @@ const Header = () => {
 
               <DropdownMenu>
                 <DropdownMenuTrigger>
-                  <Image
-                    src="/guy1Profile.png"
-                    height={24}
-                    width={24}
-                    alt="Profile Photo"
-                  />
+                  <Image src="/guy1Profile.png" height={24} width={24} alt="Profile Photo" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="shadow-lg w-40" align="end">
-                  <DropdownMenuItem className="cursor-pointer">
-                    Your Account
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={onLogOut}
-                  >
+                  <DropdownMenuItem className="cursor-pointer">Your Account</DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer" onClick={onLogOut}>
                     Sign Out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -92,11 +76,7 @@ const Header = () => {
                 Log In
               </Link>
 
-              <DPrimaryButtonLink
-                href="/signup"
-                label="Sign Up"
-                className="w-min"
-              />
+              <DPrimaryButtonLink href="/signup" label="Sign Up" className="w-min" />
             </div>
           )}
         </>

@@ -1,14 +1,8 @@
-import React, { useState } from "react";
-import { Separator } from "@/components/ui/separator";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Send, Bell } from "lucide-react";
-import { cn } from "@/lib/utils";
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
+import {Separator} from "@/components/ui/separator";
+import {cn} from "@/lib/utils";
+import {Bell, Send} from "lucide-react";
+import React, {useState} from "react";
 import DTextLink from "../DTextLink";
 
 interface FriendCardProps {
@@ -17,11 +11,7 @@ interface FriendCardProps {
   className?: string;
 }
 
-const FriendCard: React.FC<FriendCardProps> = ({
-  friend,
-  status = -1,
-  className,
-}) => {
+const FriendCard: React.FC<FriendCardProps> = ({friend, status = -1, className}) => {
   const [friendStatus, setFriendStatus] = useState<number>(status);
 
   return (
@@ -30,11 +20,7 @@ const FriendCard: React.FC<FriendCardProps> = ({
         <CardHeader className="p-4">
           <CardTitle className="font-semibold flex gap-4 items-center !text-3xl">
             <div className="flex items-center gap-2 overflow-hidden">
-              <div
-                className={cn(
-                  "rounded-full min-h-12 min-w-12 shadow-sm bg-[white]"
-                )}
-              ></div>
+              <div className={cn("rounded-full min-h-12 min-w-12 shadow-sm bg-[white]")}></div>
               <span className="flex-1 overflow-hidden text-ellipsis">
                 {friend?.name ? friend.name : friend.email}
               </span>
