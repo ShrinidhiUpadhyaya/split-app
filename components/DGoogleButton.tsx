@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
+import {cn} from "@/lib/utils";
 import Image from "next/image";
-import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
-import { signInWithGoogle } from "../firebase/utils";
+import React from "react";
+import {signInWithGoogle} from "../firebase/utils";
+import {Button} from "./ui/button";
 
 interface ButtonProps {
   label?: string;
@@ -12,11 +12,7 @@ interface ButtonProps {
   onSignIn?: Function;
 }
 
-const DGoogleButton: React.FC<ButtonProps> = ({
-  label = "Label",
-  className,
-  onSignIn,
-}) => {
+const DGoogleButton: React.FC<ButtonProps> = ({label = "Label", className, onSignIn}) => {
   const onSubmit = async () => {
     const user = await signInWithGoogle();
     onSignIn?.(user);
@@ -24,12 +20,8 @@ const DGoogleButton: React.FC<ButtonProps> = ({
 
   return (
     <div>
-      <Button
-        className={cn("font-semibold", className)}
-        variant="outline"
-        onClick={onSubmit}
-      >
-        <div className="w-full h-full flex items-center justify-center gap-4">
+      <Button className={cn("font-semibold", className)} variant="outline" onClick={onSubmit}>
+        <div className="flex h-full w-full items-center justify-center gap-4">
           <Image src={"/google.png"} height={24} width={24} alt={label} />
           {label}
         </div>

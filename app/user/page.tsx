@@ -1,10 +1,10 @@
-import React from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, Handshake, Group } from "lucide-react";
-import { cn } from "@/lib/utils";
 import Dashboard from "@/app/user/Dashboard";
 import Friends from "@/app/user/Friends";
 import Groups from "@/app/user/Groups";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {cn} from "@/lib/utils";
+import {Group, Handshake, LayoutDashboard} from "lucide-react";
+import React from "react";
 
 interface SideNavNarProps {
   className?: string;
@@ -30,18 +30,15 @@ const sideNavBarOptions = [
   },
 ];
 
-const User: React.FC<SideNavNarProps> = ({ className }) => {
+const User: React.FC<SideNavNarProps> = ({className}) => {
   return (
-    <Tabs
-      defaultValue="dashboard"
-      className={cn("flex-1 w-full md:flex md:gap-12", className)}
-    >
-      <TabsList className="flex md:flex-col items-start gap-8 h-full md:w-[25%] w-full">
+    <Tabs defaultValue="dashboard" className={cn("w-full flex-1 md:flex md:gap-12", className)}>
+      <TabsList className="flex h-full w-full items-start gap-8 md:w-[25%] md:flex-col">
         {sideNavBarOptions.map((option) => (
           <TabsTrigger
             key={option.value}
             value={option.value}
-            className="max-w-[360px] w-full font-medium gap-4 flex justify-center md:justify-start h-12 rounded-md px-8 py-4"
+            className="flex h-12 w-full max-w-[360px] justify-center gap-4 rounded-md px-8 py-4 font-medium md:justify-start"
           >
             <span>{option.icon}</span>
             <span className="hidden sm:flex">{option.label}</span>

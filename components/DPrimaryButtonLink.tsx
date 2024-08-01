@@ -1,7 +1,7 @@
-import React from "react";
+import {buttonVariants} from "@/components/ui/button";
+import {cn} from "@/lib/utils";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
+import React from "react";
 
 interface ButtonProps {
   label?: string;
@@ -22,10 +22,10 @@ const DPrimaryButtonLink: React.FC<ButtonProps> = ({
     <Link
       href={href}
       className={cn(
-        buttonVariants({ variant: "default" }),
+        buttonVariants({variant: "default"}),
         "w-full font-bold",
         disabled && "opacity-40",
-        className
+        className,
       )}
       onClick={onClick}
     >

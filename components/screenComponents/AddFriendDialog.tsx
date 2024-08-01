@@ -1,21 +1,20 @@
-import React from "react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import {Button} from "@/components/ui/button";
+import {Form} from "@/components/ui/form";
+import {useAppStore} from "@/store/zustand";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
 import DFormFieldComponent from "../DFormFieldComponent";
-import { useAppStore } from "@/store/zustand";
 
 const formSchema = z.object({
   email: z.string().min(6).max(50).email(),
@@ -26,7 +25,7 @@ const AddFriendDialog = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const { user } = useAppStore();
+  const {user} = useAppStore();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -53,27 +52,20 @@ const AddFriendDialog = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-2xl py-4">Add friends </DialogTitle>
+          <DialogTitle className="py-4 text-2xl">Add friends </DialogTitle>
           <DialogDescription>
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <DFormFieldComponent
                   control={form.control}
                   name="email"
                   placeholder="friendemail@email.com"
                 />
 
-                <div className="w-full flex justify-end pb-4 pt-12">
-                  <div className="w-1/2 flex gap-4">
+                <div className="flex w-full justify-end pb-4 pt-12">
+                  <div className="flex w-1/2 gap-4">
                     <DialogClose asChild>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="w-full font-bold"
-                      >
+                      <Button type="button" variant="outline" className="w-full font-bold">
                         Cancel
                       </Button>
                     </DialogClose>

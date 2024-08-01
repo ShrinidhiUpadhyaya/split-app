@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import {Button} from "@/components/ui/button";
+import {Checkbox} from "@/components/ui/checkbox";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {splitEqually} from "@/lib/splitAmount";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -16,16 +18,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { ArrowUpDown } from "lucide-react";
-import { splitEqually } from "@/lib/splitAmount";
+import {ArrowUpDown} from "lucide-react";
 
 export type Payment = {
   _id: string;
@@ -37,17 +30,16 @@ export type Payment = {
 export const columns: ColumnDef<Payment>[] = [
   {
     id: "select",
-    header: ({ table }) => (
+    header: ({table}) => (
       <Checkbox
         checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
+          table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")
         }
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
     ),
-    cell: ({ row }) => (
+    cell: ({row}) => (
       <Checkbox
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -59,7 +51,7 @@ export const columns: ColumnDef<Payment>[] = [
   },
   {
     accessorKey: "email",
-    header: ({ column }) => {
+    header: ({column}) => {
       return (
         <Button
           variant="ghost"
@@ -70,12 +62,12 @@ export const columns: ColumnDef<Payment>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({row}) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
     accessorKey: "amount",
     header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
+    cell: ({row}) => {
       const amount = parseFloat(row.getValue("amount"));
 
       // Format the amount as a dollar amount
@@ -95,11 +87,7 @@ interface TableProps {
   onValueChange?: Function;
 }
 
-const ExpenseTable: React.FC<TableProps> = ({
-  tableData,
-  totalAmount,
-  onValueChange = () => {},
-}) => {
+const ExpenseTable: React.FC<TableProps> = ({tableData, totalAmount, onValueChange = () => {}}) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -134,15 +122,15 @@ const ExpenseTable: React.FC<TableProps> = ({
   const newValues = useMemo(() => {
     return selectedRows.length > 0
       ? splitEqually(selectedRows, totalAmount)
-      : data.map((value) => ({ ...value, amount: 0 }));
+      : data.map((value) => ({...value, amount: 0}));
   }, [selectedRows]);
 
   const mergeValues = useCallback(() => {
     return data.map((dataObj) => {
       const matchingValues = newValues.find(
-        (selectedRowsObj) => selectedRowsObj._id === dataObj._id
+        (selectedRowsObj) => selectedRowsObj._id === dataObj._id,
       );
-      return matchingValues ? { ...dataObj, ...matchingValues } : dataObj;
+      return matchingValues ? {...dataObj, ...matchingValues} : dataObj;
     });
   }, [newValues]);
 
@@ -156,7 +144,7 @@ const ExpenseTable: React.FC<TableProps> = ({
   }, [data]);
 
   return (
-    <div className="w-full h-full">
+    <div className="h-full w-full">
       <div className="rounded-md border">
         <Table className="h-full w-full">
           <TableHeader className="">
@@ -167,17 +155,14 @@ const ExpenseTable: React.FC<TableProps> = ({
                     <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody className="block overflow-y-scroll max-h-56 !max-w-full">
+          <TableBody className="block max-h-56 !max-w-full overflow-y-scroll">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -187,20 +172,14 @@ const ExpenseTable: React.FC<TableProps> = ({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>

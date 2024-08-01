@@ -1,13 +1,13 @@
 "use client";
 
+import {Form} from "@/components/ui/form";
+import {manualSignIn} from "@/firebase/utils";
+import {zodResolver} from "@hookform/resolvers/zod";
 import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Form } from "@/components/ui/form";
-import { Button } from "../../components/ui/button";
-import { manualSignIn } from "@/firebase/utils";
+import {useForm} from "react-hook-form";
+import {z} from "zod";
 import DFormFieldComponent from "../../components/DFormFieldComponent";
+import {Button} from "../../components/ui/button";
 
 interface LoginFormProps {
   onSignIn?: (user: Object | null | undefined) => void;
@@ -18,7 +18,7 @@ const formSchema = z.object({
   password: z.string().min(10).max(20),
 });
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSignIn }) => {
+const LoginForm: React.FC<LoginFormProps> = ({onSignIn}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
