@@ -1,13 +1,13 @@
-import { connectToDB } from "@/lib/mongo";
+import {connectToDB} from "@/lib/mongo";
 import Friend from "../../../models/Friend";
 connectToDB();
 
-export async function GET(req, { params }) {
-  const { userId } = params;
+export async function GET(req, {params}) {
+  const {userId} = params;
 
   try {
     const friendships = await Friend.find({
-      $or: [{ user_id: userId }, { friend_id: userId }],
+      $or: [{user_id: userId}, {friend_id: userId}],
     }).populate("user_id friend_id", "name email");
 
     const friends = friendships.map((friendship) => {
@@ -26,9 +26,9 @@ export async function GET(req, { params }) {
       }
     });
 
-    return new Response(JSON.stringify(friends), { status: 200 });
+    return new Response(JSON.stringify(friends), {status: 200});
   } catch (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({error: error.message}), {
       status: 500,
     });
   }

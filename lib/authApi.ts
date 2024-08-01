@@ -40,4 +40,4 @@ const logOut = async () => {
   return;
 };
 
-export { login, signUp, logOut };
+export {logOut, login, signUp};

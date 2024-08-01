@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     uid: {
       type: String,
@@ -21,7 +21,7 @@ const userSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 const User = mongoose.models.User || mongoose.model("User", userSchema);
 

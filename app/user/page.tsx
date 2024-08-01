@@ -1,23 +1,22 @@
 "use client";
-import React from "react";
-import { useRouter } from "next/navigation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { LayoutDashboard, Handshake, Group } from "lucide-react";
-import { cn } from "@/lib/utils";
 import Dashboard from "@/app/user/Dashboard";
 import Friends from "@/app/user/Friends";
 import Groups from "@/app/user/Groups";
-import { useAppStore } from "@/store/zustand";
+import useShowToast from "@/components/DToast";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { logOut } from "@/lib/authApi";
-import useShowToast from "@/components/DToast";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {cn} from "@/lib/utils";
+import {useAppStore} from "@/store/zustand";
+import {Group, Handshake, LayoutDashboard} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import {useRouter} from "next/navigation";
+import React from "react";
 
 interface SideNavNarProps {
   className?: string;
@@ -43,45 +42,27 @@ const sideNavBarOptions = [
   },
 ];
 
-const User: React.FC<SideNavNarProps> = ({ className }) => {
-  const { user, clearAll } = useAppStore();
+const User: React.FC<SideNavNarProps> = ({className}) => {
+  const {user, clearAll} = useAppStore();
   const router = useRouter();
-  const { showSuccessToast } = useShowToast();
-
-  const onLogOut = async () => {
-    try {
-      await logOut();
-      clearAll();
-      router.push("/");
-      showSuccessToast("You have successfully logged out.");
-    } catch (error) {
-      console.log("Logout error", error);
-    }
-  };
+  const {showSuccessToast} = useShowToast();
 
   return (
     <>
-      <div className="w-full flex justify-between items-center gap-4 h-16 px-16">
+      <div className="flex h-16 w-full items-center justify-between gap-4 px-16">
         <Link href="/">
           <Image src={"logo.svg"} height={24} width={96} alt="Split logo" />
         </Link>
 
-        <div className="flex-1 flex items-center justify-end">
+        <div className="flex flex-1 items-center justify-end">
           <p>{user?.name ?? user?.email}</p>
 
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Image
-                src="/guy1Profile.png"
-                height={24}
-                width={24}
-                alt="Profile Photo"
-              />
+              <Image src="/guy1Profile.png" height={24} width={24} alt="Profile Photo" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="shadow-lg w-40" align="end">
-              <DropdownMenuItem className="cursor-pointer">
-                Your Account
-              </DropdownMenuItem>
+            <DropdownMenuContent className="w-40 shadow-lg" align="end">
+              <DropdownMenuItem className="cursor-pointer">Your Account</DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer" onClick={onLogOut}>
                 Sign Out
               </DropdownMenuItem>
@@ -89,16 +70,13 @@ const User: React.FC<SideNavNarProps> = ({ className }) => {
           </DropdownMenu>
         </div>
       </div>
-      <Tabs
-        defaultValue="dashboard"
-        className={cn("flex-1 w-full md:flex md:gap-12", className)}
-      >
-        <TabsList className="flex md:flex-col items-start gap-8 h-full md:w-[25%] w-full">
+      <Tabs defaultValue="dashboard" className={cn("w-full flex-1 md:flex md:gap-12", className)}>
+        <TabsList className="flex h-full w-full items-start gap-8 md:w-[25%] md:flex-col">
           {sideNavBarOptions.map((option) => (
             <TabsTrigger
               key={option.value}
               value={option.value}
-              className="max-w-[360px] w-full font-medium gap-4 flex justify-center md:justify-start h-12 rounded-md px-8 py-4"
+              className="flex h-12 w-full max-w-[360px] justify-center gap-4 rounded-md px-8 py-4 font-medium md:justify-start"
             >
               <span>{option.icon}</span>
               <span className="hidden sm:flex">{option.label}</span>

@@ -1,8 +1,7 @@
-import React from "react";
-import { useToast } from "@/components/ui/use-toast";
+import {useToast} from "@/components/ui/use-toast";
 
 const useShowToast = () => {
-  const { toast } = useToast();
+  const {toast} = useToast();
   const showErrorToast = (description: string) => {
     toast({
       variant: "destructive",
@@ -17,7 +16,7 @@ const useShowToast = () => {
     });
   };
 
-  return { showErrorToast, showSuccessToast };
+  return {showErrorToast, showSuccessToast};
 };
 
 export default useShowToast;

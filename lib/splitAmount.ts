@@ -26,4 +26,4 @@ const splitByExactAmounts = (people, amounts) => {
   return newValue;
 };
 
-export { splitEqually };
+export {splitEqually};
