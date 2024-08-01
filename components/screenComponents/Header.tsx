@@ -20,7 +20,7 @@ const Header = () => {
   }, []);
 
   return (
-    <div className={cn("flex w-full justify-between px-16 py-4", !showHeader && "hidden")}>
+    <div className={cn("flex h-16 w-full justify-between px-16 py-4", !showHeader && "hidden")}>
       <div className="flex-1">
         <Link href="/">
           <Image src={"logo.svg"} height={24} width={96} alt="Split logo" />
