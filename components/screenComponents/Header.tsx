@@ -42,7 +42,7 @@ const Header = () => {
   };
 
   return (
-    <div className={cn("w-full flex justify-between px-16 py-4", !showHeader && "hidden")}>
+    <div className={cn("flex w-full justify-between px-16 py-4", !showHeader && "hidden")}>
       <div className="flex-1">
         <Link href="/">
           <Image src={"logo.svg"} height={24} width={96} alt="Split logo" />
@@ -59,7 +59,7 @@ const Header = () => {
                 <DropdownMenuTrigger>
                   <Image src="/guy1Profile.png" height={24} width={24} alt="Profile Photo" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="shadow-lg w-40" align="end">
+                <DropdownMenuContent className="w-40 shadow-lg" align="end">
                   <DropdownMenuItem className="cursor-pointer">Your Account</DropdownMenuItem>
                   <DropdownMenuItem className="cursor-pointer" onClick={onLogOut}>
                     Sign Out
@@ -68,10 +68,10 @@ const Header = () => {
               </DropdownMenu>
             </div>
           ) : (
-            <div className="w-full flex gap-8 items-center justify-end flex-1">
+            <div className="flex w-full flex-1 items-center justify-end gap-8">
               <Link
                 href="/login"
-                className="primaryFontSize font-semibold cursor-pointer hover:underline"
+                className="primaryFontSize cursor-pointer font-semibold hover:underline"
               >
                 Log In
               </Link>

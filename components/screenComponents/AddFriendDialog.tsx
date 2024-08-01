@@ -52,7 +52,7 @@ const AddFriendDialog = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-2xl py-4">Add friends </DialogTitle>
+          <DialogTitle className="py-4 text-2xl">Add friends </DialogTitle>
           <DialogDescription>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -62,8 +62,8 @@ const AddFriendDialog = () => {
                   placeholder="friendemail@email.com"
                 />
 
-                <div className="w-full flex justify-end pb-4 pt-12">
-                  <div className="w-1/2 flex gap-4">
+                <div className="flex w-full justify-end pb-4 pt-12">
+                  <div className="flex w-1/2 gap-4">
                     <DialogClose asChild>
                       <Button type="button" variant="outline" className="w-full font-bold">
                         Cancel

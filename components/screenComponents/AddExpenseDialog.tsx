@@ -115,16 +115,16 @@ const AddExpenseDialog = () => {
       <DialogTrigger>
         <Button>Add Expense</Button>
       </DialogTrigger>
-      <DialogContent className="!max-w-full w-3/4 h-11/12 block !space-y-0">
+      <DialogContent className="h-11/12 block w-3/4 !max-w-full !space-y-0">
         <DialogHeader className="py-4">
           <DialogTitle className="text-2xl">Add an expense</DialogTitle>
         </DialogHeader>
-        <div className="w-full lg:flex gap-8">
-          <div className="lg:w-[40%] flex-1 space-y-8 rounded-lg">
+        <div className="w-full gap-8 lg:flex">
+          <div className="flex-1 space-y-8 rounded-lg lg:w-[40%]">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="flex-1 w-full space-y-6"
+                className="w-full flex-1 space-y-6"
                 id="addExpenseForm"
               >
                 <FormField
@@ -182,7 +182,7 @@ const AddExpenseDialog = () => {
                               onChange={(event) => {
                                 setTotalAmount(event.target.value);
                               }}
-                              className="font-bold text-xl"
+                              className="text-xl font-bold"
                             />
                           </FormControl>
                         </div>
@@ -196,7 +196,7 @@ const AddExpenseDialog = () => {
           </div>
 
           <div className="flex-1 rounded-lg p-4">
-            <Tabs defaultValue="equally" className="w-full ">
+            <Tabs defaultValue="equally" className="w-full">
               <TabsList className="grid w-full grid-cols-4">
                 {shareOptions.map((option) => (
                   <TabsTrigger
@@ -209,7 +209,7 @@ const AddExpenseDialog = () => {
                 ))}
               </TabsList>
               <TabsContent value="equally">
-                <div className="w-full h-72 max-h-72 rounded-lg overflow-hidden">
+                <div className="h-72 max-h-72 w-full overflow-hidden rounded-lg">
                   <ExpenseTable
                     tableData={persons}
                     totalAmount={totalAmount}
@@ -222,7 +222,7 @@ const AddExpenseDialog = () => {
         </div>
 
         <DialogFooter>
-          <div className="w-full flex gap-8 justify-end pb-4 pt-12">
+          <div className="flex w-full justify-end gap-8 pb-4 pt-12">
             <div className="flex-1">
               <Popover>
                 <PopoverTrigger asChild>

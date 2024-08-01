@@ -10,7 +10,7 @@ interface PageProps {
 const DPage: React.FC<PageProps> = ({children, className}) => {
   return (
     <motion.div
-      className={cn("w-full h-svh flex flex-col items-center relative gap-8 pt-8", className)}
+      className={cn("relative flex h-svh w-full flex-col items-center gap-8 pt-8", className)}
       initial={{opacity: 0}}
       animate={{opacity: 1}}
       transition={{ease: "easeInOut", duration: 0.4}}

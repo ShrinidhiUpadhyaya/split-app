@@ -9,14 +9,14 @@ import Image from "next/image";
 const WelcomeScreen = () => {
   return (
     <DPage>
-      <div className="w-[35%] flex flex-col items-center">
+      <div className="flex w-[35%] flex-col items-center">
         <Image src="/welcome.jpg" width={240} height={240} objectFit="contain" alt="Split Logo" />
 
-        <p className="text-4xl font-bold mb-12 w-full text-center">Welcome to Split</p>
+        <p className="mb-12 w-full text-center text-4xl font-bold">Welcome to Split</p>
 
-        <p className="text-xl font-bold mb-4 w-full text-center">What would you like do?</p>
+        <p className="mb-4 w-full text-center text-xl font-bold">What would you like do?</p>
 
-        <div className="space-y-4 w-full">
+        <div className="w-full space-y-4">
           <DPrimaryButtonLink href="/signup" label="Create Group" className="w-full" />
 
           <Button variant="outline" className="w-full font-semibold">

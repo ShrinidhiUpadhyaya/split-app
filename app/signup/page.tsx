@@ -28,21 +28,21 @@ const SignUp = () => {
 
   return (
     <DPage>
-      <div className="top-0 right-0 flex w-full">
-        <div className="flex-1 flex justify-center items-end">
+      <div className="right-0 top-0 flex w-full">
+        <div className="flex flex-1 items-end justify-center">
           <Link href="/">
             <Image src="/logo.svg" width={150} height={150} alt="Split Logo" />
           </Link>
         </div>
 
-        <div className="flex flex-col absolute right-0 py-2 px-8 text-sm">
+        <div className="absolute right-0 flex flex-col px-8 py-2 text-sm">
           <p className="text-[#616061]"> Have a account?</p>
           <DTextLink label="Log In" href="/login" />
         </div>
       </div>
 
       <div className="w-[35%] space-y-12">
-        <p className="text-4xl font-bold mb-8 w-full text-center">Create your Split account</p>
+        <p className="mb-8 w-full text-center text-4xl font-bold">Create your Split account</p>
 
         <DGoogleButton label="Continue with Google" className="w-full" onSignIn={sendSignUpReq} />
 

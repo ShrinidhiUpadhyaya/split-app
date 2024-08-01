@@ -38,7 +38,7 @@ const DPaidByCombobox: React.FC<ComboboxProps> = ({persons, onValueChange}) => {
   }, [userId]);
 
   return (
-    <div className="w-full flex items-center space-x-4">
+    <div className="flex w-full items-center space-x-4">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button

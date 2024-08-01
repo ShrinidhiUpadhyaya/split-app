@@ -25,26 +25,26 @@ const Friends = ({}) => {
   }, [user]);
 
   return (
-    <div className="w-full h-full px-8 space-y-8">
+    <div className="h-full w-full space-y-8 px-8">
       <div className="flex justify-center py-16">
         {friends.length < 1 ? (
-          <div className="w-[50%] flex flex-col justify-center gap-8 text-center">
-            <p className="text-4xl font-bold mb-8 w-full">You have not added any friends yet</p>
+          <div className="flex w-[50%] flex-col justify-center gap-8 text-center">
+            <p className="mb-8 w-full text-4xl font-bold">You have not added any friends yet</p>
 
             <AddFriendDialog />
           </div>
         ) : (
           <div className="w-full space-y-8">
-            <div className="w-full flex">
+            <div className="flex w-full">
               <AddFriendDialog />
 
-              <div className="flex-1 flex justify-end gap-4">
+              <div className="flex flex-1 justify-end gap-4">
                 <AddExpenseDialog />
                 <Button variant="secondary">Settle Up</Button>
               </div>
             </div>
 
-            <div className="w-full h-full">
+            <div className="h-full w-full">
               {friends.map((friend) => (
                 <FriendCard key={friend?.email} friend={friend} />
               ))}

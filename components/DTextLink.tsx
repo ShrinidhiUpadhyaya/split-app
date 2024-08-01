@@ -10,7 +10,7 @@ interface TextLinkProps {
 
 const DTextLink: React.FC<TextLinkProps> = ({label, href = "/", className}) => {
   return (
-    <Link href={href} className={cn("primaryColorFont text-sm font-semibold block", className)}>
+    <Link href={href} className={cn("primaryColorFont block text-sm font-semibold", className)}>
       {label}
     </Link>
   );

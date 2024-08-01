@@ -21,7 +21,7 @@ const DGoogleButton: React.FC<ButtonProps> = ({label = "Label", className, onSig
   return (
     <div>
       <Button className={cn("font-semibold", className)} variant="outline" onClick={onSubmit}>
-        <div className="w-full h-full flex items-center justify-center gap-4">
+        <div className="flex h-full w-full items-center justify-center gap-4">
           <Image src={"/google.png"} height={24} width={24} alt={label} />
           {label}
         </div>
