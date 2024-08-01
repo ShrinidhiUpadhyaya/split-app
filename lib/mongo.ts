@@ -4,7 +4,6 @@ const connectToDB = async () => {
   try {
     await mongoose.connect(process.env.NEXT_PUBLIC_DB_URI, {
       dbName: process.env.NEXT_PUBLIC_DB_NAME,
-      useNewUrlParser: true,
       useUnifiedTopology: true,
     });
     console.log("Connected to DB");

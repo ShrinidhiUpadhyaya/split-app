@@ -30,7 +30,7 @@ const AddFriendDialog = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await fetch("http://localhost:3001/add-friend", {
+      const response = await fetch("/api/add-friend", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
