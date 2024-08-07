@@ -4,15 +4,15 @@ import Link from "next/link";
 import React from "react";
 
 interface ButtonProps {
-  label?: string;
   href?: string;
   disabled?: boolean;
+  children?: React.ReactNode;
   className?: string;
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
 const DPrimaryButtonLink: React.FC<ButtonProps> = ({
-  label,
+  children,
   href = "",
   disabled,
   className,
@@ -29,7 +29,7 @@ const DPrimaryButtonLink: React.FC<ButtonProps> = ({
       )}
       onClick={onClick}
     >
-      {label}
+      {children}
     </Link>
   );
 };

@@ -81,7 +81,7 @@ const FriendCard: React.FC<FriendCardProps> = ({friend, status = -1, className})
                 )}
               </div>
 
-              <DTextLink label="more..." className="text-lg" />
+              <DTextLink className="text-lg">more...</DTextLink>
             </div>
           </div>
         </CardFooter>

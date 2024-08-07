@@ -17,13 +17,13 @@ const WelcomeScreen = () => {
         <p className="mb-4 w-full text-center text-xl font-bold">What would you like do?</p>
 
         <div className="w-full space-y-4">
-          <DPrimaryButtonLink href="/signup" label="Create Group" className="w-full" />
+          <DPrimaryButtonLink href="/signup">Create Group</DPrimaryButtonLink>
 
           <Button variant="outline" className="w-full font-semibold">
             Invite friends
           </Button>
 
-          <DTextLink href="/login" label="Skip for now" />
+          <DTextLink href="/login">Skip for now</DTextLink>
         </div>
       </div>
     </DPage>

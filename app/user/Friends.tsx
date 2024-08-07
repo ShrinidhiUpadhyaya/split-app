@@ -15,15 +15,14 @@ const Friends = ({}) => {
     async function fetchFriends() {
       try {
         const response = await fetchFriendsData(user?._id);
-        if (!response) throw Error;
-        setFriends(response);
+        if (response) setFriends(response);
       } catch (err) {
         console.log("Error fetching friends data", err);
       }
     }
 
-    fetchFriends();
-  }, [user]);
+    if (user?._id) fetchFriends();
+  }, [user?._id]);
 
   return (
     <div className="h-full w-full space-y-8 px-8">

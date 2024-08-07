@@ -7,6 +7,7 @@ import {usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
 
 import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
+import DTextLink from "../DTextLink";
 
 const headerRoutes = ["/"];
 
@@ -29,14 +30,13 @@ const Header = () => {
 
       {isMounted && (
         <div className="flex w-full flex-1 items-center justify-end gap-8">
-          <Link
-            href="/login"
-            className="primaryFontSize cursor-pointer font-semibold hover:underline"
-          >
+          <DTextLink href="/login" className="text-base">
             Log In
-          </Link>
+          </DTextLink>
 
-          <DPrimaryButtonLink href="/signup" label="Sign Up" className="w-min" />
+          <DPrimaryButtonLink href="/signup" className="w-min">
+            Sign Up
+          </DPrimaryButtonLink>
         </div>
       )}
     </div>

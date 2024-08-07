@@ -37,7 +37,7 @@ const SignUp = () => {
 
         <div className="absolute right-0 flex flex-col px-8 py-2 text-sm">
           <p className="text-[#616061]"> Have a account?</p>
-          <DTextLink label="Log In" href="/login" />
+          <DTextLink href="/login">Log In</DTextLink>
         </div>
       </div>
 

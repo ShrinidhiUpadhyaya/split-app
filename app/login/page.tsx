@@ -42,7 +42,7 @@ const Login = () => {
 
         <div className="absolute right-0 flex flex-col px-8 py-2 text-sm">
           <p className="text-[#616061]"> New to Split?</p>
-          <DTextLink label="Create Account" href="/signup" />
+          <DTextLink href="/signup">Create Account</DTextLink>
         </div>
       </div>
 

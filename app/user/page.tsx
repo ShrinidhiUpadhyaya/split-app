@@ -86,12 +86,12 @@ const User: React.FC<SideNavNarProps> = ({className}) => {
         defaultValue="dashboard"
         className={cn("h-svh w-full flex-1 py-8 md:flex md:gap-12", className)}
       >
-        <TabsList className="flex h-full min-w-[360px] max-w-[360px] items-start justify-start gap-8 px-4 md:w-[25%] md:flex-col">
+        <TabsList className="flex h-full min-w-[240px] max-w-[240px] items-start justify-start gap-8 px-4 md:w-[25%] md:flex-col">
           {sideNavBarOptions.map((option) => (
             <TabsTrigger
               key={option.value}
               value={option.value}
-              className="flex h-11 w-full justify-center gap-4 rounded-md p-8 text-base font-bold md:justify-start"
+              className="flex h-11 w-full justify-center gap-4 rounded-md py-6 text-base font-bold md:justify-start"
             >
               <span>{option.icon}</span>
               <span className="hidden sm:flex">{option.label}</span>

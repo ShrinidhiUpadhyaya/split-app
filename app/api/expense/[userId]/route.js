@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import Expense from "../../../models/Expense";
 import Friend from "../../../models/Friend";
 
+const MAX_TRANSACTION = 2;
+
 export async function GET(req, {params}) {
   const {userId} = params;
 
@@ -68,7 +70,7 @@ export async function GET(req, {params}) {
     for (const friendId in result) {
       result[friendId].transactions = result[friendId].transactions
         .sort((a, b) => new Date(b.date) - new Date(a.date))
-        .slice(0, 2);
+        .slice(0, MAX_TRANSACTION);
     }
 
     for (const friendId in result) {
