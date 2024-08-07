@@ -4,8 +4,8 @@ import AddExpenseDialog from "@/components/screenComponents/AddExpenseDialog";
 import AddFriendDialog from "@/components/screenComponents/AddFriendDialog";
 import FriendCard from "@/components/screenComponents/FriendCard";
 import {Button} from "@/components/ui/button";
+import {fetchFriendsData} from "@/lib/expenseApi";
 import {useAppStore} from "@/store/zustand";
-import axios from "axios";
 import {useEffect} from "react";
 
 const Friends = ({}) => {
@@ -14,10 +14,11 @@ const Friends = ({}) => {
   useEffect(() => {
     async function fetchFriends() {
       try {
-        const response = await axios.get(`/api/friends/${user._id}`);
-        setFriends(response.data);
-      } catch (error) {
-        console.log("Fetch friends Error", error);
+        const response = await fetchFriendsData(user?._id);
+        if (!response) throw Error;
+        setFriends(response);
+      } catch (err) {
+        console.log("Error fetching friends data", err);
       }
     }
 
@@ -44,7 +45,7 @@ const Friends = ({}) => {
               </div>
             </div>
 
-            <div className="h-full w-full">
+            <div className="flex h-full w-full gap-8">
               {friends.map((friend) => (
                 <FriendCard key={friend?.email} friend={friend} />
               ))}

@@ -31,6 +31,7 @@ import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {Input} from "../ui/input";
 
+import {addExpense} from "@/lib/expenseApi";
 import ExpenseTable from "./ExpenseTable";
 import PaidByCombobox from "./PaidByCombobox";
 
@@ -93,21 +94,30 @@ const AddExpenseDialog = () => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     setFormValues(values);
+    compueBackendValues();
   };
 
-  const compueBackendValues = useCallback(() => {
+  const compueBackendValues = useCallback(async () => {
     const checkNullAmount = backendData.filter((value) => value.amount != 0);
-    const newValues = checkNullAmount?.map((value) => ({_id: value._id}));
+    const newValues = checkNullAmount?.map((value) => ({
+      _id: value._id,
+      shareType: "equal",
+      percentage: 0,
+      shares: 0,
+      amount: value?.amount,
+      name: value?.name,
+      email: value?.email,
+    }));
 
-    const backendSchema = {
+    const apiSchemaValues = {
       description: formValues?.description,
       amount: totalAmount,
       date: Date.now,
       paidBy: formValues?.paidBy,
-      sharedWith: [{...newValues}],
+      sharedWith: newValues,
     };
 
-    console.log("Backend Schema Data", backendSchema);
+    const response = await addExpense(apiSchemaValues);
   }, [formValues]);
 
   return (

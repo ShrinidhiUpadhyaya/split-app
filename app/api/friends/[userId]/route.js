@@ -1,7 +1,4 @@
-import {connectToDB} from "@/lib/mongo";
 import Friend from "../../../models/Friend";
-
-connectToDB();
 
 export async function GET(req, {params}) {
   const {userId} = params;
@@ -29,6 +26,7 @@ export async function GET(req, {params}) {
 
     return new Response(JSON.stringify(friends), {status: 200});
   } catch (error) {
+    console.log("Get friends error", error);
     return new Response(JSON.stringify({error: error.message}), {
       status: 500,
     });
