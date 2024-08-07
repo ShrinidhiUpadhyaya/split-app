@@ -5,6 +5,7 @@ import {NextRequest, NextResponse} from "next/server";
 import User from "../../../models/User";
 
 const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET;
+connectToDB();
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -16,8 +17,6 @@ export async function POST(req: NextRequest) {
   try {
     const decodedToken = await admin.auth().verifyIdToken(token);
     const {uid, email, name, picture} = decodedToken;
-
-    await connectToDB();
 
     const existingUser = await User.findOne({uid});
 

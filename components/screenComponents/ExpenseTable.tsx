@@ -146,8 +146,8 @@ const ExpenseTable: React.FC<TableProps> = ({tableData, totalAmount, onValueChan
   return (
     <div className="h-full w-full">
       <div className="rounded-md border">
-        <Table className="h-full w-full">
-          <TableHeader className="">
+        <Table>
+          <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -162,7 +162,7 @@ const ExpenseTable: React.FC<TableProps> = ({tableData, totalAmount, onValueChan
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody className="block max-h-56 !max-w-full overflow-y-scroll">
+          <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow

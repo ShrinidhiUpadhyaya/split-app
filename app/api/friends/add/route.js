@@ -1,6 +1,7 @@
 import {connectToDB} from "@/lib/mongo";
 import Friend from "../../../models/Friend";
 import User from "../../../models/User";
+
 connectToDB();
 
 export async function POST(req) {

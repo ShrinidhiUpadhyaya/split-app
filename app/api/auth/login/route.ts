@@ -4,6 +4,7 @@ import {NextRequest, NextResponse} from "next/server";
 import User from "../../../models/User";
 
 const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET;
+connectToDB();
 
 export async function POST(req: NextRequest) {
   try {
@@ -15,8 +16,6 @@ export async function POST(req: NextRequest) {
     if (!uid) {
       return NextResponse.json({error: "UID is required"}, {status: 400});
     }
-
-    await connectToDB();
 
     const existingUser = await User.findOne({uid});
 
