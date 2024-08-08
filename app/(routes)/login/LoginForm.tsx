@@ -1,13 +1,13 @@
 "use client";
 
+import DFormFieldComponent from "@/components/DFormFieldComponent";
+import {Button} from "@/components/ui/button";
 import {Form} from "@/components/ui/form";
-import {manualSignIn} from "@/firebase/utils";
+import {manualSignIn} from "@/lib/firebase/utils";
 import {zodResolver} from "@hookform/resolvers/zod";
 import React from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-import DFormFieldComponent from "../../components/DFormFieldComponent";
-import {Button} from "../../components/ui/button";
 
 interface LoginFormProps {
   onSignIn?: (user: Object | null | undefined) => void;
