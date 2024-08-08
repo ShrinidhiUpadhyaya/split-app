@@ -12,6 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {
   Select,
@@ -29,7 +30,6 @@ import {CalendarIcon} from "lucide-react";
 import {useCallback, useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-import {Input} from "../ui/input";
 
 import ExpenseTable from "./ExpenseTable";
 import PaidByCombobox from "./PaidByCombobox";

@@ -1,7 +1,4 @@
 "use client";
-import Dashboard from "@/app/user/Dashboard";
-import Friends from "@/app/user/Friends";
-import Groups from "@/app/user/Groups";
 import useShowToast from "@/components/DToast";
 import {
   DropdownMenu,
@@ -18,6 +15,9 @@ import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import React from "react";
+import Dashboard from "./Dashboard";
+import Friends from "./Friends";
+import Groups from "./Groups";
 
 interface SideNavNarProps {
   className?: string;

@@ -1,9 +1,9 @@
 "use client";
 
+import {signInWithGoogle} from "@/lib/firebase/utils";
 import {cn} from "@/lib/utils";
 import Image from "next/image";
 import React from "react";
-import {signInWithGoogle} from "../firebase/utils";
 import {Button} from "./ui/button";
 
 interface ButtonProps {
