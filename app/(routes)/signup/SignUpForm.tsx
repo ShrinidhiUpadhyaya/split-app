@@ -1,13 +1,13 @@
 "use client";
 
+import DFormFieldComponent from "@/components/DFormFieldComponent";
+import {Button} from "@/components/ui/button";
 import {Form} from "@/components/ui/form";
-import {createUserWithEmail} from "@/firebase/utils";
+import {createUserWithEmail} from "@/lib/firebase/utils";
 import {zodResolver} from "@hookform/resolvers/zod";
 import React from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-import DFormFieldComponent from "../../components/DFormFieldComponent";
-import {Button} from "../../components/ui/button";
 
 interface SignUpFormProps {
   onSignUp?: (uid: String | null | undefined) => void;

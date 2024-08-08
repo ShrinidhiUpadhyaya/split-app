@@ -8,13 +8,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+import DFormFieldComponent from "@/components/DFormFieldComponent";
 import {Button} from "@/components/ui/button";
 import {Form} from "@/components/ui/form";
 import {useAppStore} from "@/store/zustand";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-import DFormFieldComponent from "../DFormFieldComponent";
 
 const formSchema = z.object({
   email: z.string().min(6).max(50).email(),
