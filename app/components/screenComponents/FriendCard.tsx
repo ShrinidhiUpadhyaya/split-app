@@ -40,9 +40,9 @@ const FriendCard: React.FC<FriendCardProps> = ({friend, status = -1, className})
                 <span>{friend?.owedBy != 0 ? "You owe" : "You are owed"}</span>
                 <span className="text-4xl font-semibold">
                   {friend?.owedBy != 0 ? (
-                    <span className="text-[#E01563]">$ {friend.owedBy}</span>
+                    <span className="text-[#E01563]">$ {friend.owedBy.toFixed(2)}</span>
                   ) : (
-                    <span className="text-[#3EB991]">$ {friend.owes}</span>
+                    <span className="text-[#3EB991]">$ {friend.owes.toFixed(2)}</span>
                   )}
                 </span>
               </div>
@@ -53,9 +53,9 @@ const FriendCard: React.FC<FriendCardProps> = ({friend, status = -1, className})
                   <div className="flex justify-between" key={transaction.description}>
                     <span className="text-[#64748b]">{transaction.description}</span>
                     {transaction.type == "owes" ? (
-                      <span className="text-[#3EB991]">$ {transaction.amount}</span>
+                      <span className="text-[#3EB991]">$ {transaction.amount.toFixed(2)}</span>
                     ) : (
-                      <span className="text-[#E01563]">$ {transaction.amount}</span>
+                      <span className="text-[#E01563]">$ {transaction.amount.toFixed(2)}</span>
                     )}
                   </div>
                 ))}

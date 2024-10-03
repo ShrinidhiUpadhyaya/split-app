@@ -10,14 +10,13 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {logOut} from "@/lib/authApi";
 import {cn} from "@/lib/utils";
 import {useAppStore} from "@/store/zustand";
-import {Group, Handshake, LayoutDashboard} from "lucide-react";
+import {Handshake, LayoutDashboard} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 import React from "react";
 import Dashboard from "./Dashboard";
 import Friends from "./Friends";
-import Groups from "./Groups";
 
 interface SideNavNarProps {
   className?: string;
@@ -28,12 +27,6 @@ const sideNavBarOptions = [
     label: "Dashboard",
     value: "dashboard",
     icon: <LayoutDashboard />,
-  },
-
-  {
-    label: "Groups",
-    value: "groups",
-    icon: <Group />,
   },
 
   {
@@ -100,9 +93,6 @@ const User: React.FC<SideNavNarProps> = ({className}) => {
         </TabsList>
         <TabsContent value="dashboard">
           <Dashboard />
-        </TabsContent>
-        <TabsContent value="groups">
-          <Groups />
         </TabsContent>
         <TabsContent value="friends" className="w-full">
           <Friends />
