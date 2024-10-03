@@ -5,7 +5,7 @@ import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {Button} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {splitEqually} from "@/lib/splitAmount";
+import {splitByPercentage, splitEqually} from "@/lib/splitAmount";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -19,12 +19,14 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {ArrowUpDown} from "lucide-react";
+import {Input} from "../ui/input";
 
 export type Payment = {
   _id: string;
   amount: number;
   email: string;
   name: string;
+  inputValue?: number;
 };
 
 export const columns: ColumnDef<Payment>[] = [
@@ -84,19 +86,52 @@ export const columns: ColumnDef<Payment>[] = [
 interface TableProps {
   tableData: Payment[];
   totalAmount: number;
+  type?: "equal" | "percentage" | "exact";
   onValueChange?: Function;
 }
 
-const ExpenseTable: React.FC<TableProps> = ({tableData, totalAmount, onValueChange = () => {}}) => {
+const ExpenseTable: React.FC<TableProps> = ({
+  tableData,
+  totalAmount,
+  type = "percentage",
+  onValueChange = () => {},
+}) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [data, setData] = useState<Payment[]>(tableData);
+  const [remainingPercentage, setRemainingPercentage] = useState(0);
+
+  const inputValueColumn: ColumnDef<Payment> = {
+    accessorKey: "percentage",
+    header: () => <div className="text-right">{type == "exact" && "Amount"}</div>,
+    cell: ({row}) => {
+      return (
+        <div className="flex items-center gap-2 text-right font-medium">
+          <Input
+            className="h-8 max-w-32"
+            disabled={!row.getIsSelected()}
+            value={row.getValue("percentage")}
+            onChange={(e) => handlePercentageChange(e, row.index)}
+          />
+          %
+        </div>
+      );
+    },
+  };
+
+  const allColumns = useMemo(() => {
+    const baseColumns = [...columns.slice(0, 2)];
+    if (type === "equal") return columns;
+    const extraColumns =
+      type === "exact" ? [inputValueColumn] : [inputValueColumn, ...columns.slice(2)];
+    return [...baseColumns, ...extraColumns];
+  }, [type]);
 
   const table = useReactTable({
     data,
-    columns,
+    columns: allColumns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -113,17 +148,19 @@ const ExpenseTable: React.FC<TableProps> = ({tableData, totalAmount, onValueChan
     },
   });
 
-  const getSelectedRows = () => {
-    return table.getSelectedRowModel().rows.map((row) => row.original);
-  };
-
-  const selectedRows = useMemo(() => getSelectedRows(), [rowSelection]);
+  const selectedRows = useMemo(
+    () => table.getSelectedRowModel().rows.map((row) => row.original),
+    [rowSelection],
+  );
 
   const newValues = useMemo(() => {
-    return selectedRows.length > 0
-      ? splitEqually(selectedRows, totalAmount)
-      : data.map((value) => ({...value, amount: 0}));
-  }, [selectedRows]);
+    if (!selectedRows.length) {
+      return data.map((value) => ({...value, amount: 0}));
+    }
+
+    const splitFunction = type === "equal" ? splitEqually : splitByPercentage;
+    return splitFunction(selectedRows, totalAmount);
+  }, [selectedRows, totalAmount, type]);
 
   const mergeValues = useCallback(() => {
     return data.map((dataObj) => {
@@ -134,9 +171,29 @@ const ExpenseTable: React.FC<TableProps> = ({tableData, totalAmount, onValueChan
     });
   }, [newValues]);
 
+  function calculateTotalPercentage(data) {
+    return data.reduce((total, item) => {
+      const percentage = Number(item.percentage) || 0;
+      return total + percentage;
+    }, 0);
+  }
+
+  const handlePercentageChange = (e, rowIndex) => {
+    const value = e.target.value;
+    let percentageValue = parseFloat(value);
+    percentageValue = isNaN(percentageValue) ? 0 : percentageValue;
+
+    const updatedData = data;
+    updatedData[rowIndex].percentage = percentageValue;
+
+    const splitValues = splitByPercentage(updatedData, totalAmount);
+    const totalPercentage = calculateTotalPercentage(updatedData);
+    setData(splitValues);
+    setRemainingPercentage(100 - totalPercentage);
+  };
+
   useEffect(() => {
-    const mergedValues = mergeValues();
-    setData(mergedValues);
+    setData(mergeValues);
   }, [mergeValues]);
 
   useEffect(() => {
@@ -183,6 +240,9 @@ const ExpenseTable: React.FC<TableProps> = ({tableData, totalAmount, onValueChan
                   No results.
                 </TableCell>
               </TableRow>
+            )}
+            {type === "percentage" && (
+              <h1 className="text-2xl font-bold text-[#E01563]">{remainingPercentage}</h1>
             )}
           </TableBody>
         </Table>

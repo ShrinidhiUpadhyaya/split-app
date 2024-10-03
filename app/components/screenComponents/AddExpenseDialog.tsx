@@ -27,7 +27,7 @@ import {useAppStore} from "@/store/zustand";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {format} from "date-fns";
 import {CalendarIcon} from "lucide-react";
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 
@@ -38,22 +38,16 @@ import PaidByCombobox from "./PaidByCombobox";
 const shareOptions = [
   {
     label: "Equally",
-    value: "equally",
+    value: "equal",
   },
 
   {
-    label: "Perctanges",
-    value: "perctanges",
+    label: "Percentages",
+    value: "percentage",
   },
-
-  {
-    label: "Shares",
-    value: "shares",
-  },
-
   {
     label: "Exact Amounts",
-    value: "exact Amounts",
+    value: "exact",
   },
 ];
 
@@ -74,6 +68,7 @@ const AddExpenseDialog = () => {
   const [date, setDate] = useState<Date>(new Date());
   const [formValues, setFormValues] = useState();
   const [backendData, setBackendData] = useState([]);
+  const [currentType, setCurrentType] = useState("equal");
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -81,12 +76,18 @@ const AddExpenseDialog = () => {
 
   useEffect(() => {
     const userWithAmount = friends.map((friend) => {
-      return {...friend, amount: 0};
+      return {
+        _id: friend._id,
+        email: friend.email,
+        name: friend.name,
+        amount: 0,
+        percentage: 0,
+      };
     });
 
     const updatedValue = [
       ...userWithAmount,
-      {_id: user?._id, amount: 0, name: "You", email: user?.email},
+      {_id: user?._id, amount: 0, name: "You", email: user?.email, percentage: 0},
     ];
 
     setPerson(updatedValue);
@@ -94,16 +95,15 @@ const AddExpenseDialog = () => {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     setFormValues(values);
-    compueBackendValues();
+    computeBackendValues();
   };
 
-  const compueBackendValues = useCallback(async () => {
+  const computeBackendValues = async () => {
     const checkNullAmount = backendData.filter((value) => value.amount != 0);
     const newValues = checkNullAmount?.map((value) => ({
       _id: value._id,
-      shareType: "equal",
-      percentage: 0,
-      shares: 0,
+      shareType: currentType,
+      percentage: value?.percentage,
       amount: value?.amount,
       name: value?.name,
       email: value?.email,
@@ -118,7 +118,7 @@ const AddExpenseDialog = () => {
     };
 
     const response = await addExpense(apiSchemaValues);
-  }, [formValues]);
+  };
 
   return (
     <Dialog>
@@ -206,8 +206,8 @@ const AddExpenseDialog = () => {
           </div>
 
           <div className="w-full flex-1 rounded-lg border border-[red]">
-            <Tabs defaultValue="equally" className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
+            <Tabs defaultValue="equal" className="w-full" onValueChange={setCurrentType}>
+              <TabsList className="grid w-full grid-cols-3">
                 {shareOptions.map((option) => (
                   <TabsTrigger
                     key={option.value}
@@ -218,15 +218,20 @@ const AddExpenseDialog = () => {
                   </TabsTrigger>
                 ))}
               </TabsList>
-              <TabsContent value="equally">
-                <div className="h-72 max-h-72 w-full overflow-hidden rounded-lg">
-                  <ExpenseTable
-                    tableData={persons}
-                    totalAmount={totalAmount}
-                    onValueChange={setBackendData}
-                  />
-                </div>
-              </TabsContent>
+              {shareOptions.map((option) => (
+                <TabsContent key={option.value} value={option.value}>
+                  <div className="h-72 max-h-72 w-full overflow-hidden rounded-lg">
+                    <ExpenseTable
+                      tableData={persons}
+                      totalAmount={totalAmount}
+                      onValueChange={(data) => {
+                        setBackendData(data);
+                      }}
+                      type={option.value}
+                    />
+                  </div>
+                </TabsContent>
+              ))}
             </Tabs>
           </div>
         </div>

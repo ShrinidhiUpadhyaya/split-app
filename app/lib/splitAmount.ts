@@ -8,10 +8,10 @@ const splitEqually = (people, totalAmount) => {
   return newValues;
 };
 
-const splitByPercentage = (people, totalAmount, percentages) => {
-  const newValues = people.map((person, index) => ({
+const splitByPercentage = (people, totalAmount) => {
+  const newValues = people.map((person) => ({
     ...person,
-    amount: totalAmount * (percentages[index] / 100),
+    amount: totalAmount * (person.percentage / 100),
   }));
 
   return newValues;
@@ -26,4 +26,4 @@ const splitByExactAmounts = (people, amounts) => {
   return newValue;
 };
 
-export {splitEqually};
+export {splitByExactAmounts, splitByPercentage, splitEqually};
