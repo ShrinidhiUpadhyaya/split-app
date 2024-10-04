@@ -47,4 +47,14 @@ async function addExpense(values) {
   }
 }
 
-export {addExpense, fetchFriendsData};
+async function fetchAllExpenses(userId) {
+  try {
+    const response = await axios.get(`/api/expense/all/${userId}`);
+    return response;
+  } catch (error) {
+    console.log("Add Expense Error", error);
+    return;
+  }
+}
+
+export {addExpense, fetchAllExpenses, fetchFriendsData};

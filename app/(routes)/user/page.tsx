@@ -91,7 +91,7 @@ const User: React.FC<SideNavNarProps> = ({className}) => {
             </TabsTrigger>
           ))}
         </TabsList>
-        <TabsContent value="dashboard">
+        <TabsContent value="dashboard" className="w-full">
           <Dashboard />
         </TabsContent>
         <TabsContent value="friends" className="w-full">
