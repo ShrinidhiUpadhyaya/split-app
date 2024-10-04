@@ -4,26 +4,12 @@ import AddExpenseDialog from "@/components/screenComponents/AddExpenseDialog";
 import AddFriendDialog from "@/components/screenComponents/AddFriendDialog";
 import FriendCard from "@/components/screenComponents/FriendCard";
 import {Button} from "@/components/ui/button";
-import {fetchFriendsData} from "@/lib/expenseApi";
+import useFetchFriends from "@/hooks/useFetchFriends";
 import {useAppStore} from "@/store/zustand";
-import {useEffect} from "react";
 
 const Friends = ({}) => {
-  const {user, friends, setFriends} = useAppStore();
-
-  useEffect(() => {
-    async function fetchFriends() {
-      try {
-        const response = await fetchFriendsData(user?._id);
-        if (!response) throw Error;
-        setFriends(response);
-      } catch (err) {
-        console.log("Error fetching friends data", err);
-      }
-    }
-
-    fetchFriends();
-  }, [user]);
+  const {user} = useAppStore();
+  const friends = useFetchFriends(user);
 
   return (
     <div className="h-full w-full space-y-8 px-8">

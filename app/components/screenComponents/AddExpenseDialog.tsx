@@ -130,7 +130,7 @@ const AddExpenseDialog = () => {
           <DialogTitle className="text-2xl">Add an expense</DialogTitle>
         </DialogHeader>
         <div className="w-full gap-8 lg:flex">
-          <div className="w-full space-y-8 rounded-lg border border-[red] lg:min-w-[320px] lg:max-w-[320px]">
+          <div className="w-full space-y-8 rounded-lg lg:min-w-[320px] lg:max-w-[320px]">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -205,7 +205,7 @@ const AddExpenseDialog = () => {
             </Form>
           </div>
 
-          <div className="w-full flex-1 rounded-lg border border-[red]">
+          <div className="w-full flex-1 rounded-lg">
             <Tabs defaultValue="equal" className="w-full" onValueChange={setCurrentType}>
               <TabsList className="grid w-full grid-cols-3">
                 {shareOptions.map((option) => (

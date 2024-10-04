@@ -14,7 +14,7 @@ async function fetchFriendsData(userId) {
 
 async function fetchFriendsExpenses(data, userId) {
   try {
-    const response = await axios.get(`/api/expense/${userId}`);
+    const response = await axios.get(`/api/expense/friendsExpense/${userId}`);
     const expenses = response.data;
     const matchedExpenses = [];
 

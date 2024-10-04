@@ -13,9 +13,9 @@ export async function GET(req, {params}) {
       {
         $match: {
           $or: [
-            {paidBy: mongoose.Types.ObjectId.createFromHexString(userId)},
+            {paidBy: new mongoose.Types.ObjectId(userId)},
             {paidBy: {$in: friends}},
-            {"sharedWith._id": mongoose.Types.ObjectId.createFromHexString(userId)},
+            {"sharedWith._id": new mongoose.Types.ObjectId(userId)},
             {"sharedWith._id": {$in: friends}},
           ],
         },
@@ -98,6 +98,7 @@ export async function GET(req, {params}) {
 }
 
 async function getFriends(userId) {
+  console.log("UserId", userId);
   try {
     const friendships = await Friend.find({
       $or: [{user_id: userId}, {friend_id: userId}],
