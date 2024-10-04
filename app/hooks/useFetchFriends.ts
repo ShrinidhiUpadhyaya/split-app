@@ -1,25 +1,35 @@
-import {fetchFriendsData} from "@/lib/expenseApi";
-import {useAppStore} from "@/store/zustand";
-import {useEffect} from "react";
+import {useQuery} from "@tanstack/react-query";
+import axios from "axios";
+import {useMemo} from "react";
 
-const useFetchFriends = (user) => {
-  const {friends, setFriends} = useAppStore();
+const useFetchFriends = (userId) => {
+  const {data: friendsData} = useQuery({
+    queryKey: ["friends"],
+    queryFn: () => axios.get(`/api/friends/${userId}`),
+  });
 
-  useEffect(() => {
-    async function fetchFriends() {
-      try {
-        const response = await fetchFriendsData(user?._id);
-        if (!response) throw Error;
-        setFriends(response);
-      } catch (err) {
-        console.log("Error fetching friends data", err);
-      }
+  const {
+    data: friendsExpensesData,
+    isPending,
+    isError,
+    isSuccess,
+  } = useQuery({
+    queryKey: ["friendsExpenses"],
+    queryFn: () => axios.get(`/api/expense/friendsExpense/${userId}`),
+    enabled: !!friendsData,
+  });
+
+  const friendTransactions = useMemo(() => {
+    if (friendsData && friendsExpensesData) {
+      return friendsData.data.map((friend) => ({
+        ...friend,
+        ...(friendsExpensesData.data[friend._id] || {}),
+      }));
     }
+    return [];
+  }, [friendsExpensesData]);
 
-    fetchFriends();
-  }, [user]);
-
-  return friends;
+  return {friendTransactions, isPending, isError, isSuccess};
 };
 
 export default useFetchFriends;
