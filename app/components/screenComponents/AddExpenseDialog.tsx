@@ -126,15 +126,15 @@ const AddExpenseDialog = () => {
         <Button>Add Expense</Button>
       </DialogTrigger>
       <DialogContent className="h-11/12 block w-3/4 !max-w-full !space-y-0">
-        <DialogHeader className="py-4">
+        <DialogHeader className="py-4 pb-8">
           <DialogTitle className="text-2xl">Add an expense</DialogTitle>
         </DialogHeader>
-        <div className="w-full gap-8 lg:flex">
-          <div className="w-full space-y-8 rounded-lg lg:min-w-[320px] lg:max-w-[320px]">
+        <div className="w-full space-y-16 lg:flex lg:gap-24 lg:space-y-0">
+          <div className="w-full rounded-lg lg:min-w-[360px] lg:max-w-[360px] lg:space-y-8">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="grid w-full flex-1 grid-cols-2 items-center justify-center gap-x-8 space-y-6 lg:block"
+                className="grid w-full grid-cols-2 items-center justify-center gap-8 gap-x-8 lg:block lg:flex-1 lg:space-y-6"
                 id="addExpenseForm"
               >
                 <FormField
@@ -206,21 +206,21 @@ const AddExpenseDialog = () => {
           </div>
 
           <div className="w-full flex-1 rounded-lg">
-            <Tabs defaultValue="equal" className="w-full" onValueChange={setCurrentType}>
-              <TabsList className="grid w-full grid-cols-3">
+            <Tabs defaultValue="equal" className="pt w-full" onValueChange={setCurrentType}>
+              <TabsList className="m-0 grid w-full grid-cols-3 p-0">
                 {shareOptions.map((option) => (
                   <TabsTrigger
                     key={option.value}
                     value={option.value}
-                    className="w-full gap-4 rounded-md"
+                    className="h-11 w-full gap-4 rounded-md"
                   >
                     <span className="hidden sm:flex">{option.label}</span>
                   </TabsTrigger>
                 ))}
               </TabsList>
               {shareOptions.map((option) => (
-                <TabsContent key={option.value} value={option.value}>
-                  <div className="h-72 max-h-72 w-full overflow-hidden rounded-lg">
+                <TabsContent key={option.value} value={option.value} className="mt-8">
+                  <div className="h-80 max-h-80 w-full overflow-hidden rounded-lg">
                     <ExpenseTable
                       tableData={persons}
                       totalAmount={totalAmount}

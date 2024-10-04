@@ -38,55 +38,53 @@ const DPaidByCombobox: React.FC<ComboboxProps> = ({persons, onValueChange}) => {
   }, [userId]);
 
   return (
-    <div className="flex w-full items-center space-x-4">
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            className="w-full justify-between"
-          >
-            {value == userId
-              ? "You"
-              : (persons.find((person) => person?._id === value)?.name ??
-                persons.find((person) => person?._id === value)?.email)}
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-full p-0">
-          <Command>
-            <CommandInput placeholder="Search framework..." />
-            <CommandEmpty>Person not found.</CommandEmpty>
-            <CommandList>
-              <CommandGroup>
-                {persons.map((person) => (
-                  <CommandItem
-                    key={person?._id}
-                    value={person?._id}
-                    onSelect={(currentValue) => {
-                      console.log(currentValue);
-                      if (currentValue !== value) {
-                        setValue(currentValue === value ? "" : currentValue);
-                        setOpen(false);
-                      }
-                    }}
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        value === person?._id ? "opacity-100" : "opacity-0",
-                      )}
-                    />
-                    {person?.name ? person.name : person.email}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            </CommandList>
-          </Command>
-        </PopoverContent>
-      </Popover>
-    </div>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-full justify-between"
+        >
+          {value == userId
+            ? "You"
+            : (persons.find((person) => person?._id === value)?.name ??
+              persons.find((person) => person?._id === value)?.email)}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-full p-0">
+        <Command>
+          <CommandInput placeholder="Search framework..." />
+          <CommandEmpty>Person not found.</CommandEmpty>
+          <CommandList>
+            <CommandGroup>
+              {persons.map((person) => (
+                <CommandItem
+                  key={person?._id}
+                  value={person?._id}
+                  onSelect={(currentValue) => {
+                    console.log(currentValue);
+                    if (currentValue !== value) {
+                      setValue(currentValue === value ? "" : currentValue);
+                      setOpen(false);
+                    }
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      value === person?._id ? "opacity-100" : "opacity-0",
+                    )}
+                  />
+                  {person?.name ? person.name : person.email}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 };
 

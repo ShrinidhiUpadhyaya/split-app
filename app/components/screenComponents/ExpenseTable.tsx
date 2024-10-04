@@ -18,6 +18,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import {clsx} from "clsx";
 import {ArrowUpDown} from "lucide-react";
 import {Input} from "../ui/input";
 
@@ -209,7 +210,7 @@ const ExpenseTable: React.FC<TableProps> = ({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="h-11">
                       {header.isPlaceholder
                         ? null
                         : flexRender(header.column.columnDef.header, header.getContext())}
@@ -241,8 +242,20 @@ const ExpenseTable: React.FC<TableProps> = ({
                 </TableCell>
               </TableRow>
             )}
+
             {type === "percentage" && (
-              <h1 className="text-2xl font-bold text-[#E01563]">{remainingPercentage}</h1>
+              <TableRow>
+                <TableCell colSpan={table.getAllColumns().length} className="p-0">
+                  <h1
+                    className={clsx(
+                      remainingPercentage !== 0 && "text-[#E01563]",
+                      "w-full p-4 text-right font-bold text-[#3EB991]",
+                    )}
+                  >
+                    {remainingPercentage}% Left
+                  </h1>
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>

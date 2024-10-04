@@ -1,12 +1,19 @@
+import {useAppStore} from "@/store/zustand";
 import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
-import {useMemo} from "react";
+import {useEffect, useMemo} from "react";
 
 const useFetchFriends = (userId) => {
+  const {setFriends} = useAppStore();
+
   const {data: friendsData} = useQuery({
     queryKey: ["friends"],
     queryFn: () => axios.get(`/api/friends/${userId}`),
   });
+
+  useEffect(() => {
+    if (friendsData) setFriends(friendsData.data);
+  }, [friendsData]);
 
   const {
     data: friendsExpensesData,
