@@ -7,8 +7,8 @@ const connectToDB = async () => {
       useUnifiedTopology: true,
     });
     console.log("Connected to DB");
-  } catch (err) {
-    console.error("DB connection error:", err);
+  } catch (error) {
+    console.error("DB connection error:", error);
     process.exit(1); // Exit process with failure
   }
 };
@@ -17,8 +17,8 @@ mongoose.connection.on("disconnected", () => {
   console.warn("MongoDB disconnected");
 });
 
-mongoose.connection.on("error", (err) => {
-  console.error("MongoDB error:", err);
+mongoose.connection.on("error", (error) => {
+  console.error("MongoDB error:", error);
 });
 
 export {connectToDB};

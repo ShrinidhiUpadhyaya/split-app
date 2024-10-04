@@ -15,43 +15,56 @@ const FriendCard: React.FC<FriendCardProps> = ({friend, status = -1, className})
   const [friendStatus, setFriendStatus] = useState<number>(status);
 
   return (
-    <div className={cn("w-full min-w-[240px] max-w-[320px]", className)}>
-      <Card className="w-full shadow-xl">
+    <div className={cn("w-full min-w-[240px] max-w-[360px]", className)}>
+      <Card className="flex h-[400px] w-full flex-col p-4 shadow-xl">
         <CardHeader className="p-4">
-          <CardTitle className="flex items-center gap-4 !text-3xl font-semibold">
+          <CardTitle className="flex items-center gap-4 font-semibold">
             <div className="flex items-center gap-2 overflow-hidden">
               <div className={cn("min-h-12 min-w-12 rounded-full bg-[white] shadow-sm")}></div>
-              <span className="flex-1 overflow-hidden text-ellipsis">
-                {friend?.name ? friend.name : friend.email}
+
+              <span className="overflow-hidden text-ellipsis whitespace-nowrap text-2xl">
+                {" "}
+                {friend?.name ? friend.name : friend.email}{" "}
               </span>
             </div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-4">
-          <div className="space-y-8">
-            <div className="flex items-end justify-between">
-              <span className="font-semibold">You Owe</span>
-              <span className="text-4xl font-semibold">$100</span>
-            </div>
-
-            <div>
-              <p>Transation History</p>
-              <div className="flex justify-between">
-                <span className="text-[#64748b]">Lidl</span>
-                <span className="text-[#E01563]">$10</span>
+        <CardContent className="flex-1 p-4">
+          {friend?.owedBy == 0 && friend?.owes == 0 ? (
+            <p className="flex h-full w-full items-center justify-center text-3xl font-semibold text-muted-foreground">
+              No Expenses
+            </p>
+          ) : (
+            <div className="space-y-8">
+              <div className="flex items-end justify-between">
+                <span>{friend?.owedBy != 0 ? "You owe" : "You are owed"}</span>
+                <span className="text-4xl font-semibold">
+                  {friend?.owedBy != 0 ? (
+                    <span className="text-[#E01563]">$ {friend.owedBy.toFixed(2)}</span>
+                  ) : (
+                    <span className="text-[#3EB991]">$ {friend.owes.toFixed(2)}</span>
+                  )}
+                </span>
               </div>
 
-              <div className="flex justify-between">
-                <span className="text-[#64748b]">Aldi</span>
-                <span className="text-[#E01563]">$200</span>
+              <div>
+                <p className="mb-2">Expenses History</p>
+                {friend?.transactions?.map((transaction) => (
+                  <div className="flex justify-between" key={transaction.description}>
+                    <span className="text-[#64748b]">{transaction.description}</span>
+                    {transaction.type == "owes" ? (
+                      <span className="text-[#3EB991]">$ {transaction.amount.toFixed(2)}</span>
+                    ) : (
+                      <span className="text-[#E01563]">$ {transaction.amount.toFixed(2)}</span>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-
-          <div></div>
+          )}
         </CardContent>
         <CardFooter className="flex justify-between">
-          <div className="w-full space-y-8 py-4">
+          <div className="w-full space-y-8">
             <Separator className="bg-[#64748b]" />
             <div className="flex w-full items-end gap-4">
               <div className="flex flex-1">

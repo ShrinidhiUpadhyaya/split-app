@@ -1,8 +1,5 @@
-import {connectToDB} from "@/lib/mongo";
 import Friend from "../../../models/Friend";
 import User from "../../../models/User";
-
-connectToDB();
 
 export async function POST(req) {
   const {user_id, friendEmail} = await req.json();
@@ -28,7 +25,7 @@ export async function POST(req) {
     const result = await newFriendship.save();
     return new Response(JSON.stringify(result), {status: 200});
   } catch (error) {
-    console.error("Error", error);
+    console.error("Add friends error", error);
     return new Response(JSON.stringify({error: error.message}), {
       status: 400,
     });
