@@ -1,20 +1,21 @@
+import {connectToDB} from "@/lib/mongo";
+connectToDB();
+
 import mongoose from "mongoose";
-import Expense from "../../../models/Expense";
-import Friend from "../../../models/Friend";
+import Expense from "../../../../models/Expense";
+import Friend from "../../../../models/Friend";
 
 export async function GET(req, {params}) {
   const {userId} = params;
-
   try {
     const friends = await getFriends(userId);
-    const ObjectId = mongoose.Types.ObjectId;
     const expenses = await Expense.aggregate([
       {
         $match: {
           $or: [
-            {paidBy: new ObjectId(userId)},
+            {paidBy: mongoose.Types.ObjectId.createFromHexString(userId)},
             {paidBy: {$in: friends}},
-            {"sharedWith._id": new ObjectId(userId)},
+            {"sharedWith._id": mongoose.Types.ObjectId.createFromHexString(userId)},
             {"sharedWith._id": {$in: friends}},
           ],
         },
@@ -109,7 +110,6 @@ async function getFriends(userId) {
         return friendship.user_id._id;
       }
     });
-
     return friends;
   } catch (error) {
     console.error("Error fetching friends:", error);
