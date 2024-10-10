@@ -5,6 +5,7 @@ import {Toaster} from "@/components/ui/toaster";
 import type {Metadata} from "next";
 import {Noto_Sans} from "next/font/google";
 import "./globals.css";
+import ReactQueryProvider from "./lib/ReactQueryProvider";
 
 const noto_sans = Noto_Sans({subsets: ["latin"]});
 
@@ -23,7 +24,7 @@ export default function RootLayout({
       <body className={noto_sans.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <Header />
-          {children}
+          <ReactQueryProvider>{children}</ReactQueryProvider>
           <Toaster />
         </ThemeProvider>
       </body>

@@ -25,10 +25,9 @@ const createUserWithEmail = async ({
 };
 
 const signInWithGoogle = async (): Promise<Object> => {
-  const result = await signInWithPopup(auth, provider);
-  const user = await result?.user;
+  const response = await signInWithPopup(auth, provider);
 
-  return user;
+  return response;
 };
 
 const manualSignIn = async ({email, password}: CreateUserWithEmailProps) => {

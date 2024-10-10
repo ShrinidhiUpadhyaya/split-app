@@ -33,7 +33,6 @@ const DPaidByCombobox: React.FC<ComboboxProps> = ({persons, onValueChange}) => {
   }, [value]);
 
   useEffect(() => {
-    console.log("Printing user id", userId);
     setValue(userId);
   }, [userId]);
 

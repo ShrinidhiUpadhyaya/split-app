@@ -3,14 +3,18 @@
 import DFormFieldComponent from "@/components/DFormFieldComponent";
 import {Button} from "@/components/ui/button";
 import {Form} from "@/components/ui/form";
+import {login} from "@/lib/authApi";
 import {manualSignIn} from "@/lib/firebase/utils";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {useMutation} from "@tanstack/react-query";
 import React from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 
 interface LoginFormProps {
-  onSignIn?: (user: Object | null | undefined) => void;
+  onLoading?: (loading: boolean) => void;
+  onSuccess?: (user: Object) => void;
+  onError?: (error: Error) => void;
 }
 
 const formSchema = z.object({
@@ -18,14 +22,42 @@ const formSchema = z.object({
   password: z.string().min(10).max(20),
 });
 
-const LoginForm: React.FC<LoginFormProps> = ({onSignIn}) => {
+const LoginForm: React.FC<LoginFormProps> = ({onLoading, onSuccess, onError}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
+  const mutation = useMutation({
+    mutationFn: async (values) => {
+      const user = await manualSignIn(values);
+      if (!user || !user.uid) {
+        throw new Error("User sign-in failed");
+      }
+      const data = await login(user?.uid);
+      if (!data) {
+        throw new Error("Login failed");
+      }
+      return data;
+    },
+    onSuccess: (data) => {
+      if (data) onSuccess?.(data);
+    },
+
+    onError: (error) => {
+      onError?.(error);
+    },
+
+    onMutate: () => {
+      onLoading?.(true);
+    },
+
+    onSettled: () => {
+      onLoading?.(false);
+    },
+  });
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const user = await manualSignIn(values);
-    onSignIn?.(user);
+    mutation.mutate(values);
   };
 
   return (
