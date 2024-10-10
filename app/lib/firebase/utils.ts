@@ -14,14 +14,16 @@ interface CreateUserWithEmailProps {
 
 const provider = new GoogleAuthProvider();
 
-const createUserWithEmail = async ({
-  email,
-  password,
-}: CreateUserWithEmailProps): Promise<Object> => {
-  const result = await createUserWithEmailAndPassword(auth, email, password);
-  const user = await result?.user;
+const createUserWithEmail = async ({email, password}: CreateUserWithEmailProps) => {
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    const user = await result?.user;
+    return user;
+  } catch (error) {
+    console.log("Firebase Manual Sign Up Error", error);
+  }
 
-  return user;
+  return;
 };
 
 const signInWithGoogle = async (): Promise<Object> => {
@@ -35,7 +37,7 @@ const manualSignIn = async ({email, password}: CreateUserWithEmailProps) => {
     const response = await signInWithEmailAndPassword(auth, email, password);
     return await response?.user;
   } catch (error) {
-    console.log("Firebase manual Sign In Error", error);
+    console.log("Firebase Manual Sign In Error", error);
   }
 
   return;

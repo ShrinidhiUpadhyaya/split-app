@@ -56,6 +56,7 @@ const Login = () => {
 
             <DGoogleButton
               label="Continue with Google"
+              type="LOGIN"
               className="w-full"
               onSuccess={handleSuccess}
               onError={handlError}
