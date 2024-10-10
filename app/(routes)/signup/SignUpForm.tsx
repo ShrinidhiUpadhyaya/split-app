@@ -3,14 +3,18 @@
 import DFormFieldComponent from "@/components/DFormFieldComponent";
 import {Button} from "@/components/ui/button";
 import {Form} from "@/components/ui/form";
+import {signUp} from "@/lib/authApi";
 import {createUserWithEmail} from "@/lib/firebase/utils";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {useMutation} from "@tanstack/react-query";
 import React from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 
 interface SignUpFormProps {
-  onSignUp?: (uid: String | null | undefined) => void;
+  onLoading?: (loading: boolean) => void;
+  onSuccess?: (user: Object) => void;
+  onError?: (error: Error) => void;
 }
 
 const formSchema = z
@@ -24,19 +28,49 @@ const formSchema = z
     path: ["repeatPassword"],
   });
 
-const SignUpForm: React.FC<SignUpFormProps> = ({onSignUp}) => {
+const SignUpForm: React.FC<SignUpFormProps> = ({onLoading, onSuccess, onError}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
+  const mutation = useMutation({
+    mutationFn: async (values) => {
       const createValues = {email: values.email, password: values.password};
       const user = await createUserWithEmail(createValues);
-      onSignUp?.(user);
-    } catch (error) {
-      console.log("Error", error);
-    }
+
+      if (!user) {
+        throw new Error("User Already Exists");
+      }
+
+      const token = await user.getIdToken();
+      const userData = await signUp(token);
+
+      if (!userData) {
+        throw new Error("Signup failed");
+      }
+
+      return userData;
+    },
+
+    onSuccess: (data) => {
+      if (data) onSuccess?.(data);
+    },
+
+    onError: (error) => {
+      onError?.(error);
+    },
+
+    onMutate: () => {
+      onLoading?.(true);
+    },
+
+    onSettled: () => {
+      onLoading?.(false);
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    mutation.mutate(values);
   };
 
   return (

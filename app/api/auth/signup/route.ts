@@ -1,4 +1,4 @@
-import admin from "@/firebase/admin";
+import admin from "@/lib/firebase/admin";
 import {connectToDB} from "@/lib/mongo";
 import jwt from "jsonwebtoken";
 import {NextRequest, NextResponse} from "next/server";

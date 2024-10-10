@@ -1,5 +1,6 @@
 "use client";
 
+import {login, signUp} from "@/lib/authApi";
 import {signInWithGoogle} from "@/lib/firebase/utils";
 import {cn} from "@/lib/utils";
 import Image from "next/image";
@@ -8,14 +9,39 @@ import {Button} from "./ui/button";
 
 interface ButtonProps {
   label?: string;
+  type: "LOGIN" | "SIGNUP";
   className?: string;
-  onSignIn?: Function;
+  onSuccess?: (user: Object) => void;
+  onError?: (error: Error) => void;
 }
 
-const DGoogleButton: React.FC<ButtonProps> = ({label = "Label", className, onSignIn}) => {
+const DGoogleButton: React.FC<ButtonProps> = ({
+  label = "Label",
+  type,
+  className,
+  onSuccess,
+  onError,
+}) => {
   const onSubmit = async () => {
-    const user = await signInWithGoogle();
-    onSignIn?.(user);
+    try {
+      const response = await signInWithGoogle();
+      if (!response) throw new Error("Google sign-in failed");
+
+      if (type === "LOGIN") {
+        const user = await login(response.user?.uid);
+        if (!user) throw new Error("Login failed");
+        onSuccess?.(user);
+        return;
+      }
+
+      const token = await response.user?.getIdToken();
+      const user = await signUp(token);
+      if (!user) throw new Error("SignUp failed");
+
+      onSuccess?.(user);
+    } catch (error) {
+      onError?.(error as Error);
+    }
   };
 
   return (
