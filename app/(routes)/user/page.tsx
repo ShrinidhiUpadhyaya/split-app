@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {logOut} from "@/lib/authApi";
+import {logOut} from "@/lib/api/authApi";
 import {cn} from "@/lib/utils";
 import {useAppStore} from "@/store/zustand";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";

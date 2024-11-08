@@ -1,6 +1,6 @@
 "use client";
 
-import {login, signUp} from "@/lib/authApi";
+import {login, signUp} from "@/lib/api/authApi";
 import {signInWithGoogle} from "@/lib/firebase/utils";
 import {cn} from "@/lib/utils";
 import Image from "next/image";

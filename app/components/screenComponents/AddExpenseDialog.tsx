@@ -31,7 +31,7 @@ import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 
-import {addExpense} from "@/lib/expenseApi";
+import {addExpense} from "@/lib/api/expenseApi";
 import ExpenseTable from "./ExpenseTable";
 import PaidByCombobox from "./PaidByCombobox";
 
