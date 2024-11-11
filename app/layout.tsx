@@ -2,6 +2,7 @@ import {ThemeProvider} from "@/components/theme-provider";
 
 import Header from "@/components/screenComponents/Header";
 import {Toaster} from "@/components/ui/toaster";
+import {ClerkProvider} from "@clerk/nextjs";
 import type {Metadata} from "next";
 import {Space_Grotesk} from "next/font/google";
 import "./globals.css";
@@ -23,9 +24,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={space_grostek.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <Header />
-          <ReactQueryProvider>{children}</ReactQueryProvider>
-          <Toaster />
+          <ClerkProvider>
+            <Header />
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+            <Toaster />
+          </ClerkProvider>
         </ThemeProvider>
       </body>
     </html>

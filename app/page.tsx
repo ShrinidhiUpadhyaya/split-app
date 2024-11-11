@@ -1,5 +1,6 @@
+import DSignInButton from "./components/homeScreen/DSignInButton";
+import DSignUpButton from "./components/homeScreen/DSignUpButton";
 import DTitleRowText from "./components/homeScreen/DTitleRowText";
-import {Button} from "./components/ui/button";
 
 const features = [
   {
@@ -23,6 +24,7 @@ const features = [
       "Stay on top of expenses and payments with helpful reminders and notifications. Never forget a balance and keep things clear, convenient, and on time.",
   },
 ];
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center">
@@ -34,10 +36,8 @@ export default function Home() {
             <h1 className="mb-4 text-center text-5xl font-semibold">
               Share the expenses, simplify the friendships.
             </h1>
-            <Button className="w-3/4 font-bold">Get Started</Button>
-            <Button className="primary-color-text w-3/4 border-2 font-bold" variant="outline">
-              I already have an account
-            </Button>
+            <DSignInButton />
+            <DSignUpButton />
           </div>
         </div>
 
