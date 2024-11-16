@@ -1,9 +1,9 @@
 "use client";
 
-import DPage from "@/_components/DPage";
-import DPrimaryButtonLink from "@/_components/DPrimaryButtonLink";
-import DTextLink from "@/_components/DTextLink";
-import {Button} from "@/_components/ui/button";
+import DPage from "@/components/DPage";
+import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
+import DTextLink from "@/components/DTextLink";
+import {Button} from "@/components/ui/button";
 import Image from "next/image";
 
 const WelcomeScreen = () => {
