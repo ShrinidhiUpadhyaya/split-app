@@ -1,19 +1,15 @@
 "use client";
 
-import {useClerk} from "@clerk/nextjs";
+import {SignUpButton} from "@clerk/nextjs";
 import {Button} from "../ui/button";
 
 const DSignUpButton = () => {
-  const clerk = useClerk();
-
   return (
-    <Button
-      className="primary-color-text w-3/4 border-2 font-bold"
-      variant="outline"
-      onClick={() => clerk.openSignIn()}
-    >
-      I already have an account
-    </Button>
+    <SignUpButton>
+      <Button className="primary-color-text w-3/4 border-2 font-bold" variant="outline">
+        I already have an account
+      </Button>
+    </SignUpButton>
   );
 };
 
