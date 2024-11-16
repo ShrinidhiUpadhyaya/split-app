@@ -1,16 +1,18 @@
+"use client";
+
 import DPage from "@/components/DPage";
-import useCreateUser from "@/hooks/useCreateUser";
+import useCreateUser from "@/hooks/use-create-user";
 import {redirect} from "next/navigation";
 import AvatarSelect from "./AvatarSelect";
 
 const WelcomeScreen = () => {
-  const user = useCreateUser();
+  const {isSuccess, user, newUser} = useCreateUser();
 
-  if (!user) {
+  if (isSuccess && !user) {
     redirect("/");
   }
 
-  if (!user?.newUser) {
+  if (isSuccess && !newUser) {
     redirect("/user");
   }
 
