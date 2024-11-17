@@ -21,7 +21,7 @@ const Header = () => {
     <div className={cn("flex w-full justify-center", !showHeader && "hidden")}>
       <div className="w-3/4 py-4">
         <Link href="/">
-          <Image src={"logo.svg"} height={24} width={96} alt="Split logo" />
+          <Image src="logo.svg" height={24} width={96} alt="Split logo" />
         </Link>
       </div>
     </div>

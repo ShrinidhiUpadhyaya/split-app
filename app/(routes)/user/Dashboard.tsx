@@ -1,42 +1,38 @@
-import TransactionTable from "@/components/screenComponents/TransactionTable";
-import {Separator} from "@/components/ui/separator";
 import {Skeleton} from "@/components/ui/skeleton";
-import useTransactions from "@/hooks/useTransactions";
-import {useAppStore} from "@/store/zustand";
-import {memo} from "react";
+import BalanceCard from "./dashboard/BalanceCard";
+import FriendRequestsCard from "./dashboard/FriendRequestsCard";
+import Header from "./dashboard/Header";
+import QuickActionsCard from "./dashboard/QuickActionsCard";
 
 const Dashboard = () => {
-  const {user} = useAppStore();
-  const {transactions, oweAmount, owedAmount, isPending, isError} = useTransactions(user?._id);
+  // const {user} = useAppStore();
+  // const {transactions, oweAmount, owedAmount, isPending, isError} = useTransactions(user?._id);
 
-  if (isPending) return <LoadingSkeleton />;
+  // if (isPending) return <LoadingSkeleton />;
 
-  if (isError) return <p className="mb-8 w-full text-4xl font-bold">Error Fetching Transactions</p>;
+  // if (isError) return <p className="mb-8 w-full text-4xl font-bold">Error Fetching Transactions</p>;
 
   return (
     <>
       <div className="h-full w-full space-y-8 px-16">
-        <div className="flex gap-32">
-          <div className="flex flex-1 items-end gap-4">
-            <span className="text-2xl">You are owed</span>
-            <span className="text-4xl font-semibold text-[#3EB991]">$ {owedAmount}</span>
-          </div>
+        <Header />
 
-          <div className="flex flex-1 items-end gap-4">
-            <span className="text-2xl">You owe</span>
-            <span className="text-4xl font-semibold text-[#E01563]">$ {oweAmount}</span>
-          </div>
+        <div className="flex gap-16">
+          <BalanceCard />
+          <QuickActionsCard />
         </div>
-        <Separator />
-        <div className="space-y-4">
+
+        <FriendRequestsCard />
+
+        {/* <div className="space-y-4">
           <TransactionTable transactions={transactions} />
-        </div>
+        </div> */}
       </div>
     </>
   );
 };
 
-const LoadingSkeleton = memo(() => (
+const LoadingSkeleton = () => (
   <div className="space-y-16 px-16">
     <div className="flex gap-32">
       {Array.from({length: 2}).map((_, index) => (
@@ -45,7 +41,7 @@ const LoadingSkeleton = memo(() => (
     </div>
     <Skeleton className="h-96 w-full" />
   </div>
-));
+);
 
 LoadingSkeleton.displayName = "LoadingSkeleton";
 

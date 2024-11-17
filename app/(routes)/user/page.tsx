@@ -1,20 +1,11 @@
 "use client";
-import useShowToast from "@/components/DToast";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {logOut} from "@/lib/api/authApi";
 import {cn} from "@/lib/utils";
-import {useAppStore} from "@/store/zustand";
+import {UserButton} from "@clerk/nextjs";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {Handshake, LayoutDashboard} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
 import React from "react";
 import Dashboard from "./Dashboard";
 import Friends from "./Friends";
@@ -47,43 +38,16 @@ const queryClient = new QueryClient({
 });
 
 const User: React.FC<SideNavNarProps> = ({className}) => {
-  const {user, clearAll} = useAppStore();
-  const router = useRouter();
-  const {showSuccessToast} = useShowToast();
-
-  const onLogOut = async () => {
-    try {
-      await logOut();
-      clearAll();
-      router.push("/");
-      showSuccessToast("You have successfully logged out.");
-    } catch (error) {
-      console.log("Logout error", error);
-    }
-  };
-
   return (
     <QueryClientProvider client={queryClient}>
       <>
         <div className="flex h-16 w-full items-center justify-between gap-4 px-8 pl-10">
           <Link href="/">
-            <Image src={"logo.svg"} height={24} width={96} alt="Split logo" />
+            <Image src="logo.svg" height={24} width={96} alt="Split logo" />
           </Link>
 
           <div className="flex flex-1 items-center justify-end gap-4 pr-8">
-            <p>{user?.name ?? user?.email}</p>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Image src="/guy1Profile.png" height={24} width={24} alt="Profile Photo" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-40 shadow-lg" align="end">
-                <DropdownMenuItem className="cursor-pointer">Your Account</DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer" onClick={onLogOut}>
-                  Sign Out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <UserButton />
           </div>
         </div>
         <Tabs
