@@ -3,6 +3,7 @@ import BalanceCard from "./dashboard/BalanceCard";
 import FriendRequestsCard from "./dashboard/FriendRequestsCard";
 import Header from "./dashboard/Header";
 import QuickActionsCard from "./dashboard/QuickActionsCard";
+import TransactionsCard from "./dashboard/TransactionsCard";
 
 const Dashboard = () => {
   // const {user} = useAppStore();
@@ -17,12 +18,15 @@ const Dashboard = () => {
       <div className="h-full w-full space-y-8 px-16">
         <Header />
 
-        <div className="flex gap-16">
+        <div className="flex gap-8">
           <BalanceCard />
           <QuickActionsCard />
         </div>
 
-        <FriendRequestsCard />
+        <div className="flex gap-8">
+          <TransactionsCard />
+          <FriendRequestsCard />
+        </div>
 
         {/* <div className="space-y-4">
           <TransactionTable transactions={transactions} />

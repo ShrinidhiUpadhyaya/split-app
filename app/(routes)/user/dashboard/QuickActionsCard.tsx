@@ -5,7 +5,7 @@ import DInfoCard from "./DInfoCard";
 
 const QuickActionsCard = () => {
   return (
-    <DInfoCard title="Quick Actions">
+    <DInfoCard title="Quick Actions" className="flex-0 w-2/6">
       <div className="flex flex-col space-y-4">
         <AddFriendDialog />
 

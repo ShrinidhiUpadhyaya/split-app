@@ -1,30 +1,52 @@
-import DIconTextButton from "@/components/DIconTextButton";
-import {Label} from "@radix-ui/react-label";
+import DAvatar from "@/components/DAvatar";
+import {Button} from "@/components/ui/button";
+import {Label} from "@/components/ui/label";
+import useFriendRequests from "@/hooks/use-friend-requests";
+import {calculateTimeDifference} from "@/lib/friend-request-time";
+import getAvatarType from "@/lib/get-avatar-type";
 import {Check, X} from "lucide-react";
+import {useEffect, useState} from "react";
 import DInfoCard from "./DInfoCard";
 
 const FriendRequestsCard = () => {
-  return (
-    <DInfoCard title="Requests">
-      <div className="flex items-center justify-between">
-        <Label htmlFor="name">Avatar</Label>
-        <Label htmlFor="name">Name</Label>
-        <Label htmlFor="name">Time</Label>
-        <div className="flex space-x-4">
-          <DIconTextButton
-            label="Accept"
-            className="bg-[#3EB991]"
-            size="sm"
-            icon={<Check className="h-5 w-5" />}
-          />
+  const {data} = useFriendRequests();
 
-          <DIconTextButton
-            label="Reject"
-            variant="destructive"
-            size="sm"
-            icon={<X className="h-5 w-5" />}
-          />
-        </div>
+  const [requests, setRequests] = useState([]);
+
+  useEffect(() => {
+    let requests = data?.data;
+    setRequests(requests);
+  }, [data]);
+
+  return (
+    <DInfoCard title="Requests" className="w-2/6">
+      <div className="flex items-center justify-between">
+        {requests?.map((user) => (
+          <div key={user.id} className="flex w-full items-center justify-between">
+            <div className="flex items-center gap-2">
+              <DAvatar src={getAvatarType(user?.request.avatar)} className="h-16 w-16" />
+
+              <div className="flex flex-col">
+                <Label htmlFor="name" className="text-xl">
+                  {user.request.name}
+                </Label>
+
+                <Label htmlFor="name" className="text-muted-foreground">
+                  {calculateTimeDifference(user.createdAt)}
+                </Label>
+              </div>
+            </div>
+
+            <div className="flex space-x-4">
+              <Button className="bg-[#3EB991]" size="sm">
+                <Check className="h-5 w-5" />
+              </Button>
+              <Button variant="destructive" size="sm">
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+        ))}
       </div>
     </DInfoCard>
   );

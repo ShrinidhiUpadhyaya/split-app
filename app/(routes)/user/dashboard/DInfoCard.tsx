@@ -4,11 +4,12 @@ import {Separator} from "@/components/ui/separator";
 interface DInfoCardProps {
   title: string;
   children: React.ReactNode;
+  className?: string;
 }
 
-const DInfoCard = ({title, children}: DInfoCardProps) => {
+const DInfoCard = ({title, className, children}: DInfoCardProps) => {
   return (
-    <Card className="flex-1">
+    <Card className={className}>
       <CardHeader className="space-y-4">
         <CardTitle>{title}</CardTitle>
         <Separator />

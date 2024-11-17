@@ -23,11 +23,35 @@ enum Avatar {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  userId    String   @unique
-  name      String
-  email     String   @unique
-  avatar    Avatar   @default(AVATAR1)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                     String       @id @default(cuid())
+  userId                 String       @unique
+  name                   String
+  email                  String       @unique
+  avatar                 Avatar       @default(AVATAR1)
+  createdAt              DateTime     @default(now())
+  updatedAt              DateTime     @updatedAt
+  sentFriendRequests     FriendShip[] @relation("RequestUser")
+  recievedFriendRequests FriendShip[] @relation("AcceptUser")
+}
+
+enum FriendShipStatus {
+  ACCEPTED
+  PENDING
+  BLOCKED
+  DECLINED
+}
+
+model FriendShip {
+  id          String           @id @default(cuid())
+  requesterId String
+  request     User             @relation("RequestUser", fields: [requesterId], references: [id])
+  accepterId  String
+  accept      User             @relation("AcceptUser", fields: [accepterId], references: [id])
+  status      FriendShipStatus @default(PENDING)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([requesterId, accepterId])
+  @@index([accepterId])
+  @@index([status])
 }
