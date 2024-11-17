@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Avatar {
+  AVATAR1
+  AVATAR2
+  AVATAR3
+  AVATAR4
+  AVATAR5
+  AVATAR6
+  AVATAR7
+  AVATAR8
+  AVATAR9
+  AVATAR10
+  AVATAR11
+  AVATAR12
+}
+
+model User {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  name      String
+  email     String   @unique
+  avatar    Avatar   @default(AVATAR1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

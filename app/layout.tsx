@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={space_grostek.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <ClerkProvider>
+          <ClerkProvider dynamic>
             <Header />
             <ReactQueryProvider>{children}</ReactQueryProvider>
             <Toaster />

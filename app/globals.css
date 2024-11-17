@@ -127,3 +127,7 @@
 .primary-color-text {
   @apply text-[#00BAF2];
 }
+
+.primary-color-border {
+  @apply border-[#00BAF2];
+}
