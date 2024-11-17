@@ -22,7 +22,7 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json({newProfile, newUser: true}, {status: 200});
+    return NextResponse.json({profile: newProfile, newUser: true}, {status: 200});
   } catch (error) {
     return NextResponse.json({error: "Failed to fetch users"}, {status: 500});
   }

@@ -3,20 +3,11 @@
 import DAvatar from "@/components/DAvatar";
 import {Button} from "@/components/ui/button";
 import AVATARS from "@/constants/avatars";
-import {updateAvatar} from "@/lib/update-avatar";
+import useAvatarUpdate from "@/hooks/use-avatar-update";
 import {cn} from "@/lib/utils";
-import {Avatar} from "@prisma/client";
-import {useRouter} from "next/navigation";
-import {useState} from "react";
 
 const AvatarSelect = () => {
-  const [avatarValue, setAvatarValue] = useState<Avatar>(Avatar.AVATAR1);
-  const router = useRouter();
-
-  const handleAvatarUpdate = async () => {
-    await updateAvatar(avatarValue);
-    router.push("/user");
-  };
+  const {avatarValue, setAvatarValue, handleAvatarUpdate} = useAvatarUpdate();
 
   return (
     <div className={cn("space-y-16")}>
