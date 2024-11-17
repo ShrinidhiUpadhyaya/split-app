@@ -3,14 +3,12 @@
 import {SignUpButton} from "@clerk/nextjs";
 import {Button} from "../ui/button";
 
-const DSignUpButton = () => {
+const DSignInButton = () => {
   return (
     <SignUpButton>
-      <Button className="primary-color-text w-3/4 border-2 font-bold" variant="outline">
-        I already have an account
-      </Button>
+      <Button className="w-3/4 font-bold">Get Started</Button>
     </SignUpButton>
   );
 };
 
-export default DSignUpButton;
+export default DSignInButton;

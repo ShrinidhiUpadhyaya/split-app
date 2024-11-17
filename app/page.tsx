@@ -36,8 +36,8 @@ export default function Home() {
             <h1 className="mb-4 text-center text-5xl font-semibold">
               Share the expenses, simplify the friendships.
             </h1>
-            <DSignInButton />
             <DSignUpButton />
+            <DSignInButton />
           </div>
         </div>
 
