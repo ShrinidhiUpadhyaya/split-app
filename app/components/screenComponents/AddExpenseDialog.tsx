@@ -1,7 +1,6 @@
 "use client";
 
 import {Button} from "@/components/ui/button";
-import {Calendar} from "@/components/ui/calendar";
 import {
   Dialog,
   DialogClose,
@@ -12,26 +11,30 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Input} from "@/components/ui/input";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {cn} from "@/lib/utils";
-import {useAppStore} from "@/store/zustand";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {format} from "date-fns";
-import {CalendarIcon} from "lucide-react";
+import {CalendarIcon, Check, ChevronsUpDown, Plus} from "lucide-react";
 import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 
-import {addExpense} from "@/lib/api/expenseApi";
+import useFetchFriends from "@/hooks/use-fetch-friends";
+import DAvatarChip from "../DAvatarChip";
+import DIconTextButton from "../DIconTextButton";
+import {Calendar} from "../ui/calendar";
+import {Card, CardContent} from "../ui/card";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "../ui/command";
+import {Input} from "../ui/input";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "../ui/tabs";
 import ExpenseTable from "./ExpenseTable";
 import PaidByCombobox from "./PaidByCombobox";
 
@@ -62,13 +65,18 @@ const FormSchema = z.object({
 });
 
 const AddExpenseDialog = () => {
-  const {friends, user} = useAppStore();
   const [persons, setPerson] = useState([]);
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [date, setDate] = useState<Date>(new Date());
   const [formValues, setFormValues] = useState();
   const [backendData, setBackendData] = useState([]);
   const [currentType, setCurrentType] = useState("equal");
+
+  const {friends} = useFetchFriends();
+  const [peopleInvolved, setPeopleInvolved] = useState([]);
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -122,8 +130,8 @@ const AddExpenseDialog = () => {
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button>Add Expense</Button>
+      <DialogTrigger asChild>
+        <DIconTextButton label="Add Expense" icon={<Plus />} variant="outline" />
       </DialogTrigger>
       <DialogContent className="h-11/12 block w-3/4 !max-w-full !space-y-0">
         <DialogHeader className="py-4 pb-8">
@@ -133,7 +141,7 @@ const AddExpenseDialog = () => {
           <div className="w-full rounded-lg lg:min-w-[360px] lg:max-w-[360px] lg:space-y-8">
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(onSubmit)}
+                // onSubmit={form.handleSubmit(onSubmit)}
                 className="grid w-full grid-cols-2 items-center justify-center gap-8 gap-x-8 lg:block lg:flex-1 lg:space-y-6"
                 id="addExpenseForm"
               >
@@ -160,7 +168,7 @@ const AddExpenseDialog = () => {
                       <div className="flex items-center gap-8">
                         <FormLabel className="min-w-[20%] max-w-[20%]">Paid by</FormLabel>
                         <FormControl>
-                          <PaidByCombobox persons={persons} onValueChange={field.onChange} />
+                          <PaidByCombobox friends={friends} />
                         </FormControl>
                       </div>
                       <FormMessage />
@@ -175,16 +183,6 @@ const AddExpenseDialog = () => {
                       <div className="flex items-center gap-8">
                         <FormLabel className="min-w-[20%] max-w-[20%]">Amount</FormLabel>
                         <div className="flex gap-4">
-                          <Select defaultValue="rupees">
-                            <SelectTrigger className="w-24">
-                              <SelectValue placeholder="Currency" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="rupees">₹</SelectItem>
-                              <SelectItem value="euro">€</SelectItem>
-                              <SelectItem value="dollar">$</SelectItem>
-                            </SelectContent>
-                          </Select>
                           <FormControl>
                             <Input
                               type="number"
@@ -201,6 +199,61 @@ const AddExpenseDialog = () => {
                     </FormItem>
                   )}
                 />
+                <div className="border border-[red]">
+                  <Popover open={open} onOpenChange={setOpen}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={open}
+                        className="w-full justify-between"
+                      >
+                        People Involved
+                        <ChevronsUpDown className="opacity-50" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-full p-0">
+                      <Command>
+                        <CommandInput placeholder="Search framework..." />
+                        <CommandList>
+                          <CommandEmpty>No framework found.</CommandEmpty>
+                          <CommandGroup>
+                            {friends?.map((friend) => (
+                              <CommandItem
+                                key={friend.id}
+                                value={friend.id}
+                                onSelect={(currentValue) => {
+                                  setPeopleInvolved((prev) => [...prev, friend]);
+                                  setOpen(false);
+                                }}
+                              >
+                                {friend.request?.name}
+                                <Check
+                                  className={cn(
+                                    "ml-auto",
+                                    value === friend.id ? "opacity-100" : "opacity-0",
+                                  )}
+                                />
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+
+                  <Card>
+                    <CardContent className="flex justify-start p-2">
+                      {peopleInvolved.map((person) => (
+                        <DAvatarChip
+                          key={person.request?.name}
+                          name={person.request?.name}
+                          src={person.request?.avatar}
+                        />
+                      ))}
+                    </CardContent>
+                  </Card>
+                </div>
               </form>
             </Form>
           </div>

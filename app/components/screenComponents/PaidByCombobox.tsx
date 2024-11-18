@@ -10,31 +10,21 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import useCreateUser from "@/hooks/use-create-user";
 import {cn} from "@/lib/utils";
-import {useAppStore} from "@/store/zustand";
+import {Avatar} from "@prisma/client";
 import {Check, ChevronsUpDown} from "lucide-react";
-import React, {useEffect, useState} from "react";
-
+import React, {useState} from "react";
+import UserAvatar from "../DUserAvatar";
 interface ComboboxProps {
-  persons: Array<Object>;
+  friends: Array<Object>;
   onValueChange?: Function;
 }
-
-const DPaidByCombobox: React.FC<ComboboxProps> = ({persons, onValueChange}) => {
+const DPaidByCombobox: React.FC<ComboboxProps> = ({friends}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
-  const {user} = useAppStore();
-  const userId = user._id;
-
-  useEffect(() => {
-    console.log("Value Change", value);
-    onValueChange?.(value);
-  }, [value]);
-
-  useEffect(() => {
-    setValue(userId);
-  }, [userId]);
+  const {user} = useCreateUser();
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -45,10 +35,7 @@ const DPaidByCombobox: React.FC<ComboboxProps> = ({persons, onValueChange}) => {
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {value == userId
-            ? "You"
-            : (persons.find((person) => person?._id === value)?.name ??
-              persons.find((person) => person?._id === value)?.email)}
+          {value}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -58,26 +45,33 @@ const DPaidByCombobox: React.FC<ComboboxProps> = ({persons, onValueChange}) => {
           <CommandEmpty>Person not found.</CommandEmpty>
           <CommandList>
             <CommandGroup>
-              {persons.map((person) => (
-                <CommandItem
-                  key={person?._id}
-                  value={person?._id}
-                  onSelect={(currentValue) => {
-                    console.log(currentValue);
-                    if (currentValue !== value) {
-                      setValue(currentValue === value ? "" : currentValue);
+              <UserAvatarCommandItem
+                src={user?.avatar}
+                label={user?.name}
+                value={user?.id}
+                checked={value === user.name}
+                onSelect={() => {
+                  if (user.name !== value) {
+                    setValue(user.name);
+                    setOpen(false);
+                  }
+                }}
+              />
+
+              {friends.map((friend) => (
+                <UserAvatarCommandItem
+                  src={friend.request?.avatar}
+                  label={friend.request.name}
+                  key={friend?.id}
+                  value={friend?.id}
+                  checked={value === friend.request.name}
+                  onSelect={() => {
+                    if (friend.request.name !== value) {
+                      setValue(friend.request.name);
                       setOpen(false);
                     }
                   }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === person?._id ? "opacity-100" : "opacity-0",
-                    )}
-                  />
-                  {person?.name ? person.name : person.email}
-                </CommandItem>
+                />
               ))}
             </CommandGroup>
           </CommandList>
@@ -88,3 +82,26 @@ const DPaidByCombobox: React.FC<ComboboxProps> = ({persons, onValueChange}) => {
 };
 
 export default DPaidByCombobox;
+
+interface UserAvatarCommandItemProps {
+  checked: boolean;
+  label: string;
+  src: Avatar;
+  value: string;
+  onSelect: () => void;
+}
+const UserAvatarCommandItem = ({
+  checked,
+  label,
+  src,
+  value,
+  onSelect,
+}: UserAvatarCommandItemProps) => (
+  <CommandItem value={value} className="gap-2" onSelect={onSelect}>
+    <UserAvatar src={src} label={label} />
+
+    <Check className={cn("mr-2 h-4 w-4", checked ? "opacity-100" : "opacity-0")} />
+  </CommandItem>
+);
+
+UserAvatarCommandItem.displayName = "UserAvatarCommandItem";

@@ -1,6 +1,7 @@
 import DIconTextButton from "@/components/DIconTextButton";
+import AddExpenseDialog from "@/components/screenComponents/AddExpenseDialog";
 import AddFriendDialog from "@/components/screenComponents/AddFriendDialog";
-import {Plus, Users, Wallet} from "lucide-react";
+import {Users, Wallet} from "lucide-react";
 import DInfoCard from "./DInfoCard";
 
 const QuickActionsCard = () => {
@@ -10,7 +11,9 @@ const QuickActionsCard = () => {
         <AddFriendDialog />
 
         <DIconTextButton label="Create Group" icon={<Users />} variant="outline" />
-        <DIconTextButton label="Add Expense" icon={<Plus />} variant="outline" />
+
+        <AddExpenseDialog />
+
         <DIconTextButton label="Settle Up" icon={<Wallet />} variant="outline" />
       </div>
     </DInfoCard>
