@@ -2,7 +2,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -11,10 +10,17 @@ import {
 import DFormFieldComponent from "@/components/DFormFieldComponent";
 import {Button} from "@/components/ui/button";
 import {Form} from "@/components/ui/form";
-import {useAppStore} from "@/store/zustand";
+import useAddFriends from "@/hooks/use-add-friends";
+import {cn} from "@/lib/utils";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {UserPlus} from "lucide-react";
+import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
+import DIconTextButton from "../DIconTextButton";
+import DLoadingSpinner from "../DLoadingSpinner";
+import useShowToast from "../DToast";
+import {Separator} from "../ui/separator";
 
 const formSchema = z.object({
   email: z.string().min(6).max(50).email(),
@@ -25,60 +31,62 @@ const AddFriendDialog = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const {user} = useAppStore();
+  const {searchUser, isError, error, isSuccess, isPending} = useAddFriends();
+  const {showErrorToast, showSuccessToast} = useShowToast();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      const response = await fetch("/api/friends/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: user?._id,
-          friendEmail: values?.email,
-        }),
-      });
-      console.log(response.status);
-    } catch (error) {
-      console.log("Error", error);
-    }
+    searchUser(values?.email);
   };
+
+  useEffect(() => {
+    if (isError) showErrorToast(error?.response?.data.error);
+  }, [isError]);
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button>Add friends</Button>
+      <DialogTrigger asChild>
+        <DIconTextButton
+          label="Add Friends"
+          icon={<UserPlus />}
+          variant="outline"
+          className="w-full"
+        />
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="py-4 text-2xl">Add friends </DialogTitle>
-          <DialogDescription>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <DFormFieldComponent
-                  control={form.control}
-                  name="email"
-                  placeholder="friendemail@email.com"
-                />
-
-                <div className="flex w-full justify-end pb-4 pt-12">
-                  <div className="flex w-1/2 gap-4">
-                    <DialogClose asChild>
-                      <Button type="button" variant="outline" className="w-full font-bold">
-                        Cancel
-                      </Button>
-                    </DialogClose>
-
-                    <Button type="submit" className="w-full font-bold">
-                      Add
-                    </Button>
-                  </div>
-                </div>
-              </form>
-            </Form>
-          </DialogDescription>
         </DialogHeader>
+
+        <DLoadingSpinner loading={isPending} />
+
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className={cn("space-y-4", isPending && "pointer-events-none opacity-40")}
+          >
+            <DFormFieldComponent
+              control={form.control}
+              name="email"
+              placeholder="Enter friend email"
+            />
+
+            <div>
+              <Separator className="mb-4 mt-8" />
+
+              <div className="w-full space-y-4">
+                <Button type="submit" className="w-full">
+                  Add
+                </Button>
+
+                <DialogClose asChild>
+                  <Button variant="outline" className="w-full">
+                    Cancel
+                  </Button>
+                </DialogClose>
+              </div>
+            </div>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

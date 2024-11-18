@@ -9,7 +9,7 @@ interface DIconTextButtonProps extends ButtonProps {
 const DIconTextButton = ({label, icon, className, ...buttonProps}: DIconTextButtonProps) => {
   return (
     <Button className={cn("gap-1", className)} {...buttonProps}>
-      <span>{icon}</span>
+      {icon}
       {label}
     </Button>
   );
