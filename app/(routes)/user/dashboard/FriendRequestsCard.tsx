@@ -1,6 +1,7 @@
 import DAvatar from "@/components/DAvatar";
 import {Button} from "@/components/ui/button";
 import {Label} from "@/components/ui/label";
+import useAcceptFriends from "@/hooks/use-accept-request";
 import useFriendRequests from "@/hooks/use-friend-requests";
 import {calculateTimeDifference} from "@/lib/friend-request-time";
 import getAvatarType from "@/lib/get-avatar-type";
@@ -10,6 +11,7 @@ import DInfoCard from "./DInfoCard";
 
 const FriendRequestsCard = () => {
   const {data} = useFriendRequests();
+  const {acceptRequest} = useAcceptFriends();
 
   const [requests, setRequests] = useState([]);
 
@@ -38,7 +40,7 @@ const FriendRequestsCard = () => {
             </div>
 
             <div className="flex space-x-4">
-              <Button className="bg-[#3EB991]" size="sm">
+              <Button className="bg-[#3EB991]" size="sm" onClick={() => acceptRequest(user.id)}>
                 <Check className="h-5 w-5" />
               </Button>
               <Button variant="destructive" size="sm">

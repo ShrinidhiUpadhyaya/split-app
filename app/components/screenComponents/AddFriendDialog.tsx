@@ -44,7 +44,7 @@ const AddFriendDialog = () => {
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <DIconTextButton
           label="Add Friends"
           icon={<UserPlus />}
