@@ -6,8 +6,6 @@ import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
 
-import DPrimaryButtonLink from "@/components/DPrimaryButtonLink";
-
 const headerRoutes = ["/"];
 
 const Header = () => {
@@ -20,25 +18,12 @@ const Header = () => {
   }, []);
 
   return (
-    <div className={cn("flex h-16 w-full justify-between px-16 py-4", !showHeader && "hidden")}>
-      <div className="flex-1">
+    <div className={cn("flex w-full justify-center", !showHeader && "hidden")}>
+      <div className="w-3/4 py-4">
         <Link href="/">
-          <Image src={"logo.svg"} height={24} width={96} alt="Split logo" />
+          <Image src="logo.svg" height={24} width={96} alt="Split logo" />
         </Link>
       </div>
-
-      {isMounted && (
-        <div className="flex w-full flex-1 items-center justify-end gap-8">
-          <Link
-            href="/login"
-            className="primaryFontSize cursor-pointer font-semibold hover:underline"
-          >
-            Log In
-          </Link>
-
-          <DPrimaryButtonLink href="/signup" label="Sign Up" className="w-min" />
-        </div>
-      )}
     </div>
   );
 };

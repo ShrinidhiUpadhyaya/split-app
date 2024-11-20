@@ -38,7 +38,7 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
+    --primary: 191 100% 47.6%;
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -90,7 +90,7 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
+    --primary: 191 100% 47.6%;
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -118,4 +118,16 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.primary-color-bg {
+  @apply bg-[#00BAF2];
+}
+
+.primary-color-text {
+  @apply text-[#00BAF2];
+}
+
+.primary-color-border {
+  @apply border-[#00BAF2];
 }

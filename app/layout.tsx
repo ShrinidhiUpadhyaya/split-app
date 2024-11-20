@@ -2,12 +2,13 @@ import {ThemeProvider} from "@/components/theme-provider";
 
 import Header from "@/components/screenComponents/Header";
 import {Toaster} from "@/components/ui/toaster";
+import {ClerkProvider} from "@clerk/nextjs";
 import type {Metadata} from "next";
-import {Noto_Sans} from "next/font/google";
+import {Space_Grotesk} from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "./lib/ReactQueryProvider";
 
-const noto_sans = Noto_Sans({subsets: ["latin"]});
+const space_grostek = Space_Grotesk({subsets: ["latin"]});
 
 export const metadata: Metadata = {
   title: "Split App",
@@ -21,11 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={noto_sans.className}>
+      <body className={space_grostek.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <Header />
-          <ReactQueryProvider>{children}</ReactQueryProvider>
-          <Toaster />
+          <ClerkProvider dynamic>
+            <Header />
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+            <Toaster />
+          </ClerkProvider>
         </ThemeProvider>
       </body>
     </html>
