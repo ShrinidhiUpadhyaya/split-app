@@ -30,10 +30,24 @@ export async function GET() {
             avatar: true,
           },
         },
+        accept: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
       },
     });
 
-    return NextResponse.json(friends, {status: 200});
+    const friendList = friends.map((friendship) => {
+      if (friendship.requesterId === dbUser?.id) {
+        return friendship.accept;
+      }
+      return friendship.request;
+    });
+
+    return NextResponse.json(friendList, {status: 200});
   } catch (error) {
     console.log("Get friends error", error);
     return NextResponse.json(
