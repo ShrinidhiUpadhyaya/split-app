@@ -5,7 +5,7 @@ import useCreateUser from "@/hooks/use-create-user";
 import {redirect} from "next/navigation";
 import AvatarSelect from "./AvatarSelect";
 
-const WelcomeScreen = () => {
+export default function WelcomeScreen() {
   const {isSuccess, user, newUser} = useCreateUser();
 
   if (isSuccess && !user) {
@@ -28,6 +28,4 @@ const WelcomeScreen = () => {
       </div>
     </DPage>
   );
-};
-
-export default WelcomeScreen;
+}

@@ -1,18 +1,12 @@
 "use client";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {cn} from "@/lib/utils";
 import {UserButton} from "@clerk/nextjs";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {Handshake, LayoutDashboard} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import Dashboard from "./Dashboard";
 import Friends from "./Friends";
-
-interface SideNavNarProps {
-  className?: string;
-}
 
 const sideNavBarOptions = [
   {
@@ -37,7 +31,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const User: React.FC<SideNavNarProps> = ({className}) => {
+export default function Page() {
   return (
     <QueryClientProvider client={queryClient}>
       <>
@@ -50,10 +44,7 @@ const User: React.FC<SideNavNarProps> = ({className}) => {
             <UserButton />
           </div>
         </div>
-        <Tabs
-          defaultValue="dashboard"
-          className={cn("h-svh w-full flex-1 py-8 md:flex md:gap-12", className)}
-        >
+        <Tabs defaultValue="dashboard" className="h-svh w-full flex-1 py-8 md:flex md:gap-12">
           <TabsList className="flex h-full min-w-[360px] max-w-[360px] items-start justify-start gap-8 px-4 md:w-[25%] md:flex-col">
             {sideNavBarOptions.map((option) => (
               <TabsTrigger
@@ -76,6 +67,4 @@ const User: React.FC<SideNavNarProps> = ({className}) => {
       </>
     </QueryClientProvider>
   );
-};
-
-export default User;
+}
