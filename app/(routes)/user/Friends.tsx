@@ -5,7 +5,7 @@ import AddFriendDialog from "@/components/screenComponents/AddFriendDialog";
 import FriendCard from "@/components/screenComponents/FriendCard";
 import {Button} from "@/components/ui/button";
 import {Skeleton} from "@/components/ui/skeleton";
-import useFetchFriends from "@/hooks/useFetchFriends";
+import useFetchFriends from "@/hooks/use-fetch-friends";
 import {useAppStore} from "@/store/zustand";
 import {memo} from "react";
 
