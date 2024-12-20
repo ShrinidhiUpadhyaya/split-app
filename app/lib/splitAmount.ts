@@ -1,29 +1,36 @@
-const splitEqually = (people, totalAmount) => {
-  const amountPerPerson = totalAmount / people.length;
-  const newValues = people.map((person) => ({
-    ...person,
-    amount: amountPerPerson,
-  }));
+import {SplitPerson, SplitTypes} from "@/types/utils/splitTypes";
 
-  return newValues;
+interface SplitAmountType {
+  totalAmount: number;
+  type: SplitTypes;
+  people: SplitPerson[];
+  amounts: [];
+}
+
+const splitAmount = ({totalAmount, people, type, amounts = []}: SplitAmountType) => {
+  switch (type) {
+    case "Equal":
+      const amountPerPerson = totalAmount / people.length;
+      return people.map((person) => ({
+        ...person,
+        amount: amountPerPerson,
+      }));
+
+    case "Percentage":
+      return people.map((person) => ({
+        ...person,
+        amount: totalAmount * (person.percentage / 100),
+      }));
+
+    case "Exact":
+      return people.map((person, index) => ({
+        ...person,
+        amount: amounts[index],
+      }));
+
+    default:
+      throw new Error("Invalid split type. Must be 'equally', 'percentage', or 'exact'.");
+  }
 };
 
-const splitByPercentage = (people, totalAmount) => {
-  const newValues = people.map((person) => ({
-    ...person,
-    amount: totalAmount * (person.percentage / 100),
-  }));
-
-  return newValues;
-};
-
-const splitByExactAmounts = (people, amounts) => {
-  const newValue = people.map((person, index) => ({
-    ...person,
-    amount: amounts[index],
-  }));
-
-  return newValue;
-};
-
-export {splitByExactAmounts, splitByPercentage, splitEqually};
+export {splitAmount};

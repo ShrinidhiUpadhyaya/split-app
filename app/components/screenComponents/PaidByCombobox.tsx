@@ -6,17 +6,14 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandItem,
   CommandList,
 } from "@/components/ui/command";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import useCreateUser from "@/hooks/use-create-user";
 import {FriendType} from "@/hooks/use-fetch-friends";
-import {cn} from "@/lib/utils";
-import {Avatar} from "@prisma/client";
-import {Check, ChevronsUpDown} from "lucide-react";
+import {ChevronsUpDown} from "lucide-react";
 import React, {useEffect, useState} from "react";
-import DUserAvatar from "../DUserAvatar";
+import DUserAvatarCommandItem from "../DUserAvatarCommandItem";
 
 interface ComboboxProps {
   friends: FriendType[];
@@ -59,7 +56,7 @@ const DPaidByCombobox: React.FC<ComboboxProps> = ({friends, onValueChange}) => {
           <CommandList>
             <CommandGroup>
               {user && (
-                <UserAvatarCommandItem
+                <DUserAvatarCommandItem
                   avatar={user.avatar}
                   label={user.name}
                   value={user.id}
@@ -74,11 +71,11 @@ const DPaidByCombobox: React.FC<ComboboxProps> = ({friends, onValueChange}) => {
               )}
 
               {friends.map((friend) => (
-                <UserAvatarCommandItem
+                <DUserAvatarCommandItem
+                  value={friend.id}
                   avatar={friend.avatar}
                   label={friend.name}
                   key={friend.id}
-                  value={friend.id}
                   checked={value === friend.id}
                   onSelect={() => {
                     if (friend.id !== value) {
@@ -97,26 +94,3 @@ const DPaidByCombobox: React.FC<ComboboxProps> = ({friends, onValueChange}) => {
 };
 
 export default DPaidByCombobox;
-
-interface UserAvatarCommandItemProps {
-  checked: boolean;
-  label: string;
-  avatar: Avatar;
-  value: string;
-  onSelect: () => void;
-}
-const UserAvatarCommandItem = ({
-  checked,
-  label,
-  avatar,
-  value,
-  onSelect,
-}: UserAvatarCommandItemProps) => (
-  <CommandItem value={value} className="gap-2" onSelect={onSelect}>
-    <DUserAvatar avatar={avatar} label={label} />
-
-    <Check className={cn("mr-2 h-4 w-4", checked ? "opacity-100" : "opacity-0")} />
-  </CommandItem>
-);
-
-UserAvatarCommandItem.displayName = "UserAvatarCommandItem";

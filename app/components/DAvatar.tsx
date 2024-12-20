@@ -5,7 +5,7 @@ interface DAvatarProps {
   src: string;
   selected?: boolean;
   className?: string;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
 const DAvatar = ({src, selected, className, onClick}: DAvatarProps) => {

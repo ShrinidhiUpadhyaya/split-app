@@ -103,7 +103,7 @@ const AddExpenseDialog = () => {
           <div className="w-full rounded-lg lg:min-w-[360px] lg:max-w-[360px] lg:space-y-8">
             <Form {...form}>
               <form
-                // onSubmit={form.handleSubmit(onSubmit)}
+                onSubmit={form.handleSubmit(onSubmit)}
                 className="grid w-full grid-cols-2 items-center justify-center gap-8 gap-x-8 lg:block lg:flex-1 lg:space-y-6"
                 id="addExpenseForm"
               >
