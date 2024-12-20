@@ -7,11 +7,12 @@ import DAvatarChip from "../DAvatarChip";
 import DUserAvatar from "../DUserAvatar";
 import DUserAvatarCommandItem from "../DUserAvatarCommandItem";
 import {Button} from "../ui/button";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "../ui/card";
+import {Card, CardContent, CardDescription, CardTitle} from "../ui/card";
 import {Command, CommandEmpty, CommandGroup, CommandInput, CommandList} from "../ui/command";
 import {Input} from "../ui/input";
 import {Popover, PopoverContent, PopoverTrigger} from "../ui/popover";
 import {Separator} from "../ui/separator";
+
 type ExpenseType = "Equal" | "ExactAmounts" | "Percentages";
 
 interface SplitDetailsCardProps {
@@ -41,78 +42,85 @@ const SplitDetailsCard = ({user, friends, paidBy, amount, type}: SplitDetailsCar
 
   return (
     <Card className="h-full">
-      <CardHeader>
-        <CardTitle className="text-xl">People Involved</CardTitle>
-        <CardDescription>
-          Select the people involved and define how the expense is shared.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="flex flex-col space-y-8">
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={open}
-              className="group w-full justify-between px-1"
-            >
-              <div className="flex gap-1">
-                {peopleInvolved.slice(0, 3).map((person) => (
-                  <DAvatarChip
-                    key={person.id}
-                    label={person.name}
-                    avatar={person.avatar}
-                    className="hover:border hover:border-[#00BAF2]"
-                  />
-                ))}
-              </div>
-
-              <ChevronsUpDown className="opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0">
-            <Command>
-              <CommandInput placeholder="Search framework..." />
-              <CommandList>
-                <CommandEmpty>No framework found.</CommandEmpty>
-                <CommandGroup>
-                  {user && (
-                    <DUserAvatarCommandItem
-                      key={user.id}
-                      value={user.id}
-                      label={user.name}
-                      avatar={user.avatar}
-                      checked={isUserInvolved(user.id)}
-                      onSelect={() => {
-                        if (!isUserInvolved(user.id)) setPeopleInvolved((prev) => [...prev, user]);
-                      }}
-                    />
-                  )}
-
-                  {friends?.map((friend) => (
-                    <DUserAvatarCommandItem
-                      key={friend.id}
-                      value={friend.id}
-                      label={friend.name}
-                      avatar={friend.avatar}
-                      checked={isUserInvolved(friend.id)}
-                      onSelect={() => {
-                        if (!isUserInvolved(friend.id))
-                          setPeopleInvolved((prev) => [...prev, friend]);
-                      }}
+      <CardContent className="flex flex-col space-y-8 p-4">
+        <div className="space-y-2">
+          <div>
+            <CardTitle className="text-sm sm:text-lg lg:text-xl">People Involved</CardTitle>
+            <CardDescription className="hidden sm:block">
+              Select the people involved and define how the expense is shared.
+            </CardDescription>
+          </div>
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className="group w-full justify-between px-1"
+              >
+                <div className="flex gap-1">
+                  {peopleInvolved.slice(0, 3).map((person) => (
+                    <DAvatarChip
+                      key={person.id}
+                      label={person.name}
+                      avatar={person.avatar}
+                      className="hover:border hover:border-[#00BAF2]"
                     />
                   ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
+                </div>
+
+                <ChevronsUpDown className="opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0">
+              <Command>
+                <CommandInput placeholder="Search framework..." />
+                <CommandList>
+                  <CommandEmpty>No framework found.</CommandEmpty>
+                  <CommandGroup>
+                    {user && (
+                      <DUserAvatarCommandItem
+                        key={user.id}
+                        value={user.id}
+                        label={user.name}
+                        avatar={user.avatar}
+                        checked={isUserInvolved(user.id)}
+                        onSelect={() => {
+                          if (!isUserInvolved(user.id))
+                            setPeopleInvolved((prev) => [...prev, user]);
+                        }}
+                      />
+                    )}
+
+                    {friends?.map((friend) => (
+                      <DUserAvatarCommandItem
+                        key={friend.id}
+                        value={friend.id}
+                        label={friend.name}
+                        avatar={friend.avatar}
+                        checked={isUserInvolved(friend.id)}
+                        onSelect={() => {
+                          if (!isUserInvolved(friend.id))
+                            setPeopleInvolved((prev) => [...prev, friend]);
+                        }}
+                      />
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
 
         <Separator />
 
-        <div>
-          <CardTitle className="text-xl">Split Details</CardTitle>
-          <CardDescription>Share of each person based on the selected split type.</CardDescription>
+        <div className="space-y-2">
+          <div>
+            <CardTitle className="text-sm sm:text-lg lg:text-xl">Split Details</CardTitle>
+            <CardDescription className="hidden sm:block">
+              Share of each person based on the selected split type.
+            </CardDescription>
+          </div>
 
           <div className="mt-4 space-y-4">
             {splitValues?.map((person) => (

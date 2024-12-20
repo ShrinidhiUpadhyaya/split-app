@@ -5,10 +5,10 @@ interface DAvatarProps {
   src: string;
   selected?: boolean;
   className?: string;
-  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-const DAvatar = ({src, selected, className, onClick}: DAvatarProps) => {
+const DAvatar: React.FC<DAvatarProps> = ({src, selected, className, onClick}) => {
   return (
     <div
       className={cn(

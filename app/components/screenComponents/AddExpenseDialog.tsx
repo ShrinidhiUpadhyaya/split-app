@@ -95,16 +95,16 @@ const AddExpenseDialog = () => {
       <DialogTrigger asChild>
         <DIconTextButton label="Add Expense" icon={<Plus />} variant="outline" />
       </DialogTrigger>
-      <DialogContent className="flex h-5/6 w-3/4 !max-w-full flex-col !space-y-0">
+      <DialogContent className="flex h-[95%] w-3/4 !max-w-full flex-col !space-y-0 md:h-5/6">
         <DialogHeader className="py-4 pb-8">
           <DialogTitle className="text-2xl">Add an expense</DialogTitle>
         </DialogHeader>
-        <div className="w-full flex-1 space-y-16 lg:flex lg:gap-24 lg:space-y-0">
+        <div className="w-full flex-1 space-y-8 lg:flex lg:gap-24 lg:space-y-0">
           <div className="w-full rounded-lg lg:min-w-[360px] lg:max-w-[360px] lg:space-y-8">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="grid w-full grid-cols-2 items-center justify-center gap-8 gap-x-8 lg:block lg:flex-1 lg:space-y-6"
+                className="block w-full items-center justify-center gap-8 gap-x-8 space-y-6 md:grid md:grid-cols-2 md:space-y-0 lg:block lg:space-y-6"
                 id="addExpenseForm"
               >
                 {formFields.map(({name, label, component: Component, props = {}}) => (
@@ -114,8 +114,10 @@ const AddExpenseDialog = () => {
                     name={name}
                     render={({field}) => (
                       <FormItem>
-                        <div className="flex items-center gap-8">
-                          <FormLabel className="min-w-[20%] max-w-[20%]">{label}</FormLabel>
+                        <div className="flex items-center gap-2 md:gap-8">
+                          <FormLabel className="min-w-[20%] max-w-[20%] overflow-hidden text-ellipsis">
+                            {label}
+                          </FormLabel>
                           <FormControl>
                             <Component {...field} {...props} />
                           </FormControl>
@@ -141,18 +143,18 @@ const AddExpenseDialog = () => {
         </div>
 
         <DialogFooter>
-          <div className="flex w-full justify-end gap-8 pb-4 pt-12">
+          <div className="w-full space-y-8 pb-4 pt-12 sm:flex sm:gap-8 sm:space-y-0">
             <div className="flex-1">
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     className={cn(
-                      "w-[280px] justify-start text-left font-normal",
+                      "w-full justify-start overflow-hidden text-ellipsis px-2 text-left font-normal sm:w-36 md:w-[280px]",
                       !date && "text-muted-foreground",
                     )}
                   >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    <CalendarIcon className="mr-2 hidden h-4 w-4 md:block" />
                     {date ? format(date, "PPP") : <span>Pick a date</span>}
                   </Button>
                 </PopoverTrigger>
@@ -166,14 +168,18 @@ const AddExpenseDialog = () => {
                 </PopoverContent>
               </Popover>
             </div>
-            <div className="flex gap-4">
+            <div className="space-y-4 sm:flex sm:gap-4 sm:space-y-0">
               <DialogClose asChild>
-                <Button type="button" variant="outline" className="w-40">
+                <Button type="button" variant="outline" className="w-full sm:w-24 lg:w-40">
                   Cancel
                 </Button>
               </DialogClose>
 
-              <Button type="submit" form="addExpenseForm" className="w-40 font-bold">
+              <Button
+                type="submit"
+                form="addExpenseForm"
+                className="w-full font-bold sm:w-24 lg:w-40"
+              >
                 Add
               </Button>
             </div>
