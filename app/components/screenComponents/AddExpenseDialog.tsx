@@ -1,6 +1,7 @@
 "use client";
 
 import {Button} from "@/components/ui/button";
+import {Calendar} from "@/components/ui/calendar";
 import {
   Dialog,
   DialogClose,
@@ -15,129 +16,90 @@ import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {cn} from "@/lib/utils";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {format} from "date-fns";
-import {CalendarIcon, Check, ChevronsUpDown, Plus} from "lucide-react";
-import {useEffect, useState} from "react";
+import {CalendarIcon, Plus} from "lucide-react";
+import {useEffect, useMemo, useState} from "react";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
-
-import useFetchFriends from "@/hooks/use-fetch-friends";
-import DAvatarChip from "../DAvatarChip";
 import DIconTextButton from "../DIconTextButton";
-import {Calendar} from "../ui/calendar";
-import {Card, CardContent} from "../ui/card";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "../ui/command";
 import {Input} from "../ui/input";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "../ui/tabs";
-import ExpenseTable from "./ExpenseTable";
 import PaidByCombobox from "./PaidByCombobox";
+import SplitDetailsCard from "./SplitDetailsCard";
+// import SplitTypeSelect from "./SplitTypeSelect";
+import useCreateUser from "@/hooks/use-create-user";
+import useFetchFriends from "@/hooks/use-fetch-friends";
+import User from "@/types/utils/user";
+const SPLIT_TYPES = ["Equal", "Percentage", "ExactAmounts"] as const;
 
-const shareOptions = [
-  {
-    label: "Equally",
-    value: "equal",
-  },
-
-  {
-    label: "Percentages",
-    value: "percentage",
-  },
-  {
-    label: "Exact Amounts",
-    value: "exact",
-  },
-];
-
-const FormSchema = z.object({
+const FORM_SCHEMA = z.object({
   description: z.string({
     required_error: "Please enter a description.",
   }),
-  paidBy: z.string({
-    required_error: "Please select who paid the expense.",
-  }),
-  amount: z.coerce.number().gte(0).default(0),
+  paidBy: z.custom<User>(),
+  amount: z.coerce.number().positive("Amount must be greater than 0"),
+  type: z.enum(SPLIT_TYPES).default("Equal"),
 });
 
 const AddExpenseDialog = () => {
-  const [persons, setPerson] = useState([]);
-  const [totalAmount, setTotalAmount] = useState<number>(0);
-  const [date, setDate] = useState<Date>(new Date());
-  const [formValues, setFormValues] = useState();
-  const [backendData, setBackendData] = useState([]);
-  const [currentType, setCurrentType] = useState("equal");
-
+  const [date, setDate] = useState<Date | undefined>(new Date());
   const {friends} = useFetchFriends();
-  const [peopleInvolved, setPeopleInvolved] = useState([]);
+  const {user} = useCreateUser();
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
-
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof FORM_SCHEMA>>({
+    resolver: zodResolver(FORM_SCHEMA),
   });
 
   useEffect(() => {
-    const userWithAmount = friends.map((friend) => {
-      return {
-        _id: friend._id,
-        email: friend.email,
-        name: friend.name,
-        amount: 0,
-        percentage: 0,
-      };
-    });
+    if (user) {
+      form.reset({...form.getValues(), paidBy: user});
+    }
+  }, [user, form]);
 
-    const updatedValue = [
-      ...userWithAmount,
-      {_id: user?._id, amount: 0, name: "You", email: user?.email, percentage: 0},
-    ];
+  const {paidBy, amount} = form.getValues();
 
-    setPerson(updatedValue);
-  }, [friends]);
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    setFormValues(values);
-    computeBackendValues();
+  const onSubmit = (values: z.infer<typeof FORM_SCHEMA>) => {
+    console.log("Values", values);
+    // setFormValues(values);
+    // computeBackendValues();
   };
 
-  const computeBackendValues = async () => {
-    const checkNullAmount = backendData.filter((value) => value.amount != 0);
-    const newValues = checkNullAmount?.map((value) => ({
-      _id: value._id,
-      shareType: currentType,
-      percentage: value?.percentage,
-      amount: value?.amount,
-      name: value?.name,
-      email: value?.email,
-    }));
-
-    const apiSchemaValues = {
-      description: formValues?.description,
-      amount: totalAmount,
-      date: Date.now,
-      paidBy: formValues?.paidBy,
-      sharedWith: newValues,
-    };
-
-    const response = await addExpense(apiSchemaValues);
-  };
+  const formFields = useMemo(
+    () => [
+      {
+        name: "description" as const,
+        label: "Description",
+        component: Input,
+      },
+      {
+        name: "paidBy" as const,
+        label: "Paid by",
+        component: PaidByCombobox,
+        props: {user, friends},
+      },
+      {
+        name: "amount" as const,
+        label: "Amount",
+        component: Input,
+        props: {type: "number", className: "text-xl font-bold"},
+      },
+      // {
+      //   name: "type" as const,
+      //   label: "Split Type",
+      //   component: SplitTypeSelect,
+      // },
+    ],
+    [user, friends],
+  );
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <DIconTextButton label="Add Expense" icon={<Plus />} variant="outline" />
       </DialogTrigger>
-      <DialogContent className="h-11/12 block w-3/4 !max-w-full !space-y-0">
+      <DialogContent className="flex h-5/6 w-3/4 !max-w-full flex-col !space-y-0">
         <DialogHeader className="py-4 pb-8">
           <DialogTitle className="text-2xl">Add an expense</DialogTitle>
         </DialogHeader>
-        <div className="w-full space-y-16 lg:flex lg:gap-24 lg:space-y-0">
+        <div className="w-full flex-1 space-y-16 lg:flex lg:gap-24 lg:space-y-0">
           <div className="w-full rounded-lg lg:min-w-[360px] lg:max-w-[360px] lg:space-y-8">
             <Form {...form}>
               <form
@@ -145,147 +107,36 @@ const AddExpenseDialog = () => {
                 className="grid w-full grid-cols-2 items-center justify-center gap-8 gap-x-8 lg:block lg:flex-1 lg:space-y-6"
                 id="addExpenseForm"
               >
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({field}) => (
-                    <FormItem>
-                      <div className="flex items-center gap-8">
-                        <FormLabel className="min-w-[20%] max-w-[20%]">Description</FormLabel>
-                        <FormControl>
-                          <Input {...field} />
-                        </FormControl>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="paidBy"
-                  render={({field}) => (
-                    <FormItem>
-                      <div className="flex items-center gap-8">
-                        <FormLabel className="min-w-[20%] max-w-[20%]">Paid by</FormLabel>
-                        <FormControl>
-                          <PaidByCombobox friends={friends} />
-                        </FormControl>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="amount"
-                  render={({field}) => (
-                    <FormItem>
-                      <div className="flex items-center gap-8">
-                        <FormLabel className="min-w-[20%] max-w-[20%]">Amount</FormLabel>
-                        <div className="flex gap-4">
+                {formFields.map(({name, label, component: Component, props = {}}) => (
+                  <FormField
+                    key={name}
+                    control={form.control}
+                    name={name}
+                    render={({field}) => (
+                      <FormItem>
+                        <div className="flex items-center gap-8">
+                          <FormLabel className="min-w-[20%] max-w-[20%]">{label}</FormLabel>
                           <FormControl>
-                            <Input
-                              type="number"
-                              {...field}
-                              onChange={(event) => {
-                                setTotalAmount(event.target.value);
-                              }}
-                              className="text-xl font-bold"
-                            />
+                            <Component {...field} {...props} />
                           </FormControl>
                         </div>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="border border-[red]">
-                  <Popover open={open} onOpenChange={setOpen}>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        aria-expanded={open}
-                        className="w-full justify-between"
-                      >
-                        People Involved
-                        <ChevronsUpDown className="opacity-50" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-full p-0">
-                      <Command>
-                        <CommandInput placeholder="Search framework..." />
-                        <CommandList>
-                          <CommandEmpty>No framework found.</CommandEmpty>
-                          <CommandGroup>
-                            {friends?.map((friend) => (
-                              <CommandItem
-                                key={friend.id}
-                                value={friend.id}
-                                onSelect={(currentValue) => {
-                                  setPeopleInvolved((prev) => [...prev, friend]);
-                                  setOpen(false);
-                                }}
-                              >
-                                {friend.request?.name}
-                                <Check
-                                  className={cn(
-                                    "ml-auto",
-                                    value === friend.id ? "opacity-100" : "opacity-0",
-                                  )}
-                                />
-                              </CommandItem>
-                            ))}
-                          </CommandGroup>
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-
-                  <Card>
-                    <CardContent className="flex justify-start p-2">
-                      {peopleInvolved.map((person) => (
-                        <DAvatarChip
-                          key={person.request?.name}
-                          name={person.request?.name}
-                          src={person.request?.avatar}
-                        />
-                      ))}
-                    </CardContent>
-                  </Card>
-                </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ))}
               </form>
             </Form>
           </div>
 
           <div className="w-full flex-1 rounded-lg">
-            <Tabs defaultValue="equal" className="pt w-full" onValueChange={setCurrentType}>
-              <TabsList className="m-0 grid w-full grid-cols-3 p-0">
-                {shareOptions.map((option) => (
-                  <TabsTrigger
-                    key={option.value}
-                    value={option.value}
-                    className="h-11 w-full gap-4 rounded-md"
-                  >
-                    <span className="hidden sm:flex">{option.label}</span>
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-              {shareOptions.map((option) => (
-                <TabsContent key={option.value} value={option.value} className="mt-8">
-                  <div className="h-80 max-h-80 w-full overflow-hidden rounded-lg">
-                    <ExpenseTable
-                      tableData={persons}
-                      totalAmount={totalAmount}
-                      onValueChange={(data) => {
-                        setBackendData(data);
-                      }}
-                      type={option.value}
-                    />
-                  </div>
-                </TabsContent>
-              ))}
-            </Tabs>
+            <SplitDetailsCard
+              user={user}
+              friends={friends}
+              amount={amount}
+              type="Equal"
+              paidBy={paidBy}
+            />
           </div>
         </div>
 
@@ -306,7 +157,12 @@ const AddExpenseDialog = () => {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0">
-                  <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={(day: Date | undefined) => setDate(day)}
+                    initialFocus
+                  />
                 </PopoverContent>
               </Popover>
             </div>

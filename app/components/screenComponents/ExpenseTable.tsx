@@ -28,6 +28,7 @@ export type Payment = {
   email: string;
   name: string;
   inputValue?: number;
+  percentage?: number;
 };
 
 export const columns: ColumnDef<Payment>[] = [
@@ -114,7 +115,7 @@ const ExpenseTable: React.FC<TableProps> = ({
             className="h-8 max-w-32"
             disabled={!row.getIsSelected()}
             value={row.getValue("percentage")}
-            onChange={(e) => handlePercentageChange(e, row.index)}
+            onChange={(e) => handlePercentageChange(e.target.value, row.index)}
           />
           %
         </div>
@@ -172,15 +173,14 @@ const ExpenseTable: React.FC<TableProps> = ({
     });
   }, [newValues]);
 
-  function calculateTotalPercentage(data) {
+  function calculateTotalPercentage(data: Payment[]) {
     return data.reduce((total, item) => {
       const percentage = Number(item.percentage) || 0;
       return total + percentage;
     }, 0);
   }
 
-  const handlePercentageChange = (e, rowIndex) => {
-    const value = e.target.value;
+  const handlePercentageChange = (value: string, rowIndex: number) => {
     let percentageValue = parseFloat(value);
     percentageValue = isNaN(percentageValue) ? 0 : percentageValue;
 
@@ -199,7 +199,7 @@ const ExpenseTable: React.FC<TableProps> = ({
 
   useEffect(() => {
     onValueChange(data);
-  }, [data]);
+  }, [data, onValueChange]);
 
   return (
     <div className="h-full w-full">

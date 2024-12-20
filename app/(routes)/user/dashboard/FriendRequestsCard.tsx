@@ -5,15 +5,22 @@ import useAcceptFriends from "@/hooks/use-accept-request";
 import useFriendRequests from "@/hooks/use-friend-requests";
 import {calculateTimeDifference} from "@/lib/friend-request-time";
 import getAvatarType from "@/lib/get-avatar-type";
+import {User} from "@prisma/client";
 import {Check, X} from "lucide-react";
 import {useEffect, useState} from "react";
 import DInfoCard from "./DInfoCard";
+
+interface RequestType {
+  id: string;
+  request: User;
+  createdAt: Date;
+}
 
 const FriendRequestsCard = () => {
   const {data} = useFriendRequests();
   const {acceptRequest} = useAcceptFriends();
 
-  const [requests, setRequests] = useState([]);
+  const [requests, setRequests] = useState<RequestType[]>([]);
 
   useEffect(() => {
     let requests = data?.data;

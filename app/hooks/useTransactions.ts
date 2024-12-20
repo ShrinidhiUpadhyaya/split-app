@@ -2,7 +2,7 @@ import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
 import {useEffect, useState} from "react";
 
-const useTransactions = (userId) => {
+const useTransactions = (userId: string) => {
   const [owedAmount, setOwedAmount] = useState(0);
   const [oweAmount, setOweAmount] = useState(0);
 

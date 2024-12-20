@@ -1,19 +1,16 @@
 "use server";
 
-import {auth} from "@clerk/nextjs/server";
 import {Avatar} from "@prisma/client";
-import prisma from "../lib/db";
+import {useMutation} from "@tanstack/react-query";
 
 export const updateAvatar = async (avatar: Avatar) => {
-  const {userId} = await auth();
-  if (!userId) return -1;
-
-  await prisma.user.update({
-    where: {
-      userId: userId,
-    },
-    data: {
-      avatar: avatar,
-    },
+  const {mutate, isPending, isError, isSuccess} = useMutation({
+    mutationFn: (newPost) =>
+      fetch("https://jsonplaceholder.typicode.com/posts", {
+        method: "POST",
+        body: JSON.stringify(newPost),
+      }).then((res) => res.json()),
   });
+
+  return {mutate, isPending, isError, isSuccess};
 };

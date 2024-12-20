@@ -23,15 +23,19 @@ enum Avatar {
 }
 
 model User {
-  id                     String       @id @default(cuid())
-  userId                 String       @unique
+  id                     String        @id @default(cuid())
+  userId                 String        @unique
   name                   String
-  email                  String       @unique
-  avatar                 Avatar       @default(AVATAR1)
-  createdAt              DateTime     @default(now())
-  updatedAt              DateTime     @updatedAt
-  sentFriendRequests     FriendShip[] @relation("RequestUser")
-  recievedFriendRequests FriendShip[] @relation("AcceptUser")
+  email                  String        @unique
+  avatar                 Avatar        @default(AVATAR1)
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+  sentFriendRequests     FriendShip[]  @relation("RequestUser")
+  recievedFriendRequests FriendShip[]  @relation("AcceptUser")
+  splits                 Split[]
+  paidExpenses           Expense[]     @relation("PaidExpenses")
+  createdExpenses        Expense[]     @relation("CreatedExpenses")
+  Transaction            Transaction[] @relation("UserTransactions")
 }
 
 enum FriendShipStatus {
@@ -54,4 +58,74 @@ model FriendShip {
   @@unique([requesterId, accepterId])
   @@index([accepterId])
   @@index([status])
+}
+
+enum ExpenseType {
+  EQUAL
+  PERCENTAGES
+  EXACT_AMOUNTS
+}
+
+enum ExpenseStatus {
+  PENDING
+  SETTLED
+  PARTIALLY_PAID
+}
+
+model Expense {
+  id          String        @id @default(cuid())
+  description String
+  amount      Float
+  date        DateTime      @default(now())
+  paidBy      String
+  payer       User          @relation("PaidExpenses", fields: [paidBy], references: [id], onDelete: Cascade)
+  type        ExpenseType   @default(EQUAL)
+  status      ExpenseStatus @default(PENDING)
+  splits      Split[]       @relation("ExpenseSplits")
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  userId      String
+  user        User          @relation("CreatedExpenses", fields: [userId], references: [id], onDelete: Cascade)
+  Transaction Transaction[] @relation("RelatedExpenseId")
+
+  @@index([paidBy])
+  @@index([userId])
+  @@index([date])
+  @@index([status])
+  @@map("expenses")
+}
+
+model Split {
+  id         String   @id @default(cuid())
+  expenseId  String
+  expense    Expense  @relation("ExpenseSplits", fields: [expenseId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  amount     Float
+  percentage Float?
+  status     String   @default("PENDING")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  settlementDate DateTime?
+
+  @@unique([expenseId, userId])
+  @@index([status])
+  @@index([userId])
+  @@map("splits")
+}
+
+model Transaction {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation("UserTransactions", fields: [userId], references: [id])
+  amount           Float
+  description      String
+  relatedExpenseId String
+  relatedExpense   Expense  @relation("RelatedExpenseId", fields: [relatedExpenseId], references: [id])
+  createdAt        DateTime @default(now())
+  expenseId        String?
+
+  @@index([userId])
+  @@map("transactions")
 }

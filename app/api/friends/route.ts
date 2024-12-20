@@ -48,10 +48,11 @@ export async function GET() {
     });
 
     return NextResponse.json(friendList, {status: 200});
-  } catch (error) {
+  } catch (error: unknown) {
     console.log("Get friends error", error);
+    const errorMessage = error instanceof Error ? error.message : "Unkown error occured";
     return NextResponse.json(
-      {error: error.message},
+      {error: errorMessage},
       {
         status: 500,
       },

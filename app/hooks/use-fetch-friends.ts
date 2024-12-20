@@ -1,9 +1,16 @@
+import {Avatar} from "@prisma/client";
 import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
 import {useEffect, useState} from "react";
 
+export interface FriendType {
+  id: string;
+  avatar: Avatar;
+  name: string;
+}
+
 const useFetchFriends = () => {
-  const [friends, setFriends] = useState([]);
+  const [friends, setFriends] = useState<FriendType[]>([]);
 
   const {data} = useQuery({
     queryKey: ["friends"],

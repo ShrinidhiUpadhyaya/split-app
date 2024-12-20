@@ -17,7 +17,7 @@ export async function GET() {
 
     const friendships = await prisma.friendShip.findMany({
       where: {
-        accepterId: dbUser.id,
+        accepterId: dbUser?.id,
         status: FriendShipStatus.PENDING,
       },
       include: {
