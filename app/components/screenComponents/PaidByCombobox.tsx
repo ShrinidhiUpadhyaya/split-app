@@ -60,13 +60,13 @@ const DPaidByCombobox: React.FC<ComboboxProps> = ({friends, onValueChange}) => {
             <CommandGroup>
               {user && (
                 <UserAvatarCommandItem
-                  src={user.avatar}
+                  avatar={user.avatar}
                   label={user.name}
                   value={user.id}
-                  checked={value === user.name}
+                  checked={value === user.id}
                   onSelect={() => {
-                    if (user.name !== value) {
-                      setValue(user.name);
+                    if (user.id !== value) {
+                      setValue(user.id);
                       setOpen(false);
                     }
                   }}
@@ -75,14 +75,14 @@ const DPaidByCombobox: React.FC<ComboboxProps> = ({friends, onValueChange}) => {
 
               {friends.map((friend) => (
                 <UserAvatarCommandItem
-                  src={friend.avatar}
+                  avatar={friend.avatar}
                   label={friend.name}
                   key={friend.id}
                   value={friend.id}
-                  checked={value === friend.name}
+                  checked={value === friend.id}
                   onSelect={() => {
-                    if (friend.name !== value) {
-                      setValue(friend.name);
+                    if (friend.id !== value) {
+                      setValue(friend.id);
                       setOpen(false);
                     }
                   }}
@@ -101,19 +101,19 @@ export default DPaidByCombobox;
 interface UserAvatarCommandItemProps {
   checked: boolean;
   label: string;
-  src: Avatar;
+  avatar: Avatar;
   value: string;
   onSelect: () => void;
 }
 const UserAvatarCommandItem = ({
   checked,
   label,
-  src,
+  avatar,
   value,
   onSelect,
 }: UserAvatarCommandItemProps) => (
   <CommandItem value={value} className="gap-2" onSelect={onSelect}>
-    <DUserAvatar src={src} label={label} />
+    <DUserAvatar avatar={avatar} label={label} />
 
     <Check className={cn("mr-2 h-4 w-4", checked ? "opacity-100" : "opacity-0")} />
   </CommandItem>

@@ -74,8 +74,8 @@ const SplitDetailsCard = ({user, friends, paidBy, amount, type}: SplitDetailsCar
                   <DAvatarChip
                     key={person.name}
                     label={person.name}
-                    src={person.avatar}
-                    // className="group-hover:border group-hover:border-[#00BAF2]"
+                    avatar={person.avatar}
+                    className="hover:border hover:border-[#00BAF2]"
                   />
                 ))}
               </div>
@@ -97,7 +97,7 @@ const SplitDetailsCard = ({user, friends, paidBy, amount, type}: SplitDetailsCar
                         if (!isUserInvolved(user.id)) setPeopleInvolved((prev) => [...prev, user]);
                       }}
                     >
-                      {user.name}
+                      <DUserAvatar label={user.name} avatar={user.avatar} />
                       <Check
                         className={cn(
                           "ml-auto",
@@ -116,7 +116,7 @@ const SplitDetailsCard = ({user, friends, paidBy, amount, type}: SplitDetailsCar
                           setPeopleInvolved((prev) => [...prev, friend]);
                       }}
                     >
-                      {friend.name}
+                      <DUserAvatar label={friend.name} avatar={friend.avatar} />
                       <Check
                         className={cn(
                           "ml-auto",

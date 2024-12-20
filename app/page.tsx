@@ -19,7 +19,7 @@ const features = [
       " Whether it’s an even split, custom shares, or splitting by percentage, we’ve got it covered. Create a balance that works for everyone, no matter the scenario.",
   },
   {
-    title: "Smart Reminders and Notifcations",
+    title: "Smart Reminders and Notifications",
     description:
       "Stay on top of expenses and payments with helpful reminders and notifications. Never forget a balance and keep things clear, convenient, and on time.",
   },

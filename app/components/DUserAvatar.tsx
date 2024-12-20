@@ -4,11 +4,11 @@ import Image from "next/image";
 
 interface DUserAvatarProps {
   label: string;
-  src: Avatar;
+  avatar: Avatar;
 }
 
-const DUserAvatar = ({label, src}: DUserAvatarProps) => {
-  const avatarType = getAvatarType(src);
+const DUserAvatar = ({label, avatar}: DUserAvatarProps) => {
+  const avatarType = getAvatarType(avatar);
   return (
     <div className="flex flex-1 items-center gap-2">
       {avatarType ? (
